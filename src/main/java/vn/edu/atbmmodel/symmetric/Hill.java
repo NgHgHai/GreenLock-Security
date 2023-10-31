@@ -1,4 +1,4 @@
-package vn.edu.ATBMModel.symmetric;
+package vn.edu.atbmmodel.symmetric;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;

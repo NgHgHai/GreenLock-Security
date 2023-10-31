@@ -1,5 +1,5 @@
 
-package vn.edu.ATBMModel.symmetric;
+package vn.edu.atbmmodel.symmetric;
 
 import java.util.Arrays;
 

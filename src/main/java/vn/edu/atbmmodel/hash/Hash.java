@@ -1,8 +1,7 @@
-package vn.edu.ATBMModel.hash;
+package vn.edu.atbmmodel.hash;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.DigestInputStream;

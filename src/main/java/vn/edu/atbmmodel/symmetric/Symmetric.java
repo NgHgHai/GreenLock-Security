@@ -1,4 +1,4 @@
-package vn.edu.ATBMModel.symmetric;
+package vn.edu.atbmmodel.symmetric;
 
 
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;

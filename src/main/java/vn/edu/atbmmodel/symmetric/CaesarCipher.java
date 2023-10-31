@@ -1,4 +1,4 @@
-package vn.edu.ATBMModel.symmetric;
+package vn.edu.atbmmodel.symmetric;
 
 public class CaesarCipher {
     private String alphabet;

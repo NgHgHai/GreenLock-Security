@@ -1,10 +1,9 @@
-package vn.edu.ATBMModel;
+package vn.edu.atbmmodel;
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 
 import javax.crypto.Cipher;
 import java.security.Key;
 import java.security.Security;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
