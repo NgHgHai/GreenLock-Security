@@ -35,9 +35,9 @@ public class KeyGen {
         return publicKey;
     }
 
-    public static X509Certificate genCertificate() throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
+    public static X509Certificate genCertificate(KeyPair key) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
         Security.addProvider(new BouncyCastleFipsProvider());
-        KeyPair keyPair = getKeyPair();
+        KeyPair keyPair = key;
         RSAPublicKey rsaPublicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) keyPair.getPrivate();
 
@@ -71,7 +71,7 @@ public class KeyGen {
 //        } catch (InvalidKeySpecException e) {
 //            throw new RuntimeException(e);
 //        }
-        System.out.println(genCertificate().getPublicKey()
-        );
+//        System.out.println(genCertificate().getPublicKey()
+//        );
     }
 }

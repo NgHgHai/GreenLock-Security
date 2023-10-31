@@ -2,80 +2,53 @@ package vn.edu.atbmmodel.digitalsignature;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfSignatureAppearance;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.security.DigestAlgorithms;
-import com.itextpdf.text.pdf.security.ExternalDigest;
-import com.itextpdf.text.pdf.security.ExternalSignature;
-import com.itextpdf.text.pdf.security.MakeSignature;
+import com.itextpdf.text.pdf.*;
+import com.itextpdf.text.pdf.security.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.interactive.digitalsignature.PDSignature;
+import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
+import org.apache.pdfbox.pdmodel.interactive.form.PDSignatureField;
+import org.bouncycastle.cms.CMSException;
 import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
 import org.bouncycastle.operator.OperatorCreationException;
 import vn.edu.atbmmodel.key.KeyGen;
 
 import javax.crypto.Cipher;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.*;
 import java.security.cert.Certificate;
+import java.security.cert.X509Certificate;
+import java.util.Base64;
 
 public class SignInPdf {
-    public void sign(String src, String dest,
-                     Certificate[] chain, PrivateKey pk, String digestAlgorithm, String provider,
-                     MakeSignature.CryptoStandard subfilter, String reason, String location)
-            throws GeneralSecurityException, IOException, DocumentException {
-        // Creating the reader and the stamper
-        PdfReader reader = new PdfReader(src);
-        FileOutputStream os = new FileOutputStream(dest);
-        PdfStamper stamper = PdfStamper.createSignature(reader, os, '\0');
-        // Creating the appearance
-        PdfSignatureAppearance appearance = stamper.getSignatureAppearance();
-        appearance.setReason(reason);
-        appearance.setLocation(location);
-        appearance.setVisibleSignature(new Rectangle(36, 748, 144, 780), 1, "sig");
-        // Creating the signature
-        ExternalDigest digest = new ExternalDigest() {
-            @Override
-            public MessageDigest getMessageDigest(String s) throws GeneralSecurityException {
-                return MessageDigest.getInstance(digestAlgorithm, "BCFIPS");
-            }
-        };
-        ExternalSignature signature =
-                new ExternalSignature() {
-                    @Override
-                    public String getHashAlgorithm() {
-                        return "SHA256";
-                    }
+    public static void addDetachedSignatureToPDF(byte[] detachedSignature, String sourcePdfPath, String destinationPdfPath) throws IOException {
+        PDDocument document = PDDocument.load(new File(sourcePdfPath));
+        PDPage page = new PDPage();
+        document.addPage(page);
+        PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
+        PDSignatureField signatureField = new PDSignatureField(acroForm);
+        signatureField.setPartialName("SignatureField");
+        signatureField.getWidgets().get(0).setRectangle(new PDRectangle(100, 100, 200, 50)); // Đặt vị trí và kích thước
+        signatureField.setValue(Base64.getEncoder().encodeToString(detachedSignature));
 
-                    @Override
-                    public String getEncryptionAlgorithm() {
-                        return "RSA";
-                    }
-
-                    @Override
-                    public byte[] sign(byte[] bytes) throws GeneralSecurityException {
-                        Security.addProvider(new BouncyCastleFipsProvider());
-                        Cipher cipher = Cipher.getInstance("RSA/NONE/PKCS1Padding", "BCFIPS");
-                        cipher.init(Cipher.ENCRYPT_MODE, pk);
-                        byte[] cipherText = cipher.doFinal(bytes);
-                        return cipherText;
-                    }
-                };
-        MakeSignature.signDetached(appearance, digest, signature, chain,
-                null, null, null, 0, subfilter);
+        acroForm.getFields().add(signatureField);
+        signatureField.getCOSObject().setNeedToBeUpdated(true);
+        document.getSignatureFields().add(signatureField);
+        document.save(destinationPdfPath);
+        document.close();
     }
+
 
     public static final String SRC = "src/hai.pdf";
     public static final String DEST = "src/hai%s.pdf";
 
-    public static void main(String[] args) throws GeneralSecurityException, OperatorCreationException, DocumentException, IOException {
-        Provider provider = new BouncyCastleFipsProvider();
-        Security.addProvider(provider);
-        Certificate certificate = KeyGen.genCertificate();
-        Certificate[] chain = {certificate};
+    public static void main(String[] args) throws GeneralSecurityException, OperatorCreationException, DocumentException, IOException, CMSException {
         KeyPair keyPair = KeyGen.getKeyPair();
         PrivateKey privateKey = keyPair.getPrivate();
-        SignInPdf signInPdf = new SignInPdf();
-        signInPdf.sign(SRC, String.format(DEST, 1), chain, privateKey, DigestAlgorithms.SHA256, provider.getName(), MakeSignature.CryptoStandard.CMS, "test1", "thu duc");
+        X509Certificate certificate = KeyGen.genCertificate(keyPair);
+        byte[] enc = SignInData.createDetachedSignature("hoanghai".getBytes(), certificate, "SHA256", privateKey);
+        addDetachedSignatureToPDF(enc, SRC, String.format(DEST, "1"));
     }
 }
