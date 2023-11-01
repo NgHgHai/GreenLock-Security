@@ -26,8 +26,8 @@ public class Symmetric {
         this.algorithm = algorithm;
         this.ivLength = ivLength;
         Security.addProvider(new BouncyCastleProvider());
-        encryptCipher = Cipher.getInstance(algorithm + "/" + mode + "/" + standard, "BCFIPS");
-        decryptCipher = Cipher.getInstance(algorithm + "/" + mode + "/" + standard, "BCFIPS");
+        encryptCipher = Cipher.getInstance(algorithm + "/" + mode + "/" + standard, "BC");
+        decryptCipher = Cipher.getInstance(algorithm + "/" + mode + "/" + standard, "BC");
     }
 
     static Symmetric symmetric = new Symmetric();
@@ -114,11 +114,17 @@ public class Symmetric {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        symmetric.init("CAST5 ", "CFB", "NoPadding", 8);
-        String key = "1234";
-        byte[] enc = symmetric.encrypt("Hello, World!".getBytes("UTF-8"), key);
+        symmetric.init("DESede", "OFB", "PKCS7Padding", 8);
+        String key = "1234567890123456";
+        try {
+            byte[] enc = symmetric.encrypt("Hello, World!".getBytes("UTF-8"), key);
+            byte[] dec = symmetric.decrypt(enc, key);
+            System.out.println(new String(dec));
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 //        System.out.println(new String(enc, "UTF-8"));
-        byte[] dec = symmetric.decrypt(enc, key);
-        System.out.println(new String(dec));
+
+
     }
 }
