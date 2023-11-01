@@ -1,6 +1,7 @@
 package vn.edu.atbmmodel.publicKey;
 
-import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import vn.edu.atbmmodel.key.KeyGen;
 
 import javax.crypto.BadPaddingException;
@@ -17,7 +18,7 @@ public class RSA {
     private Cipher cipher;
 
     public RSA() throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException {
-        Security.addProvider(new BouncyCastleFipsProvider());
+        Security.addProvider(new BouncyCastleProvider());
         cipher = Cipher.getInstance("RSA/NONE/PKCS1Padding", "BCFIPS");
     }
 

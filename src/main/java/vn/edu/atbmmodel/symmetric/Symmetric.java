@@ -1,7 +1,7 @@
 package vn.edu.atbmmodel.symmetric;
 
 
-import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
@@ -22,10 +22,10 @@ public class Symmetric {
     Cipher decryptCipher;
     String algorithm;
 
-    public void init(String algorithm, String mode, String standard,int ivLength) throws Exception {
+    public void init(String algorithm, String mode, String standard, int ivLength) throws Exception {
         this.algorithm = algorithm;
         this.ivLength = ivLength;
-        Security.addProvider(new BouncyCastleFipsProvider());
+        Security.addProvider(new BouncyCastleProvider());
         encryptCipher = Cipher.getInstance(algorithm + "/" + mode + "/" + standard, "BCFIPS");
         decryptCipher = Cipher.getInstance(algorithm + "/" + mode + "/" + standard, "BCFIPS");
     }

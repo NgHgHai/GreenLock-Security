@@ -1,5 +1,5 @@
 package vn.edu.atbmmodel;
-import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.crypto.Cipher;
 import java.security.Key;
@@ -11,7 +11,7 @@ import java.util.Base64;
 public class Main {
         public static void main(String[] args) throws Exception {
             // Thêm Bouncy Castle Provider
-            Security.addProvider(new BouncyCastleFipsProvider());
+            Security.addProvider(new BouncyCastleProvider());
 
             // Dữ liệu cần mã hóa
             String plainText = "Hello, World!";

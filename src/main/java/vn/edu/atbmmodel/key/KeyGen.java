@@ -5,8 +5,7 @@ import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
-import org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
@@ -23,7 +22,7 @@ import java.util.Date;
 
 public class KeyGen {
     public static KeyPair getKeyPair() throws NoSuchAlgorithmException {
-        Security.addProvider(new BouncyCastleFipsProvider());
+        Security.addProvider(new BouncyCastleProvider());
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
@@ -36,7 +35,7 @@ public class KeyGen {
     }
 
     public static X509Certificate genCertificate(KeyPair key) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
-        Security.addProvider(new BouncyCastleFipsProvider());
+        Security.addProvider(new BouncyCastleProvider());
         KeyPair keyPair = key;
         RSAPublicKey rsaPublicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) keyPair.getPrivate();
@@ -52,26 +51,15 @@ public class KeyGen {
         JcaContentSignerBuilder signerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
         ContentSigner contentSigner = signerBuilder.build(rsaPrivateKey);
         X509CertificateHolder selfSignedCert = certBuilder.build(contentSigner);
-        X509Certificate certificate  = new JcaX509CertificateConverter().getCertificate(selfSignedCert);
+        X509Certificate certificate = new JcaX509CertificateConverter().getCertificate(selfSignedCert);
         return certificate;
 
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
-//        try {
-//            KeyPair keyPair= getKeyPair();
-//
-//            byte[] data = keyPair.getPublic().getEncoded();
-//
-//            PublicKey publicKey = keyPubKey(data);
-//
-//            System.out.println(publicKey.equals(keyPair.getPublic()));
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (InvalidKeySpecException e) {
-//            throw new RuntimeException(e);
-//        }
-//        System.out.println(genCertificate().getPublicKey()
-//        );
+
+        KeyPair keyPair = getKeyPair();
+
+        System.out.println(genCertificate(keyPair));
     }
 }
