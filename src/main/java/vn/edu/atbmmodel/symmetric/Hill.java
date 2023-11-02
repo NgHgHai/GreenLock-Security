@@ -141,17 +141,17 @@ public class Hill {
         }
     }
 
-    public static void main(String[] args) {
-        Hill hill = new Hill();
-
-        int[][] key = {{16, 33}, {11, 15}};
-        String hillenc = hill.encrypt(key, "okokokokokokokokok");
-        System.out.println(hillenc);
-        System.out.println(hill.decrypt(key, hillenc));
-//        System.out.println("ỹ".codePointAt(0)== (char)7929);
-//        for (int i = 192; i<=400;i++){
-//            System.out.println((char) i);
-//        }
-//        System.out.println("Ý".codePointAt(0));
-    }
+//    public static void main(String[] args) {
+//        Hill hill = new Hill();
+//
+//        int[][] key = {{16, 33}, {11, 15}};
+//        String hillenc = hill.encrypt(key, "okokokokokokokokok");
+//        System.out.println(hillenc);
+//        System.out.println(hill.decrypt(key, hillenc));
+////        System.out.println("ỹ".codePointAt(0)== (char)7929);
+////        for (int i = 192; i<=400;i++){
+////            System.out.println((char) i);
+////        }
+////        System.out.println("Ý".codePointAt(0));
+//    }
 }

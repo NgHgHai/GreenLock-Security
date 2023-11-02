@@ -33,14 +33,14 @@ public class RSA {
         return new String(plain);
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        KeyPair pair = KeyGen.getKeyPair();
-        PublicKey publicKey1 = pair.getPublic();
-        PrivateKey privateKey1 = pair.getPrivate();
-        RSA rsa = new RSA();
-        byte[] enc = rsa.encrypt(publicKey1, "hoanghai");
-        System.out.println(rsa.decrypt(privateKey1, enc));
-    }
+//    public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchPaddingException, NoSuchProviderException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+//        KeyPair pair = KeyGen.getKeyPair();
+//        PublicKey publicKey1 = pair.getPublic();
+//        PrivateKey privateKey1 = pair.getPrivate();
+//        RSA rsa = new RSA();
+//        byte[] enc = rsa.encrypt(publicKey1, "hoanghai");
+//        System.out.println(rsa.decrypt(privateKey1, enc));
+//    }
 
 
 }

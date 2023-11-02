@@ -1,0 +1,79 @@
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			name: "pnMain"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+				name: "panel2"
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "label1"
+					"text": "Green Tool To Lock"
+					"font": new java.awt.Font( "Inter", 0, 50 )
+					"foreground": new java.awt.Color( 51, 255, 51, 255 )
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "First"
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "panel4"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+					name: "panel5"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label2"
+						"text": "Choose mode :"
+						"font": new java.awt.Font( "Inter", 0, 25 )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "North"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+					name: "pnBtn"
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnSKE"
+						"text": "Symmetric Key Encryption"
+						"font": &Font0 new java.awt.Font( "Inter", 0, 15 )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnPKE"
+						"text": "Public Key Encryption"
+						"font": #Font0
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnDS"
+						"text": "Digital Signature"
+						"font": new java.awt.Font( "Inter", 0, 15 )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnVDS"
+						"text": "Verify Digital Signature"
+						"font": new java.awt.Font( "Inter", 0, 15 )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnHash"
+						"text": "Hash"
+						"font": #Font0
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnCheckSums"
+						"text": "CheckSums"
+						"font": #Font0
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnGetKey"
+						"text": "Get key"
+						"font": #Font0
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+			}, new FormLayoutConstraints( class java.lang.String ) {
+				"value": "Center"
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 705, 315 )
+		} )
+	}
+}

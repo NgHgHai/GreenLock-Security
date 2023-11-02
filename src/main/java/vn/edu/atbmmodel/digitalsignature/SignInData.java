@@ -29,14 +29,14 @@ import java.util.List;
 
 public class SignInData {
     public static byte[] createDigitalSignature(String data, String hashAlgorithm, PrivateKey privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
-        Signature signature = Signature.getInstance(hashAlgorithm, "BCFIPS");
+        Signature signature = Signature.getInstance(hashAlgorithm, "BC");
         signature.initSign(privateKey);
         signature.update(data.getBytes());
         return signature.sign();
     }
 
     public static boolean verifyDigitalSignature(String data, byte[] signature, String hashAlgorithm, PublicKey publicKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
-        Signature sig = Signature.getInstance(hashAlgorithm, "BCFIPS");
+        Signature sig = Signature.getInstance(hashAlgorithm, "BC");
         sig.initVerify(publicKey);
         sig.update(data.getBytes());
         return sig.verify(signature);
@@ -48,11 +48,11 @@ public class SignInData {
         certList.add(certificate);
         Store certs = new JcaCertStore(certList);
         DigestCalculatorProvider digProvider = new JcaDigestCalculatorProviderBuilder()
-                .setProvider("BCFIPS").build();
+                .setProvider("BC").build();
         JcaSignerInfoGeneratorBuilder signerInfoGeneratorBuilder =
                 new JcaSignerInfoGeneratorBuilder(digProvider);
         ContentSigner signer = new JcaContentSignerBuilder(hashAlgorithm + "withRSA")
-                .setProvider("BCFIPS").build(privateKey);
+                .setProvider("BC").build(privateKey);
 
         CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
         gen.addSignerInfoGenerator(signerInfoGeneratorBuilder.build(signer, certificate));
@@ -73,22 +73,22 @@ public class SignInData {
             Collection certCollection = certStore.getMatches(signer.getSID());
             Iterator certIt = certCollection.iterator();
             X509CertificateHolder cert = (X509CertificateHolder) certIt.next();
-            if (!signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BCFIPS").build(cert))) {
+            if (!signer.verify(new JcaSimpleSignerInfoVerifierBuilder().setProvider("BC").build(cert))) {
                 return false;
             }
         }
         return true;
     }
 
-    public static void main(String[] args) throws GeneralSecurityException, OperatorCreationException, IOException, CMSException {
-        KeyPair pair = KeyGen.getKeyPair();
-        PublicKey publicKey = pair.getPublic();
-        PrivateKey privateKey = pair.getPrivate();
-        byte[] data = "hoanghai".getBytes();
-        X509Certificate certificate = KeyGen.genCertificate(pair);
-        byte[] enc = createDetachedSignature(data, certificate, "SHA256", privateKey);
-        System.out.println(verifyDetachedData(enc, data));
-
-    }
+//    public static void main(String[] args) throws GeneralSecurityException, OperatorCreationException, IOException, CMSException {
+//        KeyPair pair = KeyGen.getKeyPair();
+//        PublicKey publicKey = pair.getPublic();
+//        PrivateKey privateKey = pair.getPrivate();
+//        byte[] data = "hoanghai".getBytes();
+//        X509Certificate certificate = KeyGen.genCertificate(pair);
+//        byte[] enc = createDetachedSignature(data, certificate, "SHA256", privateKey);
+//        System.out.println(verifyDetachedData(enc, data));
+//
+//    }
 }
 

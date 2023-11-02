@@ -56,10 +56,10 @@ public class KeyGen {
 
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
-
-        KeyPair keyPair = getKeyPair();
-
-        System.out.println(genCertificate(keyPair));
-    }
+//    public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
+//
+//        KeyPair keyPair = getKeyPair();
+//
+//        System.out.println(genCertificate(keyPair));
+//    }
 }

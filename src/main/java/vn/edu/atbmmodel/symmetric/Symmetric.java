@@ -114,7 +114,7 @@ public class Symmetric {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        symmetric.init("DESede", "OFB", "PKCS7Padding", 8);
+        symmetric.init("AES", "CBC", "PKCS7Padding", 16);
         String key = "1234567890123456";
         try {
             byte[] enc = symmetric.encrypt("Hello, World!".getBytes("UTF-8"), key);

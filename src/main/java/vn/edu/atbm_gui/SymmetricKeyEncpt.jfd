@@ -1,0 +1,152 @@
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "pnMain"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+					name: "pnTop"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label3"
+						"text": "Algorithm"
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "jCBAlgorithm"
+						"preferredSize": new java.awt.Dimension( 86, 30 )
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "AES"
+							addElement( "AES" )
+							addElement( "DESede" )
+							addElement( "Blowfish" )
+							addElement( "Camellia" )
+							addElement( "DES" )
+							addElement( "Twofish" )
+							addElement( "CAST5" )
+							addElement( "Hill" )
+							addElement( "Vigener" )
+						}
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jCBAlgorithm", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label4"
+						"text": "Mode"
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "jCBMode"
+						"preferredSize": new java.awt.Dimension( 86, 26 )
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "CBC"
+							addElement( "CBC" )
+							addElement( "OFB" )
+							addElement( "CTR" )
+							addElement( "CFB" )
+							addElement( "CFB64" )
+						}
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label5"
+						"text": "padding"
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "jCBStandard"
+						"preferredSize": new java.awt.Dimension( 105, 26 )
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "NoPadding"
+							addElement( "NoPadding" )
+							addElement( "PKCS7Padding" )
+						}
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnResetInputToPlainText"
+						"text": "reset input to plain text"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnResetInputToPlainText", true ) )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "First"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+					name: "pnCenter"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
+						name: "pnInput"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane1"
+							add( new FormComponent( "javax.swing.JTextArea" ) {
+								name: "jTAInput"
+								"rows": 5
+								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Input", 1, 0 )
+							} )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnChooseFileInput"
+							"text": "choose file"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnChooseFileInput", true ) )
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+						name: "pnKey"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label8"
+							"text": "key"
+						} )
+						add( new FormComponent( "javax.swing.JTextField" ) {
+							name: "jTFKey"
+							"preferredSize": new java.awt.Dimension( 500, 30 )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnKeyFile"
+							"text": "choose key file"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnKeyFile", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnResetKeyToPlainText"
+							"text": "reset key to plain text"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnResetKeyToPlainText", true ) )
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+						name: "pnEn_De"
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnEncrypt"
+							"text": "encrypt"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnEncrypt", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnDecrypt"
+							"text": "decrypt"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnDecrypt", true ) )
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "pnResult"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane2"
+							add( new FormComponent( "javax.swing.JTextArea" ) {
+								name: "jTAResult"
+								"rows": 5
+								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Result" )
+							} )
+						} )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane3"
+					add( new FormComponent( "javax.swing.JTextArea" ) {
+						name: "jTAStatus"
+						"border": new javax.swing.border.TitledBorder( "status" )
+						"rows": 3
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Last"
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 910, 460 )
+		} )
+	}
+}

@@ -41,11 +41,11 @@ public class Vigener {
         return Arrays.toString(ciphers);
     }
 
-    public static void main(String[] args) {
-        Vigener v = new Vigener(new int[]{17, 14, 12, 4});
-        String encrypted = v.encrypt("Hello World");
-        System.out.println(encrypted);
-        System.out.println(v.decrypt(encrypted));
-    }
+//    public static void main(String[] args) {
+//        Vigener v = new Vigener(new int[]{17, 14, 12, 4});
+//        String encrypted = v.encrypt("Hello World");
+//        System.out.println(encrypted);
+//        System.out.println(v.decrypt(encrypted));
+//    }
 
 }

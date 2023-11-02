@@ -1,0 +1,137 @@
+/*
+ * Created by JFormDesigner on Thu Oct 19 18:15:43 ICT 2023
+ */
+
+package vn.edu.atbm_gui;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * @author hoang hai
+ */
+public class indexApp {
+
+    public indexApp() {
+        initComponents();
+    }
+
+    private void initComponents() {
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        // Generated using JFormDesigner Evaluation license - hoanghai
+        pnMain = new JPanel();
+        panel2 = new JPanel();
+        label1 = new JLabel();
+        panel4 = new JPanel();
+        panel5 = new JPanel();
+        label2 = new JLabel();
+        pnBtn = new JPanel();
+        btnSKE = new JButton();
+        btnPKE = new JButton();
+        btnDS = new JButton();
+        btnVDS = new JButton();
+        btnHash = new JButton();
+        btnCheckSums = new JButton();
+        btnGetKey = new JButton();
+
+        //======== pnMain ========
+        {
+            pnMain.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border
+            .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax
+            . swing. border .TitledBorder . BOTTOM, new Font ( "Dia\u006cog", Font. BOLD ,
+            12 ) ,Color .red ) ,pnMain. getBorder () ) ); pnMain. addPropertyChangeListener( new java. beans
+            .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e.
+            getPropertyName () ) )throw new RuntimeException( ) ;} } );
+            pnMain.setLayout(new BorderLayout());
+
+            //======== panel2 ========
+            {
+                panel2.setLayout(new FlowLayout());
+
+                //---- label1 ----
+                label1.setText("Green Tool To Lock");
+                label1.setFont(new Font("Inter", Font.PLAIN, 50));
+                label1.setForeground(new Color(0x33ff33));
+                panel2.add(label1);
+            }
+            pnMain.add(panel2, BorderLayout.PAGE_START);
+
+            //======== panel4 ========
+            {
+                panel4.setLayout(new BorderLayout());
+
+                //======== panel5 ========
+                {
+                    panel5.setLayout(new FlowLayout());
+
+                    //---- label2 ----
+                    label2.setText("Choose mode :");
+                    label2.setFont(new Font("Inter", Font.PLAIN, 25));
+                    panel5.add(label2);
+                }
+                panel4.add(panel5, BorderLayout.NORTH);
+
+                //======== pnBtn ========
+                {
+                    pnBtn.setLayout(new FlowLayout());
+
+                    //---- btnSKE ----
+                    btnSKE.setText("Symmetric Key Encryption");
+                    btnSKE.setFont(new Font("Inter", Font.PLAIN, 15));
+                    pnBtn.add(btnSKE);
+
+                    //---- btnPKE ----
+                    btnPKE.setText("Public Key Encryption");
+                    btnPKE.setFont(new Font("Inter", Font.PLAIN, 15));
+                    pnBtn.add(btnPKE);
+
+                    //---- btnDS ----
+                    btnDS.setText("Digital Signature");
+                    btnDS.setFont(new Font("Inter", Font.PLAIN, 15));
+                    pnBtn.add(btnDS);
+
+                    //---- btnVDS ----
+                    btnVDS.setText("Verify Digital Signature");
+                    btnVDS.setFont(new Font("Inter", Font.PLAIN, 15));
+                    pnBtn.add(btnVDS);
+
+                    //---- btnHash ----
+                    btnHash.setText("Hash");
+                    btnHash.setFont(new Font("Inter", Font.PLAIN, 15));
+                    pnBtn.add(btnHash);
+
+                    //---- btnCheckSums ----
+                    btnCheckSums.setText("CheckSums");
+                    btnCheckSums.setFont(new Font("Inter", Font.PLAIN, 15));
+                    pnBtn.add(btnCheckSums);
+
+                    //---- btnGetKey ----
+                    btnGetKey.setText("Get key");
+                    btnGetKey.setFont(new Font("Inter", Font.PLAIN, 15));
+                    pnBtn.add(btnGetKey);
+                }
+                panel4.add(pnBtn, BorderLayout.CENTER);
+            }
+            pnMain.add(panel4, BorderLayout.CENTER);
+        }
+        // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
+    }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
+    // Generated using JFormDesigner Evaluation license - hoanghai
+    private JPanel pnMain;
+    private JPanel panel2;
+    private JLabel label1;
+    private JPanel panel4;
+    private JPanel panel5;
+    private JLabel label2;
+    private JPanel pnBtn;
+    private JButton btnSKE;
+    private JButton btnPKE;
+    private JButton btnDS;
+    private JButton btnVDS;
+    private JButton btnHash;
+    private JButton btnCheckSums;
+    private JButton btnGetKey;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+}

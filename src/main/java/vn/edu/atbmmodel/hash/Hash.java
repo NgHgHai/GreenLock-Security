@@ -31,12 +31,12 @@ public class Hash {
         return no.toString(16);
     }
 
-    public static void main(String[] args) {
-        try {
-            Hash hash = new Hash("SHA-256");
-            System.out.println(hash.hashFile("C:\\Users\\H\\Downloads\\openjdk-11.0.2_windows-x64_bin.zip"));
-        } catch (NoSuchAlgorithmException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            Hash hash = new Hash("SHA-256");
+//            System.out.println(hash.hashFile("C:\\Users\\H\\Downloads\\openjdk-11.0.2_windows-x64_bin.zip"));
+//        } catch (NoSuchAlgorithmException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

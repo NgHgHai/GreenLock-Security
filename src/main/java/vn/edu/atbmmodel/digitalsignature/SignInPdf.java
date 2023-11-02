@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.security.*;
 import java.security.cert.Certificate;
 
+import java.security.cert.X509Certificate;
+
 
 public class SignInPdf {
     public void sign(String src, String temp, String dest, Certificate[] chain, PrivateKey pk,
@@ -50,18 +52,18 @@ public class SignInPdf {
     public static final String SRC = "src/hai.pdf";
     public static final String DEST = "src/hai%s.pdf";
 
-    public static void main(String[] args) throws GeneralSecurityException, OperatorCreationException, IOException, CMSException {
-        Provider provider = new BouncyCastleProvider();
-        Security.addProvider(provider);
-        KeyPair keyPair = KeyGen.getKeyPair();
-        Certificate[] chain = {KeyGen.genCertificate(keyPair)};
-        PrivateKey privateKey = keyPair.getPrivate();
-        String digestAlgorithm = "SHA256";
-        String providerName = provider.getName();
-        PdfSigner.CryptoStandard subfilter = PdfSigner.CryptoStandard.CMS;
-        String reason = "Test";
-        String location = "Ha Noi";
-        new SignInPdf().sign(SRC, String.format(DEST, 1), String.format(DEST, 2), chain, privateKey, digestAlgorithm, providerName, subfilter, reason, location);
-
-    }
+//    public static void main(String[] args) throws GeneralSecurityException, OperatorCreationException, IOException, CMSException {
+//        Provider provider = new BouncyCastleProvider();
+//        Security.addProvider(provider);
+//        KeyPair keyPair = KeyGen.getKeyPair();
+//        Certificate[] chain = {KeyGen.genCertificate(keyPair)};
+//        PrivateKey privateKey = keyPair.getPrivate();
+//        String digestAlgorithm = "SHA256";
+//        String providerName = provider.getName();
+//        PdfSigner.CryptoStandard subfilter = PdfSigner.CryptoStandard.CMS;
+//        String reason = "Test";
+//        String location = "Ha Noi";
+//        new SignInPdf().sign(SRC, String.format(DEST, 1), String.format(DEST, 2), chain, privateKey, digestAlgorithm, providerName, subfilter, reason, location);
+//
+//    }
 }

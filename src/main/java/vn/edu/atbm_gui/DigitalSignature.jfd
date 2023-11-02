@@ -1,0 +1,108 @@
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "pnMain"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+					name: "pnTop"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label3"
+						"text": "Algorithm"
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "jCBAlgorithm"
+						"preferredSize": new java.awt.Dimension( 86, 30 )
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "RSA"
+							addElement( "RSA" )
+						}
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label4"
+						"text": "Mode"
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "jCBMode"
+						"preferredSize": new java.awt.Dimension( 86, 26 )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label5"
+						"text": "Standard"
+					} )
+					add( new FormComponent( "javax.swing.JComboBox" ) {
+						name: "jCBStandard"
+						"preferredSize": new java.awt.Dimension( 86, 26 )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "First"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+					name: "pnCenter"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
+						name: "pnInput"
+						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+							name: "scrollPane1"
+							add( new FormComponent( "javax.swing.JTextArea" ) {
+								name: "jTAInput"
+								"rows": 5
+								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Input", 1, 0 )
+							} )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnChooseFileInput"
+							"text": "choose file"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+						name: "pnKey"
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label8"
+							"text": "Portable Key Store"
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "jCBExtend"
+							"preferredSize": new java.awt.Dimension( 86, 26 )
+							"model": new javax.swing.DefaultComboBoxModel {
+								selectedItem: ".pfx"
+								addElement( ".pfx" )
+								addElement( ".p12" )
+							}
+						} )
+						add( new FormComponent( "javax.swing.JTextField" ) {
+							name: "JTFKey"
+							"preferredSize": new java.awt.Dimension( 500, 30 )
+						} )
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnKeyFile"
+							"text": "choose key file"
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+						name: "pnExecute"
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnSign"
+							"text": "sign"
+						} )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPane3"
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "jTAStatus"
+					"border": new javax.swing.border.TitledBorder( "status" )
+					"rows": 3
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 930, 385 )
+		} )
+	}
+}
