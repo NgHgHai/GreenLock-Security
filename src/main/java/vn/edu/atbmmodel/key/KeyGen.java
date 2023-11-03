@@ -10,6 +10,12 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.CertificateException;
@@ -18,6 +24,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.Date;
 
 public class KeyGen {
@@ -32,6 +39,12 @@ public class KeyGen {
     public static PublicKey keyPubKey(byte[] data) throws NoSuchAlgorithmException, InvalidKeySpecException {
         PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(data));
         return publicKey;
+    }
+    public static SecretKey getKeySymmetric(String algorithm,int size) throws NoSuchAlgorithmException {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);
+        keyGenerator.init(size);
+        SecretKey key = keyGenerator.generateKey();
+        return key;
     }
 
     public static X509Certificate genCertificate(KeyPair key) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
@@ -56,10 +69,22 @@ public class KeyGen {
 
     }
 
-//    public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
-//
-//        KeyPair keyPair = getKeyPair();
-//
-//        System.out.println(genCertificate(keyPair));
-//    }
+    public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
+
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(128);
+        Key key = keyGenerator.generateKey();
+        try{
+            JFileChooser jFileChooser = new JFileChooser();
+            jFileChooser.showSaveDialog(null);
+            FileOutputStream fos = new FileOutputStream(jFileChooser.getSelectedFile());
+//            FileOutputStream fos = new FileOutputStream("key.AES");
+            fos.write(key.getEncoded());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -12,11 +12,11 @@ public class Main {
         }
         JFrame frame = new JFrame("app");
         SwingUtilities.updateComponentTreeUI(frame);
-//        frame.setSize(600, 250);
-        JPanel pnMain = new SymmetricKeyEncpt().pnMain;
+        frame.setSize(600, 250);
+        JPanel pnMain = new indexApp().pnMain;
         frame.setContentPane(pnMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
+//        frame.pack();
         frame.setVisible(true);
 
 

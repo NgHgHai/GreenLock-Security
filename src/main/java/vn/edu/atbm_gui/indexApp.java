@@ -4,6 +4,7 @@
 
 package vn.edu.atbm_gui;
 
+import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,6 +15,28 @@ public class indexApp {
 
     public indexApp() {
         initComponents();
+    }
+
+    private void btnSKE(ActionEvent e) {
+        // chuyen den frame SymmetricKeyEncpt
+        JFrame frame = new JFrame("SymmetricKeyEncpt");
+        SwingUtilities.updateComponentTreeUI(frame);
+        JPanel pnMain = new SymmetricKeyEncpt().pnMain;
+        frame.setContentPane(pnMain);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void btnPKE(ActionEvent e) {
+        // chuyen den frame PublicKeyEncpt
+        JFrame frame = new JFrame("PublicKeyEncpt");
+        SwingUtilities.updateComponentTreeUI(frame);
+        JPanel pnMain = new PublicKeyEncpt().pnMain;
+        frame.setContentPane(pnMain);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
 
     private void initComponents() {
@@ -36,12 +59,13 @@ public class indexApp {
 
         //======== pnMain ========
         {
-            pnMain.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border
-            .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax
-            . swing. border .TitledBorder . BOTTOM, new Font ( "Dia\u006cog", Font. BOLD ,
-            12 ) ,Color .red ) ,pnMain. getBorder () ) ); pnMain. addPropertyChangeListener( new java. beans
-            .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e.
-            getPropertyName () ) )throw new RuntimeException( ) ;} } );
+            pnMain.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
+            swing. border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border
+            . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog"
+            ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,pnMain. getBorder
+            ( )) ); pnMain. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
+            .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException
+            ( ); }} );
             pnMain.setLayout(new BorderLayout());
 
             //======== panel2 ========
@@ -51,7 +75,7 @@ public class indexApp {
                 //---- label1 ----
                 label1.setText("Green Tool To Lock");
                 label1.setFont(new Font("Inter", Font.PLAIN, 50));
-                label1.setForeground(new Color(0x33ff33));
+                label1.setForeground(new Color(0x339900));
                 panel2.add(label1);
             }
             pnMain.add(panel2, BorderLayout.PAGE_START);
@@ -78,11 +102,13 @@ public class indexApp {
                     //---- btnSKE ----
                     btnSKE.setText("Symmetric Key Encryption");
                     btnSKE.setFont(new Font("Inter", Font.PLAIN, 15));
+                    btnSKE.addActionListener(e -> btnSKE(e));
                     pnBtn.add(btnSKE);
 
                     //---- btnPKE ----
                     btnPKE.setText("Public Key Encryption");
                     btnPKE.setFont(new Font("Inter", Font.PLAIN, 15));
+                    btnPKE.addActionListener(e -> btnPKE(e));
                     pnBtn.add(btnPKE);
 
                     //---- btnDS ----

@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -11,7 +11,7 @@ new FormModel {
 					name: "label1"
 					"text": "Green Tool To Lock"
 					"font": new java.awt.Font( "Inter", 0, 50 )
-					"foreground": new java.awt.Color( 51, 255, 51, 255 )
+					"foreground": new java.awt.Color( 51, 153, 0, 255 )
 				} )
 			}, new FormLayoutConstraints( class java.lang.String ) {
 				"value": "First"
@@ -34,11 +34,13 @@ new FormModel {
 						name: "btnSKE"
 						"text": "Symmetric Key Encryption"
 						"font": &Font0 new java.awt.Font( "Inter", 0, 15 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSKE", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "btnPKE"
 						"text": "Public Key Encryption"
 						"font": #Font0
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnPKE", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "btnDS"

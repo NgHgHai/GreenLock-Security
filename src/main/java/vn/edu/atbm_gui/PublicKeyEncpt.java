@@ -5,6 +5,7 @@
 package vn.edu.atbm_gui;
 
 
+import java.awt.event.*;
 import org.jdesktop.swingx.VerticalLayout;
 
 import javax.swing.*;
@@ -17,6 +18,10 @@ import java.awt.*;
 public class PublicKeyEncpt extends JPanel {
     public PublicKeyEncpt() {
         initComponents();
+    }
+
+    private void btnResetKeyToPlainText(ActionEvent e) {
+        // TODO add your code here
     }
 
     private void initComponents() {
@@ -37,9 +42,9 @@ public class PublicKeyEncpt extends JPanel {
         btnChooseFileInput = new JButton();
         pnKey = new JPanel();
         label8 = new JLabel();
-        jCBKeyLength = new JComboBox();
         key = new JTextField();
         btnKeyFile = new JButton();
+        btnResetKeyToPlainText = new JButton();
         pnExecute = new JPanel();
         jCBEn_De = new JComboBox<>();
         btnExecute = new JButton();
@@ -50,12 +55,13 @@ public class PublicKeyEncpt extends JPanel {
         jTAStatus = new JTextArea();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border
-        .EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax
-        .swing.border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,
-        12),java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans
-        .PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.
-        getPropertyName()))throw new RuntimeException();}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
+        swing. border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border
+        . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog"
+        ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder
+        ( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
+        .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException
+        ( ); }} );
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -127,10 +133,6 @@ public class PublicKeyEncpt extends JPanel {
                     label8.setText("key");
                     pnKey.add(label8);
 
-                    //---- jCBKeyLength ----
-                    jCBKeyLength.setPreferredSize(new Dimension(86, 26));
-                    pnKey.add(jCBKeyLength);
-
                     //---- key ----
                     key.setPreferredSize(new Dimension(500, 30));
                     pnKey.add(key);
@@ -138,6 +140,11 @@ public class PublicKeyEncpt extends JPanel {
                     //---- btnKeyFile ----
                     btnKeyFile.setText("choose key file");
                     pnKey.add(btnKeyFile);
+
+                    //---- btnResetKeyToPlainText ----
+                    btnResetKeyToPlainText.setText("reset key to plain text");
+                    btnResetKeyToPlainText.addActionListener(e -> btnResetKeyToPlainText(e));
+                    pnKey.add(btnResetKeyToPlainText);
                 }
                 pnCenter.add(pnKey);
 
@@ -183,7 +190,7 @@ public class PublicKeyEncpt extends JPanel {
 
             //---- jTAStatus ----
             jTAStatus.setBorder(new TitledBorder("status"));
-            jTAStatus.setRows(3);
+            jTAStatus.setRows(8);
             scrollPane3.setViewportView(jTAStatus);
         }
         add(scrollPane3);
@@ -207,9 +214,9 @@ public class PublicKeyEncpt extends JPanel {
     private JButton btnChooseFileInput;
     private JPanel pnKey;
     private JLabel label8;
-    private JComboBox jCBKeyLength;
     private JTextField key;
     private JButton btnKeyFile;
+    private JButton btnResetKeyToPlainText;
     private JPanel pnExecute;
     private JComboBox<String> jCBEn_De;
     private JButton btnExecute;

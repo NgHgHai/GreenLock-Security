@@ -5,7 +5,6 @@
 package vn.edu.atbm_gui;
 
 
-
 import org.jdesktop.swingx.VerticalLayout;
 import vn.edu.atbmmodel.symmetric.Symmetric;
 
@@ -14,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Base64;
 
 
@@ -38,7 +38,7 @@ public class SymmetricKeyEncpt extends JPanel {
             jTFKey.setText(fileChooser.getSelectedFile().getAbsolutePath());
             keyIsFile = true;
             jTAStatus.append("key field: " + fileChooser.getSelectedFile().getAbsolutePath() + "\n");
-            dataSource = fileChooser.getSelectedFile();
+            key = fileChooser.getSelectedFile();
         }
 
     }
@@ -57,7 +57,7 @@ public class SymmetricKeyEncpt extends JPanel {
             jTAInput.setText(fileChooser.getSelectedFile().getAbsolutePath());
             inputIsFile = true;
             jTAStatus.append("input field: " + fileChooser.getSelectedFile().getAbsolutePath() + "\n");
-            key = fileChooser.getSelectedFile();
+            dataSource = fileChooser.getSelectedFile();
         }
     }
 
@@ -68,23 +68,91 @@ public class SymmetricKeyEncpt extends JPanel {
 
 
     private void btnEncrypt(ActionEvent e) {
-        // TODO add your code here
         jTAStatus.append("encrypting...\n");
         Symmetric symmetric = Symmetric.getInstance();
-        try {
-            symmetric.init(jCBAlgorithm.getSelectedItem().toString(), jCBMode.getSelectedItem().toString(), jCBStandard.getSelectedItem().toString(), 16);
-            byte[] enc = symmetric.encrypt(jTAInput.getText().getBytes(), jTFKey.getText());
-            jTAResult.setText(Base64.getEncoder().encodeToString(enc));
-        } catch (Exception ex) {
-           jTAStatus.append(ex.getMessage() + "\n");
+        byte[] enc;
+        byte[] key = null;
+        String des = null;
+        if (keyIsFile) {
+            try {
+                key = symmetric.readKeyFromFile(jTFKey.getText());
+                jTAStatus.append("key: read from file\n");
+            } catch (IOException ex) {
+                jTAStatus.append("ERROR : "+ex.getMessage() + "\n");
+            }
+        } else {
+            key = jTFKey.getText().getBytes();
+            jTAStatus.append("key: read from text field\n");
         }
-
-
+        try {
+            symmetric.init(jCBAlgorithm.getSelectedItem().toString(), jCBMode.getSelectedItem().toString(), jCBStandard.getSelectedItem().toString(), symmetric.getIvLength(jCBAlgorithm.getSelectedItem().toString()));
+            jTAStatus.append("init algorithm: " + jCBAlgorithm.getSelectedItem().toString() + "/" + jCBMode.getSelectedItem().toString() + "/" + jCBStandard.getSelectedItem().toString() + "\n");
+            if (inputIsFile) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(jTAInput.getText()));
+                fileChooser.setSelectedFile(new File(jTAInput.getText() + "-encrypted" + ".enc"));
+                int returnValue = fileChooser.showSaveDialog(this);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    des = fileChooser.getSelectedFile().getAbsolutePath();
+                }
+                boolean b = symmetric.encryptFile(jTAInput.getText(), key, des);
+                if (b) {
+                    jTAStatus.append("encrypt file success : " + des + "\n");
+                } else {
+                    jTAStatus.append("encrypt file fail\n");
+                }
+            } else {
+                enc = symmetric.encrypt(jTAInput.getText().getBytes(), key);
+                jTAResult.setText(Base64.getEncoder().encodeToString(enc));
+                jTAStatus.append("encrypt success\n");
+            }
+        } catch (Exception ex) {
+            jTAStatus.append("ERROR : "+ex.getMessage() + "\n");
+        }
     }
 
     private void btnDecrypt(ActionEvent e) {
-        // TODO add your code here
         jTAStatus.append("decrypting...\n");
+        Symmetric symmetric = Symmetric.getInstance();
+        byte[] dec;
+        byte[] key = null;
+        String des = null;
+        if (keyIsFile) {
+            try {
+                key = symmetric.readKeyFromFile(jTFKey.getText());
+                jTAStatus.append("key: read from file\n");
+            } catch (IOException ex) {
+                jTAStatus.append("ERROR : "+ex.getMessage() + "\n");
+            }
+        } else {
+            key = jTFKey.getText().getBytes();
+            jTAStatus.append("key: read from text field\n");
+        }
+        try {
+            symmetric.init(jCBAlgorithm.getSelectedItem().toString(), jCBMode.getSelectedItem().toString(), jCBStandard.getSelectedItem().toString(), symmetric.getIvLength(jCBAlgorithm.getSelectedItem().toString()));
+            jTAStatus.append("init algorithm: " + jCBAlgorithm.getSelectedItem().toString() + "/" + jCBMode.getSelectedItem().toString() + "/" + jCBStandard.getSelectedItem().toString() + "\n");
+            if (inputIsFile) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(jTAInput.getText()));
+//                fileChooser.setSelectedFile(new File(jTAInput.getText()+ "-encrypted" + ".enc"));
+                int returnValue = fileChooser.showSaveDialog(this);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    des = fileChooser.getSelectedFile().getAbsolutePath();
+                }
+                boolean b = symmetric.decryptFile(jTAInput.getText(), key, des);
+                if (b) {
+                    jTAStatus.append("decrypt file success : " + des + "\n");
+                } else {
+                    jTAStatus.append("decrypt file fail\n");
+                }
+            } else {
+                dec = symmetric.decrypt(Base64.getDecoder().decode(jTAInput.getText()), key);
+                jTAResult.setText(new String(dec));
+                jTAStatus.append("decrypt success\n");
+            }
+        } catch (Exception ex) {
+            jTAStatus.append("ERROR : "+ex.getMessage() + "\n");
+        }
     }
 
     private void jCBAlgorithm(ActionEvent e) {
@@ -98,7 +166,7 @@ public class SymmetricKeyEncpt extends JPanel {
             jCBMode.setEnabled(true);
             jCBStandard.setEnabled(true);
         }
-        if (algorithm.equals("ASE")) {
+        if (algorithm.equals("AES")) {
             jTAStatus.append("key length: 128 - 256 - 512 bits (16 - 32 - 64 byte)\n");
             jTAStatus.append("iv : 16 bytes\n");
         }
@@ -128,9 +196,12 @@ public class SymmetricKeyEncpt extends JPanel {
         }
         if (algorithm.equals("Hill")) {
             jTAStatus.append("key length: 2x2 matrix\n");
+            jTAStatus.append("key là 4 con số từ 0 -> 256\n");
+            jTAStatus.append("example: 16 33 55 99\n");
             jTAStatus.append("Có thể mã hóa bảng chữ cái tiếng việt cả hoa lẫn thường\n");
         }
         if (algorithm.equals("Vigener")) {
+            jTAStatus.append("key là 1 mảng gồm nhưững con số từ 0 -> 26\n");
             jTAStatus.append("Chỉ mã hóa bảng chữ cái tiếng anh\n");
         }
 
@@ -168,12 +239,11 @@ public class SymmetricKeyEncpt extends JPanel {
         jTAStatus = new JTextArea();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
-        EmptyBorder(0,0,0,0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e",javax.swing.border.TitledBorder.CENTER,javax.swing
-        .border.TitledBorder.BOTTOM,new java.awt.Font("Dialo\u0067",java.awt.Font.BOLD,12),
-        java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener()
-        {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("borde\u0072".equals(e.getPropertyName()))
-        throw new RuntimeException();}});
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(
+        0,0,0,0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e",javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder
+        .BOTTOM,new java.awt.Font("Dialo\u0067",java.awt.Font.BOLD,12),java.awt.Color.
+        red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.
+        beans.PropertyChangeEvent e){if("borde\u0072".equals(e.getPropertyName()))throw new RuntimeException();}});
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -236,7 +306,7 @@ public class SymmetricKeyEncpt extends JPanel {
                 btnResetInputToPlainText.addActionListener(e -> btnResetInputToPlainText(e));
                 pnTop.add(btnResetInputToPlainText);
             }
-            pnMain.add(pnTop, BorderLayout.PAGE_START);
+            pnMain.add(pnTop, BorderLayout.NORTH);
 
             //======== pnCenter ========
             {
@@ -305,7 +375,7 @@ public class SymmetricKeyEncpt extends JPanel {
 
                 //======== pnResult ========
                 {
-                    pnResult.setLayout(new VerticalLayout());
+                    pnResult.setLayout(new BorderLayout());
 
                     //======== scrollPane2 ========
                     {
@@ -313,9 +383,10 @@ public class SymmetricKeyEncpt extends JPanel {
                         //---- jTAResult ----
                         jTAResult.setRows(5);
                         jTAResult.setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), "Result"));
+                        jTAResult.setToolTipText("result encode as Base64");
                         scrollPane2.setViewportView(jTAResult);
                     }
-                    pnResult.add(scrollPane2);
+                    pnResult.add(scrollPane2, BorderLayout.CENTER);
                 }
                 pnCenter.add(pnResult);
             }
@@ -326,10 +397,10 @@ public class SymmetricKeyEncpt extends JPanel {
 
                 //---- jTAStatus ----
                 jTAStatus.setBorder(new TitledBorder("status"));
-                jTAStatus.setRows(3);
+                jTAStatus.setRows(8);
                 scrollPane3.setViewportView(jTAStatus);
             }
-            pnMain.add(scrollPane3, BorderLayout.PAGE_END);
+            pnMain.add(scrollPane3, BorderLayout.SOUTH);
         }
         add(pnMain);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
