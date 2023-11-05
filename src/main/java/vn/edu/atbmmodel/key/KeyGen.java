@@ -9,10 +9,12 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
+import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.swing.*;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,24 +25,40 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 import java.util.Date;
 
 public class KeyGen {
-    public static KeyPair getKeyPair() throws NoSuchAlgorithmException {
+    public static KeyPair getKeyPair(int size) throws NoSuchAlgorithmException {
         Security.addProvider(new BouncyCastleProvider());
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(2048);
+        keyPairGenerator.initialize(size);
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
         return keyPair;
     }
 
-    public static PublicKey keyPubKey(byte[] data) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(data));
+    public static PublicKey getPublicKeyformBytes(byte[] data) {
+        PublicKey publicKey = null;
+        try {
+            publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(data));
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
         return publicKey;
     }
-    public static SecretKey getKeySymmetric(String algorithm,int size) throws NoSuchAlgorithmException {
+
+    public static PrivateKey getPrivateKeyformBytes(byte[] key) {
+        PrivateKey privateKey = null;
+        try {
+            privateKey = KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(key));
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        return privateKey;
+    }
+
+    public static SecretKey getKeySymmetric(String algorithm, int size) throws NoSuchAlgorithmException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);
         keyGenerator.init(size);
         SecretKey key = keyGenerator.generateKey();
@@ -69,22 +87,12 @@ public class KeyGen {
 
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
-
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(128);
-        Key key = keyGenerator.generateKey();
-        try{
-            JFileChooser jFileChooser = new JFileChooser();
-            jFileChooser.showSaveDialog(null);
-            FileOutputStream fos = new FileOutputStream(jFileChooser.getSelectedFile());
-//            FileOutputStream fos = new FileOutputStream("key.AES");
-            fos.write(key.getEncoded());
-            fos.close();
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException, IOException {
+        FileInputStream fis = new FileInputStream("I:\\test\\privateKey.priRSA");
+        byte[] key = ReadKeyFormFile.readKeyFromFile("I:\\test\\privateKey.priRSA");
+        PrivateKey privateKey = KeyGen.getPrivateKeyformBytes(key);
+        System.out.println(privateKey);
     }
+
+
 }

@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -56,6 +56,7 @@ new FormModel {
 						name: "btnHash"
 						"text": "Hash"
 						"font": #Font0
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnHash", true ) )
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "btnCheckSums"
@@ -75,7 +76,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 705, 315 )
+			"size": new java.awt.Dimension( 705, 255 )
 		} )
 	}
 }

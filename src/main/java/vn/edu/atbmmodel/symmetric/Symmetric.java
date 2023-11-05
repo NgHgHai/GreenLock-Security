@@ -37,8 +37,7 @@ public class Symmetric {
         return symmetric;
     }
 
-    Symmetric() {
-    }
+   
     public int getIvLength(String algorithm) {
         if (algorithm.equals("AES"))
             return 16;
@@ -98,16 +97,7 @@ public class Symmetric {
             return 8;
         return 0;
     }
-    public byte[] readKeyFromFile(String path) throws IOException {
-        File file = new File(path);
-        if (!file.exists()) {
-            return null;
-        }
-        byte[] key = new byte[(int) file.length()];
-        FileInputStream fis = new FileInputStream(file);    //read file
-        fis.read(key);    //store file data in key
-        return key;
-    }
+
     public byte[] encrypt(byte[] plaintextBytes, byte[] key) throws Exception {
         iv = new SecureRandom().generateSeed(ivLength);
         encryptCipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, algorithm), new IvParameterSpec(iv));

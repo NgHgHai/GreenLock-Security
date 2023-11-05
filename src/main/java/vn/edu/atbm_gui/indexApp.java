@@ -23,7 +23,7 @@ public class indexApp {
         SwingUtilities.updateComponentTreeUI(frame);
         JPanel pnMain = new SymmetricKeyEncpt().pnMain;
         frame.setContentPane(pnMain);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
@@ -34,7 +34,18 @@ public class indexApp {
         SwingUtilities.updateComponentTreeUI(frame);
         JPanel pnMain = new PublicKeyEncpt().pnMain;
         frame.setContentPane(pnMain);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void btnHash(ActionEvent e) {
+        // chuyen den frame Hash
+        JFrame frame = new JFrame("Hash");
+        SwingUtilities.updateComponentTreeUI(frame);
+        JPanel pnMain = new HashGUI().pnMain;
+        frame.setContentPane(pnMain);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
@@ -59,13 +70,12 @@ public class indexApp {
 
         //======== pnMain ========
         {
-            pnMain.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
-            swing. border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border
-            . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog"
-            ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,pnMain. getBorder
-            ( )) ); pnMain. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
-            .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException
-            ( ); }} );
+            pnMain.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder
+            ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border
+            .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt
+            . Color .red ) ,pnMain. getBorder () ) ); pnMain. addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void
+            propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
+            ;} } );
             pnMain.setLayout(new BorderLayout());
 
             //======== panel2 ========
@@ -124,6 +134,7 @@ public class indexApp {
                     //---- btnHash ----
                     btnHash.setText("Hash");
                     btnHash.setFont(new Font("Inter", Font.PLAIN, 15));
+                    btnHash.addActionListener(e -> btnHash(e));
                     pnBtn.add(btnHash);
 
                     //---- btnCheckSums ----
@@ -145,7 +156,7 @@ public class indexApp {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - hoanghai
-    private JPanel pnMain;
+    JPanel pnMain;
     private JPanel panel2;
     private JLabel label1;
     private JPanel panel4;

@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -28,14 +28,29 @@ new FormModel {
 					add( new FormComponent( "javax.swing.JComboBox" ) {
 						name: "jCBMode"
 						"preferredSize": new java.awt.Dimension( 86, 26 )
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "ECB"
+							addElement( "ECB" )
+						}
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label5"
-						"text": "Standard"
+						"text": "padding"
 					} )
 					add( new FormComponent( "javax.swing.JComboBox" ) {
-						name: "jCBStandard"
+						name: "jCBPadding"
 						"preferredSize": new java.awt.Dimension( 86, 26 )
+						"model": new javax.swing.DefaultComboBoxModel {
+							selectedItem: "NoPadding"
+							addElement( "NoPadding" )
+							addElement( "PKCS1Padding" )
+							addElement( "OAEPPadding" )
+						}
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnResetInputToPlainText"
+						"text": "reset input to plain text"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnResetInputToPlainText", true ) )
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "First"
@@ -55,6 +70,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnChooseFileInput"
 							"text": "choose file"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnChooseFileInput", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
@@ -64,12 +80,14 @@ new FormModel {
 							"text": "key"
 						} )
 						add( new FormComponent( "javax.swing.JTextField" ) {
-							name: "key"
+							name: "jTFKey"
 							"preferredSize": new java.awt.Dimension( 500, 30 )
+							"toolTipText": "choose publicKey for encode, privateKey for  decode"
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnKeyFile"
 							"text": "choose key file"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnKeyFile", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnResetKeyToPlainText"
@@ -79,17 +97,15 @@ new FormModel {
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 						name: "pnExecute"
-						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "jCBEn_De"
-							"model": new javax.swing.DefaultComboBoxModel {
-								selectedItem: "encrypt"
-								addElement( "encrypt" )
-								addElement( "decrypt" )
-							}
+						add( new FormComponent( "javax.swing.JButton" ) {
+							name: "btnEncrypt"
+							"text": "encrypt"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnEncrypt", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "btnExecute"
-							"text": "execute"
+							name: "btnDecrypt"
+							"text": "decrypt"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnDecrypt", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
@@ -106,13 +122,15 @@ new FormModel {
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "Center"
 				} )
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane3"
-				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "jTAStatus"
-					"border": new javax.swing.border.TitledBorder( "status" )
-					"rows": 8
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane3"
+					add( new FormComponent( "javax.swing.JTextArea" ) {
+						name: "jTAStatus"
+						"border": new javax.swing.border.TitledBorder( "status" )
+						"rows": 8
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Last"
 				} )
 			} )
 		}, new FormLayoutConstraints( null ) {

@@ -1,9 +1,7 @@
 package vn.edu.atbmmodel.publicKey;
 
 
-import com.itextpdf.io.source.OutputStream;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import vn.edu.atbm_gui.SymmetricKeyEncpt;
 import vn.edu.atbmmodel.key.KeyGen;
 import vn.edu.atbmmodel.symmetric.Symmetric;
 
@@ -11,6 +9,7 @@ import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.*;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 
 public class RSA {
@@ -20,9 +19,15 @@ public class RSA {
     private KeyStore keyStore;
     private Cipher cipher;
 
-    public RSA() throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException {
+    static RSA rsa = new RSA();
+    public static RSA getInstance(){
+        if(rsa == null)
+            rsa = new RSA();
+        return rsa;
+    }
+    public void init(String algorithm, String mode, String padding) throws Exception {
         Security.addProvider(new BouncyCastleProvider());
-        cipher = Cipher.getInstance("RSA/NONE/PKCS1Padding", "BC");
+        cipher = Cipher.getInstance(algorithm + "/" + mode + "/" + padding, "BC");
     }
 
     public byte[] encrypt(PublicKey publicKey, byte[] data) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
@@ -59,7 +64,11 @@ public class RSA {
             int read = 0;
             while ((read = cipherInputStream.read(buffer)) != -1) {
                 dos.write(buffer, 0, read);
+                dos.flush();
             }
+            dos.flush();
+            dos.close();
+            cipherInputStream.close();
             return true;
         } catch (Exception e) {
             return false;
@@ -67,7 +76,8 @@ public class RSA {
         }
 
     }
-    public boolean decryptFile(PrivateKey privateKey, String source, String dest) throws InvalidKeyException, IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException {
+
+    public boolean decryptFile(PrivateKey privateKey, String source, String dest) {
         try {
             Cipher cipherAES = Cipher.getInstance("AES/ECB/PKCS5Padding");
 
@@ -87,7 +97,11 @@ public class RSA {
             int read = 0;
             while ((read = dis.read(buffer)) != -1) {
                 cipherOutputStream.write(buffer, 0, read);
+                cipherOutputStream.flush();
             }
+            cipherOutputStream.flush();
+            cipherOutputStream.close();
+            dis.close();
             return true;
         } catch (Exception e) {
             return false;
@@ -95,6 +109,22 @@ public class RSA {
     }
 
     public static void main(String[] args) {
+        try {
+            RSA rsa = RSA.getInstance();
+            rsa.init("RSA", "ECB", "PKCS1Padding");
+            KeyPair keyPair = KeyGen.getKeyPair(2048);
+            PublicKey publicKey = keyPair.getPublic();
+            PrivateKey privateKey = keyPair.getPrivate();
+            byte[] data = "Hello, World!".getBytes();
+            byte[] enc = rsa.encrypt(publicKey, data);
+            byte[] dec = rsa.decrypt(privateKey, enc);
+            System.out.println(new String(dec));
+//            rsa.encryptFile(publicKey, "I:\\swingATBM\\test.txt", "I:\\swingATBM\\test.txt-encrypted.enc");
+//            rsa.decryptFile(privateKey, "I:\\swingATBM\\test.txt-encrypted.enc", "I:\\swingATBM\\test.txt-decrypted.txt");
+            System.out.println("Done");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
