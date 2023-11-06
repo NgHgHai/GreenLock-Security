@@ -42,16 +42,19 @@ public class DigitalSignature extends JPanel {
         btnKeyFile = new JButton();
         pnExecute = new JPanel();
         btnSign = new JButton();
+        pnResult = new JPanel();
+        scrollPane2 = new JScrollPane();
+        jTAResult = new JTextArea();
         scrollPane3 = new JScrollPane();
         jTAStatus = new JTextArea();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
-        EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing.border.TitledBorder.CENTER,javax.swing
-        .border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069alog",java.awt.Font.BOLD,12),
-        java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener()
-        {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName()))
-        throw new RuntimeException();}});
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border.
+        EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax. swing
+        . border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ),
+        java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( )
+        { @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () ))
+        throw new RuntimeException( ); }} );
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -89,11 +92,11 @@ public class DigitalSignature extends JPanel {
                 jCBStandard.setPreferredSize(new Dimension(86, 26));
                 pnTop.add(jCBStandard);
             }
-            pnMain.add(pnTop, BorderLayout.PAGE_START);
+            pnMain.add(pnTop, BorderLayout.NORTH);
 
             //======== pnCenter ========
             {
-                pnCenter.setLayout(new VerticalLayout());
+                pnCenter.setLayout(new BorderLayout());
 
                 //======== pnInput ========
                 {
@@ -113,7 +116,7 @@ public class DigitalSignature extends JPanel {
                     btnChooseFileInput.setText("choose file");
                     pnInput.add(btnChooseFileInput);
                 }
-                pnCenter.add(pnInput);
+                pnCenter.add(pnInput, BorderLayout.CENTER);
 
                 //======== pnKey ========
                 {
@@ -139,7 +142,7 @@ public class DigitalSignature extends JPanel {
                     btnKeyFile.setText("choose key file");
                     pnKey.add(btnKeyFile);
                 }
-                pnCenter.add(pnKey);
+                pnCenter.add(pnKey, BorderLayout.NORTH);
 
                 //======== pnExecute ========
                 {
@@ -149,9 +152,25 @@ public class DigitalSignature extends JPanel {
                     btnSign.setText("sign");
                     pnExecute.add(btnSign);
                 }
-                pnCenter.add(pnExecute);
+                pnCenter.add(pnExecute, BorderLayout.SOUTH);
             }
             pnMain.add(pnCenter, BorderLayout.CENTER);
+
+            //======== pnResult ========
+            {
+                pnResult.setLayout(new VerticalLayout());
+
+                //======== scrollPane2 ========
+                {
+
+                    //---- jTAResult ----
+                    jTAResult.setRows(5);
+                    jTAResult.setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), "Result"));
+                    scrollPane2.setViewportView(jTAResult);
+                }
+                pnResult.add(scrollPane2);
+            }
+            pnMain.add(pnResult, BorderLayout.SOUTH);
         }
         add(pnMain);
 
@@ -189,6 +208,9 @@ public class DigitalSignature extends JPanel {
     private JButton btnKeyFile;
     private JPanel pnExecute;
     private JButton btnSign;
+    private JPanel pnResult;
+    private JScrollPane scrollPane2;
+    private JTextArea jTAResult;
     private JScrollPane scrollPane3;
     private JTextArea jTAStatus;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on

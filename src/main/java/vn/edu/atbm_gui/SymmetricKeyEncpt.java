@@ -6,7 +6,9 @@ package vn.edu.atbm_gui;
 
 
 import org.jdesktop.swingx.VerticalLayout;
+import vn.edu.atbmmodel.symmetric.Hill;
 import vn.edu.atbmmodel.symmetric.Symmetric;
+import vn.edu.atbmmodel.symmetric.Vigener;
 import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
 import javax.swing.*;
@@ -15,7 +17,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.regex.Pattern;
 
 
 /**
@@ -70,6 +74,38 @@ public class SymmetricKeyEncpt extends JPanel {
 
     private void btnEncrypt(ActionEvent e) {
         jTAStatus.append("encrypting...\n");
+        if (jCBAlgorithm.getSelectedItem().equals("Hill")) {
+            Hill hill = new Hill();
+            String pattern = "^(0?\\d{1,2}|1\\d{2}|2[0-4]\\d|25[0-6]) (0?\\d{1,2}|1\\d{2}|2[0-4]\\d|25[0-6]) (0?\\d{1,2}|1\\d{2}|2[0-4]\\d|25[0-6]) (0?\\d{1,2}|1\\d{2}|2[0-4]\\d|25[0-6])$";
+            boolean isMatch = Pattern.matches(pattern, jTFKey.getText());
+            if (!isMatch) {
+                jTAStatus.append("ERROR : key is not match\n");
+                return;
+            }
+            int[][] key = hill.getKey(jTFKey.getText());
+//            System.out.println(jTAInput.getText());
+//            System.out.println(Arrays.deepToString(key));
+            jTAResult.setText(hill.encrypt(key, jTAInput.getText()));
+            return;
+        }
+        if (jCBAlgorithm.getSelectedItem().equals("Vigener")){
+             int[] key ;
+            try {
+                key = Arrays.stream(jTFKey.getText().split(" ")).mapToInt(Integer::parseInt).toArray();
+                for (int i = 0; i < key.length; i++) {
+                    if (key[i] < 0 || key[i] > 26) {
+                        jTAStatus.append("ERROR : key is not match\n");
+                        return;
+                    }
+                }
+            } catch (Exception ex) {
+                jTAStatus.append("ERROR : key is not match\n");
+                return;
+            }
+            Vigener vigener = new Vigener(key);
+            jTAResult.setText(vigener.encrypt(jTAInput.getText()));
+            return;
+        }
         Symmetric symmetric = Symmetric.getInstance();
         byte[] enc;
         byte[] key = null;
@@ -79,7 +115,7 @@ public class SymmetricKeyEncpt extends JPanel {
                 key = ReadKeyFormFile.readKeyFromFile(jTFKey.getText());
                 jTAStatus.append("key: read from file\n");
             } catch (IOException ex) {
-                jTAStatus.append("ERROR : "+ex.getMessage() + "\n");
+                jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
             }
         } else {
             key = jTFKey.getText().getBytes();
@@ -108,12 +144,43 @@ public class SymmetricKeyEncpt extends JPanel {
                 jTAStatus.append("encrypt success\n");
             }
         } catch (Exception ex) {
-            jTAStatus.append("ERROR : "+ex.getMessage() + "\n");
+            jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
         }
     }
 
     private void btnDecrypt(ActionEvent e) {
         jTAStatus.append("decrypting...\n");
+        if (jCBAlgorithm.getSelectedItem().equals("Hill")) {
+            Hill hill = new Hill();
+            String pattern = "^(0?\\d{1,2}|1\\d{2}|2[0-4]\\d|25[0-6]) (0?\\d{1,2}|1\\d{2}|2[0-4]\\d|25[0-6]) (0?\\d{1,2}|1\\d{2}|2[0-4]\\d|25[0-6]) (0?\\d{1,2}|1\\d{2}|2[0-4]\\d|25[0-6])$";
+            boolean isMatch = Pattern.matches(pattern, jTFKey.getText());
+            if (!isMatch) {
+                jTAStatus.append("ERROR : key is not match\n");
+                return;
+            }
+            int[][] key = hill.getKey(jTFKey.getText());
+//            System.out.println(jTAInput.getText());
+            jTAResult.setText(hill.decrypt(key, jTAInput.getText()));
+            return;
+        }
+        if (jCBAlgorithm.getSelectedItem().equals("Vigener")){
+            int[] key ;
+            try {
+                key = Arrays.stream(jTFKey.getText().split(" ")).mapToInt(Integer::parseInt).toArray();
+                for (int i = 0; i < key.length; i++) {
+                    if (key[i] < 0 || key[i] > 26) {
+                        jTAStatus.append("ERROR : key is not match\n");
+                        return;
+                    }
+                }
+            } catch (Exception ex) {
+                jTAStatus.append("ERROR : key is not match\n");
+                return;
+            }
+            Vigener vigener = new Vigener(key);
+            jTAResult.setText(vigener.decrypt(jTAInput.getText()));
+            return;
+        }
         Symmetric symmetric = Symmetric.getInstance();
         byte[] dec;
         byte[] key = null;
@@ -123,7 +190,7 @@ public class SymmetricKeyEncpt extends JPanel {
                 key = ReadKeyFormFile.readKeyFromFile(jTFKey.getText());
                 jTAStatus.append("key: read from file\n");
             } catch (IOException ex) {
-                jTAStatus.append("ERROR : "+ex.getMessage() + "\n");
+                jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
             }
         } else {
             key = jTFKey.getText().getBytes();
@@ -152,7 +219,7 @@ public class SymmetricKeyEncpt extends JPanel {
                 jTAStatus.append("decrypt success\n");
             }
         } catch (Exception ex) {
-            jTAStatus.append("ERROR : "+ex.getMessage() + "\n");
+            jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
         }
     }
 
@@ -202,7 +269,7 @@ public class SymmetricKeyEncpt extends JPanel {
             jTAStatus.append("Có thể mã hóa bảng chữ cái tiếng việt cả hoa lẫn thường\n");
         }
         if (algorithm.equals("Vigener")) {
-            jTAStatus.append("key là 1 mảng gồm nhưững con số từ 0 -> 26\n");
+            jTAStatus.append("key là 1 mảng gồm những con số từ 0 -> 26\n");
             jTAStatus.append("Chỉ mã hóa bảng chữ cái tiếng anh\n");
         }
 

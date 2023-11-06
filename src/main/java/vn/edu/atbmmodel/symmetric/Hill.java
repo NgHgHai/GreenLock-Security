@@ -1,6 +1,7 @@
 package vn.edu.atbmmodel.symmetric;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 
@@ -41,7 +42,7 @@ public class Hill {
         }
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                key[i][j] = getNum(st.nextToken());
+                key[i][j] = Integer.parseInt(st.nextToken());
             }
         }
         return key;
@@ -141,17 +142,18 @@ public class Hill {
         }
     }
 
-//    public static void main(String[] args) {
-//        Hill hill = new Hill();
-//
+    public static void main(String[] args) {
+        Hill hill = new Hill();
+           int[][] key=    hill.getKey("16 33 11 15");
+        System.out.println(Arrays.deepToString(key));
 //        int[][] key = {{16, 33}, {11, 15}};
-//        String hillenc = hill.encrypt(key, "okokokokokokokokok");
+//        String hillenc = hill.encrypt(key, "hoang hai");
 //        System.out.println(hillenc);
 //        System.out.println(hill.decrypt(key, hillenc));
-////        System.out.println("ỹ".codePointAt(0)== (char)7929);
-////        for (int i = 192; i<=400;i++){
-////            System.out.println((char) i);
-////        }
-////        System.out.println("Ý".codePointAt(0));
-//    }
+//        System.out.println("ỹ".codePointAt(0)== (char)7929);
+//        for (int i = 192; i<=400;i++){
+//            System.out.println((char) i);
+//        }
+//        System.out.println("Ý".codePointAt(0));
+    }
 }
