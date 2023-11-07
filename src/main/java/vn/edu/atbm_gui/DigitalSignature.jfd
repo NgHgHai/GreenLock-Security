@@ -1,127 +1,248 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 			name: "this"
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			"font": &Font0 new java.awt.Font( "Arial", 0, 12 )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 				name: "pnMain"
+				"font": #Font0
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 					name: "pnTop"
+					"font": #Font0
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label3"
 						"text": "Algorithm"
+						"font": #Font0
 					} )
 					add( new FormComponent( "javax.swing.JComboBox" ) {
 						name: "jCBAlgorithm"
 						"preferredSize": new java.awt.Dimension( 86, 30 )
 						"model": new javax.swing.DefaultComboBoxModel {
-							selectedItem: "RSA"
-							addElement( "RSA" )
+							selectedItem: "SHA1withRSA"
+							addElement( "SHA1withRSA" )
+							addElement( "SHA224withRSA" )
+							addElement( "SHA256withRSA" )
+							addElement( "SHA384withRSA" )
+							addElement( "SHA512withRSA" )
+							addElement( "SHA512(224)withRSA" )
+							addElement( "SHA512(256)withRSA" )
+							addElement( "SHA3-224withRSA" )
+							addElement( "SHA3-256withRSA" )
+							addElement( "SHA3-384withRSA" )
+							addElement( "SHA3-512withRSA" )
 						}
+						"font": #Font0
 					} )
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label4"
-						"text": "Mode"
-					} )
-					add( new FormComponent( "javax.swing.JComboBox" ) {
-						name: "jCBMode"
-						"preferredSize": new java.awt.Dimension( 86, 26 )
-					} )
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "label5"
-						"text": "Standard"
-					} )
-					add( new FormComponent( "javax.swing.JComboBox" ) {
-						name: "jCBStandard"
-						"preferredSize": new java.awt.Dimension( 86, 26 )
-					} )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "North"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
 					name: "pnCenter"
+					"font": #Font0
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
 						name: "pnInput"
+						"font": #Font0
 						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 							name: "scrollPane1"
+							"font": #Font0
 							add( new FormComponent( "javax.swing.JTextArea" ) {
 								name: "jTAInput"
 								"rows": 5
 								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Input", 1, 0 )
+								"font": #Font0
 							} )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnChooseFileInput"
 							"text": "choose file"
+							"font": #Font0
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnChooseFileInput", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JCheckBox" ) {
+							name: "jCheckUseTextInField"
+							"text": "use text in field"
+							"font": #Font0
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jCheckUseTextInField", true ) )
 						} )
 					}, new FormLayoutConstraints( class java.lang.String ) {
 						"value": "Center"
 					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 						name: "pnKey"
-						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "label8"
-							"text": "Portable Key Store"
+						"font": #Font0
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel1"
+							"font": #Font0
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label8"
+								"text": "Key Store          "
+								"maximumSize": new java.awt.Dimension( 110, 17 )
+								"minimumSize": new java.awt.Dimension( 110, 17 )
+								"preferredSize": new java.awt.Dimension( 110, 17 )
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "JTFKeyStore"
+								"preferredSize": &Dimension0 new java.awt.Dimension( 500, 30 )
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnKeyStoreFile"
+								"text": "choose key-store file"
+								"preferredSize": new java.awt.Dimension( 170, 30 )
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnKeyStoreFile", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label2"
+								"text": "pass"
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JPasswordField" ) {
+								name: "jPassKeyStore"
+								"minimumSize": new java.awt.Dimension( 100, 26 )
+								"preferredSize": new java.awt.Dimension( 100, 26 )
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JRadioButton" ) {
+								name: "jRadioKeyStore"
+								"text": "use key store"
+								"toolTipText": "key store has certificate and private key, return a file Digital Certificate .(CA organization will authenticate)"
+								"$buttonGroup": new FormReference( "buttonGroup1" )
+								"selected": true
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jRadioKeyStore", true ) )
+							} )
 						} )
-						add( new FormComponent( "javax.swing.JComboBox" ) {
-							name: "jCBExtend"
-							"preferredSize": new java.awt.Dimension( 86, 26 )
-							"model": new javax.swing.DefaultComboBoxModel {
-								selectedItem: ".pfx"
-								addElement( ".pfx" )
-								addElement( ".p12" )
-							}
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel2"
+							"font": #Font0
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label9"
+								"text": "Key (private key)"
+								"maximumSize": new java.awt.Dimension( 110, 17 )
+								"minimumSize": new java.awt.Dimension( 110, 17 )
+								"preferredSize": new java.awt.Dimension( 110, 17 )
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "JTFPrivateKey"
+								"preferredSize": #Dimension0
+								"enabled": false
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnPrivateKeyFile"
+								"text": "choose key file"
+								"preferredSize": new java.awt.Dimension( 170, 30 )
+								"enabled": false
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnPrivateKeyFile", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JRadioButton" ) {
+								name: "jRadioOnlyPrivateKey"
+								"text": "only private key (no certificate)"
+								"$buttonGroup": new FormReference( "buttonGroup1" )
+								"toolTipText": "will return a String (base64 encode)- Digital Signature -(CA organization will NOT authenticate)"
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jRadioOnlyPrivateKey", true ) )
+							} )
 						} )
-						add( new FormComponent( "javax.swing.JTextField" ) {
-							name: "JTFKey"
-							"preferredSize": new java.awt.Dimension( 500, 30 )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "btnKeyFile"
-							"text": "choose key file"
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel3"
+							"font": #Font0
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label10"
+								"text": "Certificate"
+								"maximumSize": new java.awt.Dimension( 110, 17 )
+								"minimumSize": new java.awt.Dimension( 110, 17 )
+								"preferredSize": new java.awt.Dimension( 110, 17 )
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "JTFCertificate"
+								"preferredSize": #Dimension0
+								"enabled": false
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnCertificateFile"
+								"text": "choose certificate file"
+								"enabled": false
+								"preferredSize": new java.awt.Dimension( 170, 26 )
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnCertificateFile", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JRadioButton" ) {
+								name: "jRadioWithCertificate"
+								"text": "private key with certificate"
+								"$buttonGroup": new FormReference( "buttonGroup1" )
+								"toolTipText": " return a file Digital Certificate .(CA organization will authenticate)"
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jRadioWithCertificate", true ) )
+							} )
 						} )
 					}, new FormLayoutConstraints( class java.lang.String ) {
 						"value": "North"
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 						name: "pnExecute"
+						"font": #Font0
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnSign"
 							"text": "sign"
+							"font": #Font0
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSign", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label1"
+							"text": "p/s: this tool signed with detached-signature, it mean signed data dose NOT containt original data"
+							"font": #Font0
 						} )
 					}, new FormLayoutConstraints( class java.lang.String ) {
 						"value": "South"
 					} )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "Center"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 					name: "pnResult"
+					"font": #Font0
 					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 						name: "scrollPane2"
+						"font": #Font0
 						add( new FormComponent( "javax.swing.JTextArea" ) {
 							name: "jTAResult"
 							"rows": 5
 							"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Result" )
+							"font": #Font0
 						} )
 					} )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "South"
 				} )
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane3"
-				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "jTAStatus"
-					"border": new javax.swing.border.TitledBorder( "status" )
-					"rows": 3
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPane3"
+					"font": #Font0
+					add( new FormComponent( "javax.swing.JTextArea" ) {
+						name: "jTAStatus"
+						"border": new javax.swing.border.TitledBorder( "status" )
+						"rows": 20
+						"font": new java.awt.Font( "Arial", 0, 12 )
+					} )
 				} )
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 930, 385 )
+			"size": new java.awt.Dimension( 1040, 720 )
+		} )
+		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
+			name: "buttonGroup1"
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 621 )
 		} )
 	}
 }

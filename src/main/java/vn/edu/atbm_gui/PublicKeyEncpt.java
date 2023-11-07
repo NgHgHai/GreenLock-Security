@@ -32,6 +32,7 @@ public class PublicKeyEncpt extends JPanel {
     public boolean inputIsFile = false;
     File dataSource;
     File key;
+    KeyGen keyGen = KeyGen.getInstance();
 
     public PublicKeyEncpt() {
         initComponents();
@@ -100,14 +101,14 @@ public class PublicKeyEncpt extends JPanel {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     des = fileChooser.getSelectedFile().getAbsolutePath();
                 }
-                boolean b = rsa.encryptFile(KeyGen.getPublicKeyformBytes(key), jTAInput.getText(), des);
+                boolean b = rsa.encryptFile(keyGen.getPublicKeyformBytes(key), jTAInput.getText(), des);
                 if (b) {
                     jTAStatus.append("encrypt file success : " + des + "\n");
                 } else {
                     jTAStatus.append("encrypt file fail\n");
                 }
             } else {
-                enc = rsa.encrypt(KeyGen.getPublicKeyformBytes(key), jTAInput.getText().getBytes());
+                enc = rsa.encrypt(keyGen.getPublicKeyformBytes(key), jTAInput.getText().getBytes());
                 jTAResult.setText(Base64.getEncoder().encodeToString(enc));
                 jTAStatus.append("encrypt success\n");
             }
@@ -144,14 +145,14 @@ public class PublicKeyEncpt extends JPanel {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     des = fileChooser.getSelectedFile().getAbsolutePath();
                 }
-                boolean b = rsa.decryptFile(KeyGen.getPrivateKeyformBytes(key), jTAInput.getText(), des);
+                boolean b = rsa.decryptFile(keyGen.getPrivateKeyformBytes(key), jTAInput.getText(), des);
                 if (b) {
                     jTAStatus.append("decrypt file success : " + des + "\n");
                 } else {
                     jTAStatus.append("decrypt file fail\n");
                 }
             } else {
-                dec = rsa.decrypt(KeyGen.getPrivateKeyformBytes(key), Base64.getDecoder().decode(jTAInput.getText()));
+                dec = rsa.decrypt(keyGen.getPrivateKeyformBytes(key), Base64.getDecoder().decode(jTAInput.getText()));
                 jTAResult.setText(new String(dec));
                 jTAStatus.append("decrypt success\n");
             }

@@ -42,9 +42,9 @@ public class RSA {
 
     public boolean encryptFile(PublicKey publicKey, String source, String dest) throws InvalidKeyException, IOException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException {
         try {
-
+            KeyGen keyGen = KeyGen.getInstance();
             Cipher cipherAES = Cipher.getInstance("AES/ECB/PKCS5Padding");
-            SecretKey keyAES = KeyGen.getKeySymmetric("AES", 128);
+            SecretKey keyAES = keyGen.getKeySymmetric("AES", 128);
             cipherAES.init(Cipher.ENCRYPT_MODE, keyAES);
 
             File sourceFile = new File(source);
@@ -109,22 +109,7 @@ public class RSA {
     }
 
     public static void main(String[] args) {
-        try {
-            RSA rsa = RSA.getInstance();
-            rsa.init("RSA", "ECB", "PKCS1Padding");
-            KeyPair keyPair = KeyGen.getKeyPair(2048);
-            PublicKey publicKey = keyPair.getPublic();
-            PrivateKey privateKey = keyPair.getPrivate();
-            byte[] data = "Hello, World!".getBytes();
-            byte[] enc = rsa.encrypt(publicKey, data);
-            byte[] dec = rsa.decrypt(privateKey, enc);
-            System.out.println(new String(dec));
-//            rsa.encryptFile(publicKey, "I:\\swingATBM\\test.txt", "I:\\swingATBM\\test.txt-encrypted.enc");
-//            rsa.decryptFile(privateKey, "I:\\swingATBM\\test.txt-encrypted.enc", "I:\\swingATBM\\test.txt-decrypted.txt");
-            System.out.println("Done");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
     }
 
