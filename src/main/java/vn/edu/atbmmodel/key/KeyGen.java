@@ -19,6 +19,7 @@ import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -95,9 +96,9 @@ public class KeyGen {
 
         return new JcaX509CertificateConverter().getCertificate(selfSignedCert);
 
-    }   public  X509Certificate genCertificate(PrivateKey privateKey,PublicKey publicKey, String issuerNameString,BigInteger seri ) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
+    }   public  X509Certificate genCertificate(PrivateKey caPrivateKey,PublicKey publicKey, String issuerNameString,BigInteger seri ) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
         RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
-        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) privateKey;
+        RSAPrivateKey caRsaPrivateKey = (RSAPrivateKey) caPrivateKey;
 
         X500Name issuerName = new X500Name("CN=" + issuerNameString);
         X500Name subjectName = new X500Name("CN=Hoang Hai, O=GreenTea Group , OU=Students , L=Thu Duc, ST=HCM, C=vietnamese");
@@ -110,7 +111,7 @@ public class KeyGen {
         X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(issuerName, seri, startDate, endDate, subjectName, publicKeyInfo);
         JcaContentSignerBuilder signerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
 
-        ContentSigner contentSigner = signerBuilder.build(rsaPrivateKey);
+        ContentSigner contentSigner = signerBuilder.build(caRsaPrivateKey);
         X509CertificateHolder selfSignedCert = certBuilder.build(contentSigner);
 
         return new JcaX509CertificateConverter().getCertificate(selfSignedCert);
@@ -153,9 +154,24 @@ public class KeyGen {
 //        fileOutputStream.close();
 //        System.out.println("Done");
 
-        RSAPublicKey publicKey = (RSAPublicKey) KeyGen.getInstance().getPublicKeyformBytes(ReadKeyFormFile.readKeyFromFile("src/publicKey.key"));
-        System.out.println(publicKey);
+//       FileInputStream fileInputStream = new FileInputStream("src/privateKey.key");
+//         byte[] data = new byte[fileInputStream.available()];
+//            fileInputStream.read(data);
+//            fileInputStream.close();
+            PrivateKey privateKey = KeyGen.getInstance().getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile("src/privateKey.key"));
+            System.out.println(privateKey);
     }
+
+    public X509Certificate getCertificateFormBytes(byte[] data) {
+        X509Certificate certificate = null;
+        try {
+            certificate = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(data));
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        }
+        return certificate;
+    }
+
 
 
 }

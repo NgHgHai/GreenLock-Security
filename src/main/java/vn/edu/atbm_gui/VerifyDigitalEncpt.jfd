@@ -5,53 +5,151 @@ new FormModel {
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 			name: "this"
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 				name: "pnMain"
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 					name: "pnTop"
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "First"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+						name: "pnTop2"
+						"font": &Font0 new java.awt.Font( "Arial", 0, 12 )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "label3"
+							"text": "Algorithm"
+							"font": #Font0
+						} )
+						add( new FormComponent( "javax.swing.JComboBox" ) {
+							name: "jCBAlgorithm"
+							"preferredSize": new java.awt.Dimension( 115, 30 )
+							"model": new javax.swing.DefaultComboBoxModel {
+								selectedItem: "SHA1withRSA"
+								addElement( "SHA1withRSA" )
+								addElement( "SHA224withRSA" )
+								addElement( "SHA256withRSA" )
+								addElement( "SHA384withRSA" )
+								addElement( "SHA512withRSA" )
+								addElement( "SHA512(224)withRSA" )
+								addElement( "SHA512(256)withRSA" )
+								addElement( "SHA3-224withRSA" )
+								addElement( "SHA3-256withRSA" )
+								addElement( "SHA3-384withRSA" )
+								addElement( "SHA3-512withRSA" )
+							}
+							"font": #Font0
+						} )
+					} )
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 					name: "pnCenter"
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 						name: "pnInput"
-						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-							name: "scrollPane1"
-							add( new FormComponent( "javax.swing.JTextArea" ) {
-								name: "textArea2"
-								"rows": 5
-								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "signed file", 1, 0 )
-								"preferredSize": new java.awt.Dimension( 500, 113 )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel2"
+							"font": #Font0
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label9"
+								"text": "Key (public key)"
+								"maximumSize": new java.awt.Dimension( 110, 17 )
+								"minimumSize": new java.awt.Dimension( 110, 17 )
+								"preferredSize": new java.awt.Dimension( 110, 17 )
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFPublicKey"
+								"preferredSize": &Dimension0 new java.awt.Dimension( 500, 30 )
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnPublicKeyFile"
+								"text": "choose key file"
+								"preferredSize": new java.awt.Dimension( 170, 30 )
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnPublicKeyFile", true ) )
 							} )
 						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "button4"
-							"text": "choose file"
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel3"
+							"font": #Font0
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label10"
+								"text": "Signed file (.sig)"
+								"maximumSize": &Dimension1 new java.awt.Dimension( 110, 17 )
+								"minimumSize": &Dimension2 new java.awt.Dimension( 110, 17 )
+								"preferredSize": &Dimension3 new java.awt.Dimension( 110, 17 )
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFSignedFile"
+								"preferredSize": #Dimension0
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnSigFile"
+								"text": "choose sig file"
+								"preferredSize": &Dimension4 new java.awt.Dimension( 170, 26 )
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSigFile", true ) )
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel4"
+							"font": #Font0
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label11"
+								"text": "data"
+								"maximumSize": #Dimension1
+								"minimumSize": #Dimension2
+								"preferredSize": #Dimension3
+								"font": #Font0
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFData"
+								"preferredSize": #Dimension0
+								"font": #Font0
+								"editable": false
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btndataFile"
+								"text": "choose data file"
+								"preferredSize": #Dimension4
+								"font": #Font0
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btndataFile", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JCheckBox" ) {
+								name: "jCheckUseTextInField"
+								"text": "use text in field"
+								"font": #Font0
+								"toolTipText": "if this checkbox is selected, it mean the system will use the data in field"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jCheckUseTextInField", true ) )
+							} )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 						name: "pnEn_De"
 						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "btnEncrypt"
+							name: "btnVerify"
 							"text": "verify"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnVerify", true ) )
 						} )
 					} )
-				}, new FormLayoutConstraints( class java.lang.String ) {
-					"value": "Center"
-				} )
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "scrollPane3"
-				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "jTAStatus"
-					"border": new javax.swing.border.TitledBorder( "status" )
-					"rows": 3
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "scrollPane3"
+						add( new FormComponent( "javax.swing.JTextArea" ) {
+							name: "jTAStatus"
+							"border": new javax.swing.border.TitledBorder( "status" )
+							"rows": 10
+						} )
+					} )
 				} )
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 625, 275 )
+			"location": new java.awt.Point( 10, 0 )
+			"size": new java.awt.Dimension( 920, 410 )
 		} )
 	}
 }

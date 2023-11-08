@@ -19,7 +19,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JComboBox" ) {
 						name: "jCBAlgorithm"
-						"preferredSize": new java.awt.Dimension( 86, 30 )
+						"preferredSize": new java.awt.Dimension( 115, 30 )
 						"model": new javax.swing.DefaultComboBoxModel {
 							selectedItem: "SHA1withRSA"
 							addElement( "SHA1withRSA" )
@@ -51,6 +51,7 @@ new FormModel {
 								"rows": 5
 								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Input", 1, 0 )
 								"font": #Font0
+								"editable": false
 							} )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
@@ -85,7 +86,7 @@ new FormModel {
 								"font": #Font0
 							} )
 							add( new FormComponent( "javax.swing.JTextField" ) {
-								name: "JTFKeyStore"
+								name: "jTFKeyStore"
 								"preferredSize": &Dimension0 new java.awt.Dimension( 500, 30 )
 								"font": #Font0
 							} )
@@ -131,7 +132,7 @@ new FormModel {
 								"font": #Font0
 							} )
 							add( new FormComponent( "javax.swing.JTextField" ) {
-								name: "JTFPrivateKey"
+								name: "jTFPrivateKey"
 								"preferredSize": #Dimension0
 								"enabled": false
 								"font": #Font0
@@ -148,7 +149,7 @@ new FormModel {
 								name: "jRadioOnlyPrivateKey"
 								"text": "only private key (no certificate)"
 								"$buttonGroup": new FormReference( "buttonGroup1" )
-								"toolTipText": "will return a String (base64 encode)- Digital Signature -(CA organization will NOT authenticate)"
+								"toolTipText": "will return a - Digital Signature -(CA organization will NOT authenticate)"
 								"font": #Font0
 								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jRadioOnlyPrivateKey", true ) )
 							} )
@@ -167,7 +168,7 @@ new FormModel {
 								"font": #Font0
 							} )
 							add( new FormComponent( "javax.swing.JTextField" ) {
-								name: "JTFCertificate"
+								name: "jTFCertificate"
 								"preferredSize": #Dimension0
 								"enabled": false
 								"font": #Font0
@@ -210,20 +211,6 @@ new FormModel {
 						"value": "South"
 					} )
 				} )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
-					name: "pnResult"
-					"font": #Font0
-					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-						name: "scrollPane2"
-						"font": #Font0
-						add( new FormComponent( "javax.swing.JTextArea" ) {
-							name: "jTAResult"
-							"rows": 5
-							"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Result" )
-							"font": #Font0
-						} )
-					} )
-				} )
 				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 					name: "scrollPane3"
 					"font": #Font0
@@ -237,7 +224,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 1040, 720 )
+			"size": new java.awt.Dimension( 1040, 610 )
 		} )
 		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
 			name: "buttonGroup1"

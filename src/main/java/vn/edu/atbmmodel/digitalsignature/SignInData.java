@@ -25,10 +25,10 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.*;
 
 public class SignInData {
-    public static byte[] createDigitalSignature(String data, String algorithm, PrivateKey privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
+    public static byte[] createDigitalSignature(byte[] data, String algorithm, PrivateKey privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
         Signature signature = Signature.getInstance(algorithm, "BC");
         signature.initSign(privateKey);
-        signature.update(data.getBytes());
+        signature.update(data);
         return signature.sign();
     }
 
@@ -122,7 +122,7 @@ public class SignInData {
         return true;
     }
 
-    public static boolean verifyDetachedData(byte[] cmsSignedData, byte[] data)
+    public static boolean verifyDetachedData( byte[] data,byte[] cmsSignedData)
             throws GeneralSecurityException, OperatorCreationException, CMSException {
         CMSSignedData signedData = new CMSSignedData(
                 new CMSProcessableByteArray(data), cmsSignedData);
@@ -169,9 +169,10 @@ public class SignInData {
         KeyGen keyGen = KeyGen.getInstance();
         PrivateKey privateKey = keyGen.getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile("src/privateKey.key"));
         PublicKey publicKey = keyGen.getPublicKeyformBytes(ReadKeyFormFile.readKeyFromFile("src/publicKey.key"));
-        createDigitalSignatureFile("src/privateKey.key", "src/privateKey.sig", "SHA256withRSA", privateKey);
-        System.out.println(verifyDigitalSignatureFile("src/privateKey.key", "src/privateKey.sig", "SHA256withRSA", publicKey));
-
+//        createDigitalSignatureFile("src/privateKey.key", "src/privateKey.sig", "SHA256withRSA", privateKey);
+//        System.out.println(verifyDigitalSignatureFile("src/privateKey.key", "src/privateKey.sig", "SHA256withRSA", publicKey));
+//        System.out.println(verifyDetachedDataFile("I:\\swingx-1.6.1-javadoc.rar.jar", "I:\\test\\Swingx.sig"));
+        System.out.println(verifyDigitalSignatureFile("I:\\swingx-1.6.1-javadoc.rar.jar", "I:\\test\\Swingx1.sig", "SHA1withRSA", publicKey));
     }
 }
 
