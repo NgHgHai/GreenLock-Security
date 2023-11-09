@@ -8,8 +8,11 @@ package vn.edu.atbm_gui;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
+
+import org.jdesktop.swingx.*;
 import org.jdesktop.swingx.VerticalLayout;
 import vn.edu.atbmmodel.hash.Hash;
+import vn.edu.atbmmodel.tool.ChooseFile;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -20,6 +23,7 @@ import java.awt.*;
  */
 public class HashGUI extends JPanel {
     public boolean inputIsFile = false;
+
     public HashGUI() {
         initComponents();
     }
@@ -33,14 +37,23 @@ public class HashGUI extends JPanel {
     }
 
     private void btnChooseFileInput(ActionEvent e) {
+        jTAInput.setEditable(false);
         valueStatus.setText("hash on file");
         inputIsFile = true;
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Choose file input");
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            String path = fileChooser.getSelectedFile().getAbsolutePath();
-            jTAInput.setText(path);
+        String path = ChooseFile.chooseFile("choose file input");
+        jTAInput.setText(path);
+
+    }
+
+    private void jCheckUseTextInField(ActionEvent e) {
+        if (jCheckUseTextInField.isSelected()) {
+            jTAInput.setEditable(true);
+            inputIsFile = false;
+            valueStatus.setText("hash on text");
+        } else {
+            jTAInput.setEditable(false);
+            inputIsFile = true;
+            valueStatus.setText("hash on file");
         }
     }
 
@@ -52,21 +65,17 @@ public class HashGUI extends JPanel {
             Hash hash = new Hash(algorithm);
             if (inputIsFile) {
                 result = hash.hashFile(input);
+                System.out.println(result);
             } else {
                 result = hash.hash(input);
             }
             jTAResult.setText(result);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
 
-    private void btnResetInputToPlainText(ActionEvent e) {
-        valueStatus.setText("ready !!!");
-        inputIsFile = false;
-        jTAInput.setText("");
-    }
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -75,7 +84,6 @@ public class HashGUI extends JPanel {
         pnTop = new JPanel();
         label3 = new JLabel();
         jCBAlgorithm = new JComboBox<>();
-        btnResetInputToPlainText = new JButton();
         label1 = new JLabel();
         label2 = new JLabel();
         valueStatus = new JLabel();
@@ -84,6 +92,7 @@ public class HashGUI extends JPanel {
         scrollPane1 = new JScrollPane();
         jTAInput = new JTextArea();
         btnChooseFileInput = new JButton();
+        jCheckUseTextInField = new JCheckBox();
         pnExecute = new JPanel();
         btnHash = new JButton();
         pnResult = new JPanel();
@@ -92,12 +101,14 @@ public class HashGUI extends JPanel {
         btnCopyHash = new JButton();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border
-        . EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax. swing. border. TitledBorder. CENTER, javax
-        . swing. border. TitledBorder. BOTTOM, new java .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,
-        12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans
-        . PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .equals (e .
-        getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (
+        new javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn"
+        , javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM
+        , new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 )
+        , java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (
+        new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e
+        ) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
+        ; }} );
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -113,7 +124,7 @@ public class HashGUI extends JPanel {
                 pnTop.add(label3);
 
                 //---- jCBAlgorithm ----
-                jCBAlgorithm.setPreferredSize(new Dimension(86, 30));
+                jCBAlgorithm.setPreferredSize(new Dimension(110, 30));
                 jCBAlgorithm.setModel(new DefaultComboBoxModel<>(new String[] {
                     "SHA-1",
                     "SHA-224",
@@ -139,11 +150,6 @@ public class HashGUI extends JPanel {
                     "Whirlpool"
                 }));
                 pnTop.add(jCBAlgorithm);
-
-                //---- btnResetInputToPlainText ----
-                btnResetInputToPlainText.setText("reset input to plain text");
-                btnResetInputToPlainText.addActionListener(e -> btnResetInputToPlainText(e));
-                pnTop.add(btnResetInputToPlainText);
 
                 //---- label1 ----
                 label1.setText("status: ");
@@ -171,6 +177,7 @@ public class HashGUI extends JPanel {
                         jTAInput.setRows(5);
                         jTAInput.setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), "Input", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION));
                         jTAInput.setPreferredSize(new Dimension(500, 113));
+                        jTAInput.setEditable(false);
                         scrollPane1.setViewportView(jTAInput);
                     }
                     pnInput.add(scrollPane1);
@@ -179,6 +186,12 @@ public class HashGUI extends JPanel {
                     btnChooseFileInput.setText("choose file");
                     btnChooseFileInput.addActionListener(e -> btnChooseFileInput(e));
                     pnInput.add(btnChooseFileInput);
+
+                    //---- jCheckUseTextInField ----
+                    jCheckUseTextInField.setText("use text in field");
+                    jCheckUseTextInField.setFont(new Font("Arial", Font.PLAIN, 12));
+                    jCheckUseTextInField.addActionListener(e -> jCheckUseTextInField(e));
+                    pnInput.add(jCheckUseTextInField);
                 }
                 pnCenter.add(pnInput);
 
@@ -195,7 +208,7 @@ public class HashGUI extends JPanel {
 
                 //======== pnResult ========
                 {
-                    pnResult.setLayout(new VerticalLayout());
+                    pnResult.setLayout(new BoxLayout(pnResult, BoxLayout.X_AXIS));
 
                     //======== scrollPane2 ========
                     {
@@ -226,7 +239,6 @@ public class HashGUI extends JPanel {
     private JPanel pnTop;
     private JLabel label3;
     private JComboBox<String> jCBAlgorithm;
-    private JButton btnResetInputToPlainText;
     private JLabel label1;
     private JLabel label2;
     private JLabel valueStatus;
@@ -235,6 +247,7 @@ public class HashGUI extends JPanel {
     private JScrollPane scrollPane1;
     private JTextArea jTAInput;
     private JButton btnChooseFileInput;
+    private JCheckBox jCheckUseTextInField;
     private JPanel pnExecute;
     private JButton btnHash;
     private JPanel pnResult;
@@ -242,4 +255,11 @@ public class HashGUI extends JPanel {
     private JTextArea jTAResult;
     private JButton btnCopyHash;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setContentPane(new HashGUI());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
 }

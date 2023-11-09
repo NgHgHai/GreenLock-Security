@@ -16,16 +16,15 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.security.PublicKey;
-import java.util.Base64;
 
 /**
  * @author hoang hai
  */
-public class VerifyDigitalEncpt extends JPanel {
+public class VerifyDigitalSignature extends JPanel {
 
     boolean useTextInField = false;
 
-    public VerifyDigitalEncpt() {
+    public VerifyDigitalSignature() {
         initComponents();
     }
 
@@ -315,7 +314,7 @@ public class VerifyDigitalEncpt extends JPanel {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - hoanghai
-    private JPanel pnMain;
+    JPanel pnMain;
     private JPanel pnTop;
     private JPanel pnTop2;
     private JLabel label3;
@@ -347,7 +346,7 @@ public class VerifyDigitalEncpt extends JPanel {
         }
         JFrame frame = new JFrame();
 
-        frame.setContentPane(new VerifyDigitalEncpt());
+        frame.setContentPane(new VerifyDigitalSignature());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

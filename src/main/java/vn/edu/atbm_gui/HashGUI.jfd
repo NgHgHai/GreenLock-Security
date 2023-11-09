@@ -15,7 +15,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JComboBox" ) {
 						name: "jCBAlgorithm"
-						"preferredSize": new java.awt.Dimension( 86, 30 )
+						"preferredSize": new java.awt.Dimension( 110, 30 )
 						"model": new javax.swing.DefaultComboBoxModel {
 							selectedItem: "SHA-1"
 							addElement( "SHA-1" )
@@ -42,11 +42,6 @@ new FormModel {
 							addElement( "Whirlpool" )
 						}
 					} )
-					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "btnResetInputToPlainText"
-						"text": "reset input to plain text"
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnResetInputToPlainText", true ) )
-					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
 						name: "label1"
 						"text": "status: "
@@ -72,12 +67,19 @@ new FormModel {
 								"rows": 5
 								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Input", 1, 0 )
 								"preferredSize": new java.awt.Dimension( 500, 113 )
+								"editable": false
 							} )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnChooseFileInput"
 							"text": "choose file"
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnChooseFileInput", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JCheckBox" ) {
+							name: "jCheckUseTextInField"
+							"text": "use text in field"
+							"font": new java.awt.Font( "Arial", 0, 12 )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jCheckUseTextInField", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
@@ -88,7 +90,7 @@ new FormModel {
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnHash", true ) )
 						} )
 					} )
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
 						name: "pnResult"
 						add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 							name: "scrollPane2"
@@ -110,7 +112,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 625, 370 )
+			"size": new java.awt.Dimension( 625, 310 )
 		} )
 	}
 }

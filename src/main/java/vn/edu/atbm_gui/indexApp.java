@@ -50,6 +50,39 @@ public class indexApp {
         frame.setVisible(true);
     }
 
+    private void btnCheckSums(ActionEvent e) {
+        // chuyen den frame CheckSum
+        JFrame frame = new JFrame("CheckSum");
+        SwingUtilities.updateComponentTreeUI(frame);
+        JPanel pnMain = new CheckSum().pnMain;
+        frame.setContentPane(pnMain);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void btnDS(ActionEvent e) {
+        // chuyen den frame DigitalSignature
+        JFrame frame = new JFrame("DigitalSignature");
+        SwingUtilities.updateComponentTreeUI(frame);
+        JPanel pnMain = new DigitalSignature().pnMain;
+        frame.setContentPane(pnMain);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void btnVDS(ActionEvent e) {
+        // chuyen den frame VerifyDigitalSignature
+        JFrame frame = new JFrame("VerifyDigitalSignature");
+        SwingUtilities.updateComponentTreeUI(frame);
+        JPanel pnMain = new VerifyDigitalSignature().pnMain;
+        frame.setContentPane(pnMain);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - hoanghai
@@ -70,12 +103,11 @@ public class indexApp {
 
         //======== pnMain ========
         {
-            pnMain.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder
-            ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border
-            .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt
-            . Color .red ) ,pnMain. getBorder () ) ); pnMain. addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void
-            propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
-            ;} } );
+            pnMain.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder (
+            0, 0 ,0 , 0) ,  "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder
+            . BOTTOM, new java. awt .Font ( "D\u0069al\u006fg", java .awt . Font. BOLD ,12 ) ,java . awt. Color .
+            red ) ,pnMain. getBorder () ) ); pnMain. addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java .
+            beans. PropertyChangeEvent e) { if( "\u0062or\u0064er" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
             pnMain.setLayout(new BorderLayout());
 
             //======== panel2 ========
@@ -124,11 +156,13 @@ public class indexApp {
                     //---- btnDS ----
                     btnDS.setText("Digital Signature");
                     btnDS.setFont(new Font("Inter", Font.PLAIN, 15));
+                    btnDS.addActionListener(e -> btnDS(e));
                     pnBtn.add(btnDS);
 
                     //---- btnVDS ----
                     btnVDS.setText("Verify Digital Signature");
                     btnVDS.setFont(new Font("Inter", Font.PLAIN, 15));
+                    btnVDS.addActionListener(e -> btnVDS(e));
                     pnBtn.add(btnVDS);
 
                     //---- btnHash ----
@@ -140,6 +174,7 @@ public class indexApp {
                     //---- btnCheckSums ----
                     btnCheckSums.setText("CheckSums");
                     btnCheckSums.setFont(new Font("Inter", Font.PLAIN, 15));
+                    btnCheckSums.addActionListener(e -> btnCheckSums(e));
                     pnBtn.add(btnCheckSums);
 
                     //---- btnGetKey ----

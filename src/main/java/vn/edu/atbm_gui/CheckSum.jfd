@@ -15,10 +15,31 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JComboBox" ) {
 						name: "jCBAlgorithm"
-						"preferredSize": new java.awt.Dimension( 86, 30 )
+						"preferredSize": new java.awt.Dimension( 110, 30 )
 						"model": new javax.swing.DefaultComboBoxModel {
-							selectedItem: "RSA"
-							addElement( "RSA" )
+							selectedItem: "SHA-1"
+							addElement( "SHA-1" )
+							addElement( "SHA-224" )
+							addElement( "SHA-256" )
+							addElement( "SHA-384" )
+							addElement( "SHA-512" )
+							addElement( "SHA-512(224)" )
+							addElement( "SHA-512(256)" )
+							addElement( "SHA3-224" )
+							addElement( "SHA3-256" )
+							addElement( "SHA3-384" )
+							addElement( "SHA3-512" )
+							addElement( "SHAKE128" )
+							addElement( "SHAKE256" )
+							addElement( "cSHAKE128" )
+							addElement( "cSHAKE256" )
+							addElement( "GOST3411" )
+							addElement( "RIPEMD128" )
+							addElement( "RIPEMD160" )
+							addElement( "RIPEMD256" )
+							addElement( "RIPEMD320" )
+							addElement( "Tiger" )
+							addElement( "Whirlpool" )
 						}
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
@@ -34,11 +55,19 @@ new FormModel {
 								name: "jTAInput"
 								"rows": 5
 								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Input", 1, 0 )
+								"editable": false
 							} )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnChooseFileInput"
 							"text": "choose file"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnChooseFileInput", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JCheckBox" ) {
+							name: "jCheckUseTextInField"
+							"text": "use text in field"
+							"font": new java.awt.Font( "Arial", 0, 12 )
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jCheckUseTextInField", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
@@ -48,7 +77,7 @@ new FormModel {
 							"text": "checksums"
 						} )
 						add( new FormComponent( "javax.swing.JTextField" ) {
-							name: "key"
+							name: "jTFhashValue"
 							"preferredSize": new java.awt.Dimension( 500, 30 )
 						} )
 					} )
@@ -57,6 +86,7 @@ new FormModel {
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnCheck"
 							"text": "check"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnCheck", true ) )
 						} )
 					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
@@ -65,7 +95,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 625, 255 )
+			"size": new java.awt.Dimension( 625, 240 )
 		} )
 	}
 }

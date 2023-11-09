@@ -15,6 +15,7 @@ import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -94,7 +95,10 @@ public class DigitalSignature extends JPanel {
         inputIsFile = true;
         jCheckUseTextInField.setSelected(false);
         jTAInput.setEditable(false);
+
         JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Tệp PDF", "pdf");
+        fileChooser.setFileFilter(filter);
         fileChooser.setDialogTitle("Choose file input");
         int userSelection = fileChooser.showSaveDialog(this);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
@@ -556,7 +560,7 @@ public class DigitalSignature extends JPanel {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - hoanghai
-    private JPanel pnMain;
+    JPanel pnMain;
     private JPanel pnTop;
     private JLabel label3;
     private JComboBox<String> jCBAlgorithm;
@@ -597,7 +601,7 @@ public class DigitalSignature extends JPanel {
         } catch (Exception e) {
         }
         JFrame frame = new JFrame("app");
-        frame.setContentPane(new DigitalSignature());
+        frame.setContentPane(new DigitalSignature().pnMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
