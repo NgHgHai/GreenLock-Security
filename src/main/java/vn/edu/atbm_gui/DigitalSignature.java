@@ -4,11 +4,11 @@
 
 package vn.edu.atbm_gui;
 
-import java.awt.event.*;
-
+import com.itextpdf.signatures.PdfSigner;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.jdesktop.swingx.*;
+import org.jdesktop.swingx.VerticalLayout;
 import vn.edu.atbmmodel.digitalsignature.SignInData;
+import vn.edu.atbmmodel.digitalsignature.SignInPdf;
 import vn.edu.atbmmodel.key.KeyGen;
 import vn.edu.atbmmodel.tool.ChooseFile;
 import vn.edu.atbmmodel.tool.ReadKeyFormFile;
@@ -16,18 +16,21 @@ import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.security.KeyStore;
 import java.security.PrivateKey;
+import java.security.Provider;
 import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.StringTokenizer;
 
 
 /**
@@ -102,23 +105,66 @@ public class DigitalSignature extends JPanel {
     }
 
     private void btnSign(ActionEvent e) {
-        Security.addProvider(new BouncyCastleProvider());
+        Provider provider = new BouncyCastleProvider();
+        Security.addProvider(provider);
         String algorithm = jCBAlgorithm.getSelectedItem().toString();
 
 
         try {
+            if (jCheckPdf.isSelected()) {
+                String pdfPath = jTAInput.getText();
+                if (!pdfPath.endsWith("pdf")) {
+                    JOptionPane.showMessageDialog(this, "choose a pdf file !!!");
+                    return;
+                }
+                PrivateKey privateKey = null;
+                X509Certificate certificate = null;
+                if (jRadioKeyStore.isSelected()) {
+                    String keyStore = jTFKeyStore.getText();
+
+                    FileInputStream fis = new FileInputStream(new File(keyStore));
+                    KeyStore ks = KeyStore.getInstance("PKCS12", "BC");
+                    ks.load(fis, jPassKeyStore.getPassword());
+                    String alias = ks.aliases().nextElement();
+
+                    privateKey = (PrivateKey) ks.getKey(alias, jPassKeyStore.getPassword());
+                    certificate = (X509Certificate) ks.getCertificate(alias);
+                    jTAStatus.append(now + ": certificate form keyStore : " + "\n");
+                }
+                if (jRadioWithCertificate.isSelected()) {
+                    privateKey = keyGen.getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile(jTFPrivateKey.getText()));
+                    byte[] certificateByte = Files.readAllBytes(new File(jTFCertificate.getText()).toPath());
+                    certificate = (X509Certificate) KeyGen.getInstance().getCertificateFormBytes(certificateByte);
+                    jTAStatus.append(now + ": certificate form private key and certificate : " + "\n");
+                }
+                
+                jTAStatus.append(now + ": private key : " + privateKey.getAlgorithm() + "\n");
+                jTAStatus.append(now + ": Certificate : " + certificate.toString() + "\n");
+                String des = ChooseFile.chooseFile("Choose file to save signature");
+                Certificate[] chain ={certificate};
+//                StringTokenizer st = new StringTokenizer(algorithm, "with");
+//                String digestAlgorithm = st.nextToken();
+                SignInPdf.sign(pdfPath,des,chain,privateKey, "SHA256",provider.getName(), PdfSigner.CryptoStandard.CMS,"sign by GreenLock","vietnamese");
+                jTAStatus.append("=====================================================================================\n");
+                jTAStatus.append("=====================================================================================\n");
+                return;
+            }
             if (jRadioKeyStore.isSelected()) {
                 String keyStore = jTFKeyStore.getText();
+
                 FileInputStream fis = new FileInputStream(new File(keyStore));
                 KeyStore ks = KeyStore.getInstance("PKCS12", "BC");
                 ks.load(fis, jPassKeyStore.getPassword());
                 String alias = ks.aliases().nextElement();
+
                 PrivateKey privateKey = (PrivateKey) ks.getKey(alias, jPassKeyStore.getPassword());
                 X509Certificate certificate = (X509Certificate) ks.getCertificate(alias);
+
                 jTAStatus.append(now + ": private key : " + privateKey.getAlgorithm() + "\n");
                 jTAStatus.append(now + ": Certificate : " + certificate.toString() + "\n");
                 jTAStatus.append(now + ": certificate form keyStore : " + "\n");
                 String des = ChooseFile.chooseFile("Choose file to save signature");
+
                 if (inputIsFile) {
                     SignInData.createDetachedSignatureWithCertFile(jTAInput.getText(), des, certificate, algorithm, privateKey);
                     jTAStatus.append(now + ": Signature form file \n");
@@ -163,9 +209,9 @@ public class DigitalSignature extends JPanel {
                 X509Certificate certificate = (X509Certificate) KeyGen.getInstance().getCertificateFormBytes(certificateByte);
                 jTAStatus.append(now + ": Private Key : " + privateKey.getAlgorithm() + "\n");
                 jTAStatus.append(now + ": Certificate : " + certificate.toString() + "\n");
+                jTAStatus.append(now + ": certificate form private key and certificate : " + "\n");
                 String des = ChooseFile.chooseFile("Choose file to save signature");
                 FileOutputStream fos = new FileOutputStream(des);
-                jTAStatus.append(now + ": certificate form private key and certificate : " + "\n");
                 if (inputIsFile) {
                     SignInData.createDetachedSignatureWithCertFile(jTAInput.getText(), des, certificate, algorithm, privateKey);
                     jTAStatus.append(now + ": Signature form file \n");
@@ -181,8 +227,8 @@ public class DigitalSignature extends JPanel {
             }
 
 
-            jTAInput.append("=====================================================================================\n");
-            jTAInput.append("=====================================================================================\n");
+            jTAStatus.append("=====================================================================================\n");
+            jTAStatus.append("=====================================================================================\n");
 
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -202,6 +248,18 @@ public class DigitalSignature extends JPanel {
     private void btnCertificateFile(ActionEvent e) {
         jTFCertificate.setText(ChooseFile.chooseFile("Choose certificate file"));
         jTAStatus.append(now + ": Certificate : " + jTFCertificate.getText() + "\n");
+    }
+
+    private void checkPdf(ActionEvent e) {
+        if (jCheckPdf.isSelected()) {
+            jCheckUseTextInField.setEnabled(false);
+            jRadioOnlyPrivateKey.setSelected(false);
+            jRadioOnlyPrivateKey.setEnabled(false);
+            jRadioOnlyPrivateKey.setVisible(true);
+        } else {
+            jRadioOnlyPrivateKey.setEnabled(true);
+            jRadioOnlyPrivateKey.setVisible(true);
+        }
     }
 
     private void initComponents() {
@@ -236,6 +294,7 @@ public class DigitalSignature extends JPanel {
         btnCertificateFile = new JButton();
         jRadioWithCertificate = new JRadioButton();
         pnExecute = new JPanel();
+        jCheckPdf = new JCheckBox();
         btnSign = new JButton();
         label1 = new JLabel();
         scrollPane3 = new JScrollPane();
@@ -243,13 +302,12 @@ public class DigitalSignature extends JPanel {
 
         //======== this ========
         setFont(new Font("Arial", Font.PLAIN, 12));
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new
-        javax . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax
-        . swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java
-        . awt .Font ( "Dia\u006cog", java .awt . Font. BOLD ,12 ) ,java . awt
-        . Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .
-        PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r" .
-        equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border
+        . EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax
+        . swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,
+        12 ), java. awt. Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans
+        . PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .
+        getPropertyName () )) throw new RuntimeException( ); }} );
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -268,7 +326,7 @@ public class DigitalSignature extends JPanel {
                 pnTop.add(label3);
 
                 //---- jCBAlgorithm ----
-                jCBAlgorithm.setPreferredSize(new Dimension(115, 30));
+                jCBAlgorithm.setPreferredSize(new Dimension(130, 30));
                 jCBAlgorithm.setModel(new DefaultComboBoxModel<>(new String[] {
                     "SHA1withRSA",
                     "SHA224withRSA",
@@ -454,6 +512,11 @@ public class DigitalSignature extends JPanel {
                     pnExecute.setFont(new Font("Arial", Font.PLAIN, 12));
                     pnExecute.setLayout(new FlowLayout());
 
+                    //---- jCheckPdf ----
+                    jCheckPdf.setText("sign in pdf");
+                    jCheckPdf.addActionListener(e -> checkPdf(e));
+                    pnExecute.add(jCheckPdf);
+
                     //---- btnSign ----
                     btnSign.setText("sign");
                     btnSign.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -522,6 +585,7 @@ public class DigitalSignature extends JPanel {
     private JButton btnCertificateFile;
     private JRadioButton jRadioWithCertificate;
     private JPanel pnExecute;
+    private JCheckBox jCheckPdf;
     private JButton btnSign;
     private JLabel label1;
     private JScrollPane scrollPane3;

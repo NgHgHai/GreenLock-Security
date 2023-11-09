@@ -100,6 +100,7 @@ public class SignInData {
             certList.add(certificate);
             CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
             CMSTypedData msg = new CMSProcessableFile(new File(source));
+            CMSTypedData msg1 = (CMSTypedData) new CMSTypedStream(new FileInputStream(source));
             Store certs = new JcaCertStore(certList);
 
             DigestCalculatorProvider digProvider = new JcaDigestCalculatorProviderBuilder()

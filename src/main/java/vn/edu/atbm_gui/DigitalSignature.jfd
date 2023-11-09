@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -19,7 +19,7 @@ new FormModel {
 					} )
 					add( new FormComponent( "javax.swing.JComboBox" ) {
 						name: "jCBAlgorithm"
-						"preferredSize": new java.awt.Dimension( 115, 30 )
+						"preferredSize": new java.awt.Dimension( 130, 30 )
 						"model": new javax.swing.DefaultComboBoxModel {
 							selectedItem: "SHA1withRSA"
 							addElement( "SHA1withRSA" )
@@ -196,6 +196,11 @@ new FormModel {
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 						name: "pnExecute"
 						"font": #Font0
+						add( new FormComponent( "javax.swing.JCheckBox" ) {
+							name: "jCheckPdf"
+							"text": "sign in pdf"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "checkPdf", true ) )
+						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnSign"
 							"text": "sign"
@@ -224,7 +229,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 1040, 610 )
+			"size": new java.awt.Dimension( 1085, 610 )
 		} )
 		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
 			name: "buttonGroup1"
