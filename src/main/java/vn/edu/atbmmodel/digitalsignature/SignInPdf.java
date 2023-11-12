@@ -4,9 +4,7 @@ import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.StampingProperties;
 import com.itextpdf.signatures.*;
-import org.bouncycastle.cms.CMSException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.operator.OperatorCreationException;
 import vn.edu.atbmmodel.key.KeyGen;
 
 import java.io.File;
@@ -55,7 +53,7 @@ public class SignInPdf {
     public static final String SRC = "src/hai.pdf";
     public static final String DEST = "src/hai%s.pdf";
 
-    public static void main(String[] args) throws GeneralSecurityException, OperatorCreationException, IOException, CMSException {
+    public static void main(String[] args) throws GeneralSecurityException, IOException {
         Provider provider = new BouncyCastleProvider();
         Security.addProvider(provider);
         Certificate certificate = KeyGen.getInstance().getCertificateFormBytes(Files.readAllBytes(new File("src/Certificate.cer").toPath()));

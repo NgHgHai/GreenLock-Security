@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"

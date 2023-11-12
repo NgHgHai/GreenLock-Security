@@ -4,9 +4,9 @@
 
 package vn.edu.atbm_gui;
 
-import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
  * @author hoang hai
@@ -83,9 +83,21 @@ public class indexApp {
         frame.setVisible(true);
     }
 
+    private void btnGetKey(ActionEvent e) {
+        // chuyen den frame GetKey
+        JFrame frame = new JFrame("GetKey");
+        SwingUtilities.updateComponentTreeUI(frame);
+        JPanel pnMain = new GenKeyGUI().pnMain;
+        frame.setContentPane(pnMain);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - hoanghai
+        panel1 = new JPanel();
         pnMain = new JPanel();
         panel2 = new JPanel();
         label1 = new JLabel();
@@ -101,96 +113,105 @@ public class indexApp {
         btnCheckSums = new JButton();
         btnGetKey = new JButton();
 
-        //======== pnMain ========
+        //======== panel1 ========
         {
-            pnMain.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder (
-            0, 0 ,0 , 0) ,  "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder
-            . BOTTOM, new java. awt .Font ( "D\u0069al\u006fg", java .awt . Font. BOLD ,12 ) ,java . awt. Color .
-            red ) ,pnMain. getBorder () ) ); pnMain. addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java .
-            beans. PropertyChangeEvent e) { if( "\u0062or\u0064er" .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
-            pnMain.setLayout(new BorderLayout());
+            panel1.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing.
+            border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER
+            , javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font
+            .BOLD ,12 ), java. awt. Color. red) ,panel1. getBorder( )) ); panel1. addPropertyChangeListener (
+            new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r"
+            .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+            panel1.setLayout(new BorderLayout());
 
-            //======== panel2 ========
+            //======== pnMain ========
             {
-                panel2.setLayout(new FlowLayout());
+                pnMain.setLayout(new BorderLayout());
 
-                //---- label1 ----
-                label1.setText("Green Tool To Lock");
-                label1.setFont(new Font("Inter", Font.PLAIN, 50));
-                label1.setForeground(new Color(0x339900));
-                panel2.add(label1);
-            }
-            pnMain.add(panel2, BorderLayout.PAGE_START);
-
-            //======== panel4 ========
-            {
-                panel4.setLayout(new BorderLayout());
-
-                //======== panel5 ========
+                //======== panel2 ========
                 {
-                    panel5.setLayout(new FlowLayout());
+                    panel2.setLayout(new FlowLayout());
 
-                    //---- label2 ----
-                    label2.setText("Choose mode :");
-                    label2.setFont(new Font("Inter", Font.PLAIN, 25));
-                    panel5.add(label2);
+                    //---- label1 ----
+                    label1.setText("Green Lock");
+                    label1.setFont(new Font("Inter", Font.PLAIN, 50));
+                    label1.setForeground(new Color(0x339900));
+                    panel2.add(label1);
                 }
-                panel4.add(panel5, BorderLayout.NORTH);
+                pnMain.add(panel2, BorderLayout.PAGE_START);
 
-                //======== pnBtn ========
+                //======== panel4 ========
                 {
-                    pnBtn.setLayout(new FlowLayout());
+                    panel4.setLayout(new BorderLayout());
 
-                    //---- btnSKE ----
-                    btnSKE.setText("Symmetric Key Encryption");
-                    btnSKE.setFont(new Font("Inter", Font.PLAIN, 15));
-                    btnSKE.addActionListener(e -> btnSKE(e));
-                    pnBtn.add(btnSKE);
+                    //======== panel5 ========
+                    {
+                        panel5.setLayout(new FlowLayout());
 
-                    //---- btnPKE ----
-                    btnPKE.setText("Public Key Encryption");
-                    btnPKE.setFont(new Font("Inter", Font.PLAIN, 15));
-                    btnPKE.addActionListener(e -> btnPKE(e));
-                    pnBtn.add(btnPKE);
+                        //---- label2 ----
+                        label2.setText("Choose mode :");
+                        label2.setFont(new Font("Inter", Font.PLAIN, 25));
+                        panel5.add(label2);
+                    }
+                    panel4.add(panel5, BorderLayout.NORTH);
 
-                    //---- btnDS ----
-                    btnDS.setText("Digital Signature");
-                    btnDS.setFont(new Font("Inter", Font.PLAIN, 15));
-                    btnDS.addActionListener(e -> btnDS(e));
-                    pnBtn.add(btnDS);
+                    //======== pnBtn ========
+                    {
+                        pnBtn.setLayout(new FlowLayout());
 
-                    //---- btnVDS ----
-                    btnVDS.setText("Verify Digital Signature");
-                    btnVDS.setFont(new Font("Inter", Font.PLAIN, 15));
-                    btnVDS.addActionListener(e -> btnVDS(e));
-                    pnBtn.add(btnVDS);
+                        //---- btnSKE ----
+                        btnSKE.setText("Symmetric Key Encryption");
+                        btnSKE.setFont(new Font("Inter", Font.PLAIN, 15));
+                        btnSKE.addActionListener(e -> btnSKE(e));
+                        pnBtn.add(btnSKE);
 
-                    //---- btnHash ----
-                    btnHash.setText("Hash");
-                    btnHash.setFont(new Font("Inter", Font.PLAIN, 15));
-                    btnHash.addActionListener(e -> btnHash(e));
-                    pnBtn.add(btnHash);
+                        //---- btnPKE ----
+                        btnPKE.setText("Public Key Encryption");
+                        btnPKE.setFont(new Font("Inter", Font.PLAIN, 15));
+                        btnPKE.addActionListener(e -> btnPKE(e));
+                        pnBtn.add(btnPKE);
 
-                    //---- btnCheckSums ----
-                    btnCheckSums.setText("CheckSums");
-                    btnCheckSums.setFont(new Font("Inter", Font.PLAIN, 15));
-                    btnCheckSums.addActionListener(e -> btnCheckSums(e));
-                    pnBtn.add(btnCheckSums);
+                        //---- btnDS ----
+                        btnDS.setText("Digital Signature");
+                        btnDS.setFont(new Font("Inter", Font.PLAIN, 15));
+                        btnDS.addActionListener(e -> btnDS(e));
+                        pnBtn.add(btnDS);
 
-                    //---- btnGetKey ----
-                    btnGetKey.setText("Get key");
-                    btnGetKey.setFont(new Font("Inter", Font.PLAIN, 15));
-                    pnBtn.add(btnGetKey);
+                        //---- btnVDS ----
+                        btnVDS.setText("Verify Digital Signature");
+                        btnVDS.setFont(new Font("Inter", Font.PLAIN, 15));
+                        btnVDS.addActionListener(e -> btnVDS(e));
+                        pnBtn.add(btnVDS);
+
+                        //---- btnHash ----
+                        btnHash.setText("Hash");
+                        btnHash.setFont(new Font("Inter", Font.PLAIN, 15));
+                        btnHash.addActionListener(e -> btnHash(e));
+                        pnBtn.add(btnHash);
+
+                        //---- btnCheckSums ----
+                        btnCheckSums.setText("CheckSums");
+                        btnCheckSums.setFont(new Font("Inter", Font.PLAIN, 15));
+                        btnCheckSums.addActionListener(e -> btnCheckSums(e));
+                        pnBtn.add(btnCheckSums);
+
+                        //---- btnGetKey ----
+                        btnGetKey.setText("Get key");
+                        btnGetKey.setFont(new Font("Inter", Font.PLAIN, 15));
+                        btnGetKey.addActionListener(e -> btnGetKey(e));
+                        pnBtn.add(btnGetKey);
+                    }
+                    panel4.add(pnBtn, BorderLayout.CENTER);
                 }
-                panel4.add(pnBtn, BorderLayout.CENTER);
+                pnMain.add(panel4, BorderLayout.CENTER);
             }
-            pnMain.add(panel4, BorderLayout.CENTER);
+            panel1.add(pnMain, BorderLayout.CENTER);
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents  @formatter:on
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
     // Generated using JFormDesigner Evaluation license - hoanghai
+    private JPanel panel1;
     JPanel pnMain;
     private JPanel panel2;
     private JLabel label1;

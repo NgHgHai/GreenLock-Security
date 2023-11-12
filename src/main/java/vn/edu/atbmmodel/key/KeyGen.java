@@ -11,13 +11,13 @@ import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import javax.swing.*;
-import java.io.*;
+import javax.crypto.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.*;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -25,7 +25,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 
@@ -44,13 +43,13 @@ public class KeyGen {
         Security.addProvider(new BouncyCastleProvider());
     }
 
-    public  KeyPair getKeyPair(int size) throws NoSuchAlgorithmException, NoSuchProviderException {
+    public KeyPair getKeyPair(int size) throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA", "BC");
         keyPairGenerator.initialize(size);
         return keyPairGenerator.generateKeyPair();
     }
 
-    public  PublicKey getPublicKeyformBytes(byte[] data) {
+    public PublicKey getPublicKeyformBytes(byte[] data) {
         PublicKey publicKey = null;
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
@@ -61,7 +60,7 @@ public class KeyGen {
         return publicKey;
     }
 
-    public  PrivateKey getPrivateKeyformBytes(byte[] key) {
+    public PrivateKey getPrivateKeyformBytes(byte[] key) {
         PrivateKey privateKey = null;
         try {
             privateKey = KeyFactory.getInstance("RSA", "BC").generatePrivate(new PKCS8EncodedKeySpec(key));
@@ -71,37 +70,29 @@ public class KeyGen {
         return privateKey;
     }
 
-    public  SecretKey getKeySymmetric(String algorithm, int size) throws NoSuchAlgorithmException, NoSuchProviderException {
+    public SecretKey getKeySymmetric(String algorithm, int size) throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm, "BC");
         keyGenerator.init(size);
         return keyGenerator.generateKey();
     }
 
-    public  X509Certificate genCertificate(KeyPair key, String issuerNameString, BigInteger seri) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
-        RSAPublicKey rsaPublicKey = (RSAPublicKey) key.getPublic();
-        RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) key.getPrivate();
+    public X509Certificate getCertificateFormBytes(byte[] data) {
+        X509Certificate certificate = null;
+        try {
+            certificate = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(data));
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        }
+        return certificate;
+    }
 
-        X500Name issuerName = new X500Name("CN=" + issuerNameString);
-        X500Name subjectName = new X500Name("CN=Hoang Hai, O=GreenTea Group , OU=Students , L=Thu Duc, ST=HCM, C=vietnamese"); // Chứng chỉ tự ký có cả thông tin người phát hành và người sử dụng giống nhau
-        Date startDate = new Date();
-        Date endDate = new Date(System.currentTimeMillis() + 365 * 24 * 60 * 60 * 1000); // 1 năm
 
-        SubjectPublicKeyInfo publicKeyInfo = SubjectPublicKeyInfo.getInstance(rsaPublicKey.getEncoded());
-
-        X509v3CertificateBuilder certBuilder = new X509v3CertificateBuilder(issuerName, seri, startDate, endDate, subjectName, publicKeyInfo);
-        JcaContentSignerBuilder signerBuilder = new JcaContentSignerBuilder("SHA256WithRSAEncryption");
-
-        ContentSigner contentSigner = signerBuilder.build(rsaPrivateKey);
-        X509CertificateHolder selfSignedCert = certBuilder.build(contentSigner);
-
-        return new JcaX509CertificateConverter().getCertificate(selfSignedCert);
-
-    }   public  X509Certificate genCertificate(PrivateKey caPrivateKey,PublicKey publicKey, String issuerNameString,BigInteger seri ) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
+    public X509Certificate genCertificate(PrivateKey caPrivateKey, PublicKey publicKey, String issuerNameString, BigInteger seri) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException {
         RSAPublicKey rsaPublicKey = (RSAPublicKey) publicKey;
         RSAPrivateKey caRsaPrivateKey = (RSAPrivateKey) caPrivateKey;
 
-        X500Name issuerName = new X500Name("CN=" + issuerNameString);
-        X500Name subjectName = new X500Name("CN=Hoang Hai, O=GreenTea Group , OU=Students , L=Thu Duc, ST=HCM, C=vietnamese");
+        X500Name issuerName = new X500Name("CN=2013016@, O=GreenTea Group , OU=Students , L=Thu Duc, ST=HCM, C=vietnamese");
+        X500Name subjectName = new X500Name("CN=" + issuerNameString);
         Date startDate = new Date();
         Date endDate = new Date(System.currentTimeMillis() + 365 * 24 * 60 * 60 * 1000); // 1 năm
 //        BigInteger serial = new BigInteger(64, new SecureRandom());
@@ -118,7 +109,7 @@ public class KeyGen {
 
     }
 
-    public  byte[] genKeyStore(PrivateKey privateKey, X509Certificate certificate, char[] password) {
+    public byte[] genKeyStore(PrivateKey privateKey, X509Certificate certificate, char[] password) {
         try {
             KeyStore keyStore = KeyStore.getInstance("PKCS12", "BC");
             keyStore.load(null, null);
@@ -133,45 +124,44 @@ public class KeyGen {
         return null;
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException, IOException, KeyStoreException, NoSuchProviderException, UnrecoverableKeyException {
-//        KeyGen gen = KeyGen.getInstance();
-//        KeyPair keyPair =gen.getKeyPair(2048);
-//        PrivateKey privateKey = keyPair.getPrivate();
-//        PublicKey publicKey = keyPair.getPublic();
-//        X509Certificate certificate = gen.genCertificate(keyPair, "Nguyen Hoang Hai", new BigInteger(64, new SecureRandom()));
-//        byte[] keyStore = gen.genKeyStore(privateKey, certificate, "123456".toCharArray());
-//        FileOutputStream fileOutputStream = new FileOutputStream("src/keystore.p12");
-//        fileOutputStream.write(keyStore);
-//        fileOutputStream.close();
-//        fileOutputStream = new FileOutputStream("src/publicKey.key");
-//        fileOutputStream.write(publicKey.getEncoded());
-//        fileOutputStream.close();
-//        fileOutputStream = new FileOutputStream("src/privateKey.key");
-//        fileOutputStream.write(privateKey.getEncoded());
-//        fileOutputStream.close();
-//        fileOutputStream = new FileOutputStream("src/Certificate.cer");
-//        fileOutputStream.write(certificate.getEncoded());
-//        fileOutputStream.close();
-//        System.out.println("Done");
-
-//       FileInputStream fileInputStream = new FileInputStream("src/privateKey.key");
-//         byte[] data = new byte[fileInputStream.available()];
-//            fileInputStream.read(data);
-//            fileInputStream.close();
-            PrivateKey privateKey = KeyGen.getInstance().getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile("src/privateKey.key"));
-            System.out.println(privateKey);
-    }
-
-    public X509Certificate getCertificateFormBytes(byte[] data) {
-        X509Certificate certificate = null;
+    public X509Certificate genCertificate(PublicKey publicKey, String name, BigInteger seri) throws CertificateException, NoSuchAlgorithmException, OperatorCreationException {
+        KeyGen keyGen = KeyGen.getInstance();
+        PrivateKey privateKey;
         try {
-            certificate = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(new ByteArrayInputStream(data));
-        } catch (CertificateException e) {
-            e.printStackTrace();
+            privateKey = keyGen.getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile("src/greenlock_ca/GreenLockPrivateKey.key"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return certificate;
+        return genCertificate(privateKey, publicKey, name, seri);
     }
 
+    public static void main(String[] args) throws NoSuchAlgorithmException, OperatorCreationException, CertificateException, IOException, KeyStoreException, NoSuchProviderException, UnrecoverableKeyException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        KeyGen keyGen = KeyGen.getInstance();
+        KeyPair keyPair = keyGen.getKeyPair(2048);
+        PublicKey publicKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+        X509Certificate certificate = keyGen.genCertificate(privateKey, publicKey, "GreenTea", new BigInteger(64, new SecureRandom()));
+        byte[] keyStore = keyGen.genKeyStore(privateKey, certificate, "000000".toCharArray());
+        KeyStore keyStore1 = KeyStore.getInstance("PKCS12", "BC");
+        FileOutputStream fos = new FileOutputStream("src/greenlock_ca/GreenLockKeyStorePass000000.p12");
+        fos.write(keyStore);
+        fos.flush();
+        fos.close();
+        fos = new FileOutputStream("src/greenlock_ca/GreenLockPublicKey.key");
+        fos.write(publicKey.getEncoded());
+        fos.flush();
+        fos.close();
+        fos = new FileOutputStream("src/greenlock_ca/GreenLockPrivateKey.key");
+        fos.write(privateKey.getEncoded());
+        fos.flush();
+        fos.close();
+        fos = new FileOutputStream("src/greenlock_ca/GreenLockCertificate.crt");
+        fos.write(certificate.getEncoded());
+        fos.flush();
+        fos.close();
+
+
+    }
 
 
 }

@@ -1,0 +1,331 @@
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.BorderLayout ) ) {
+				name: "pnMain"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+					name: "panel1"
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnSymMode"
+						"text": "Symmetric algo"
+						"preferredSize": new java.awt.Dimension( 100, 100 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSymMode", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnPubMode"
+						"text": "Publickey algo"
+						"preferredSize": new java.awt.Dimension( 100, 100 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnPubMode", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnCertMode"
+						"text": "Certificate"
+						"preferredSize": new java.awt.Dimension( 100, 100 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnCertMode", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "btnKeyStoreMode"
+						"text": "Key Store"
+						"preferredSize": new java.awt.Dimension( 100, 100 )
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnKeyStoreMode", true ) )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "West"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+					name: "pnRoot2nd"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "pnSymmetric"
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel6"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label1"
+								"text": "Symmetric algo :"
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "jCBSymAlgo"
+								"preferredSize": new java.awt.Dimension( 130, 26 )
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "AES"
+									addElement( "AES" )
+									addElement( "DESede" )
+									addElement( "Blowfish" )
+									addElement( "Camellia" )
+									addElement( "DES" )
+									addElement( "Twofish" )
+									addElement( "CAST5" )
+									addElement( "Hill" )
+									addElement( "Vigener" )
+								}
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jCBSymAlgo", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label2"
+								"text": "size"
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "jCBSymSize"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "128"
+									addElement( "128" )
+									addElement( "192" )
+									addElement( "256" )
+								}
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel7"
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnSymGen"
+								"text": "Gen"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnSymGen", true ) )
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel8"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label7"
+								"text": "key :            "
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFSymKey"
+								"preferredSize": new java.awt.Dimension( 400, 26 )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jSymCopy"
+								"text": "copy"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jSymCopy", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jSymExport"
+								"text": "export"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jSymExport", true ) )
+							} )
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "pnPublicKey"
+						"visible": false
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel9"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label4"
+								"text": "Publickey algo :"
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "jCBPubAlgo"
+								"preferredSize": new java.awt.Dimension( 130, 26 )
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "RSA"
+									addElement( "RSA" )
+								}
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label5"
+								"text": "size"
+							} )
+							add( new FormComponent( "javax.swing.JComboBox" ) {
+								name: "jCBPubSize"
+								"model": new javax.swing.DefaultComboBoxModel {
+									selectedItem: "2048"
+									addElement( "2048" )
+									addElement( "1024" )
+									addElement( "4096" )
+								}
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel10"
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnPubGen"
+								"text": "Gen"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnPubGen", true ) )
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel11"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label8"
+								"text": "public key : "
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFPubPublicKey"
+								"preferredSize": &Dimension0 new java.awt.Dimension( 400, 26 )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jPubPublicKeyCopy"
+								"text": "copy"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jPubPublicKeyCopy", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jPubPublicKeyExport"
+								"text": "export"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jPubPublicKeyExport", true ) )
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel12"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label9"
+								"text": "private key :"
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFPubPrivateKey"
+								"preferredSize": new java.awt.Dimension( 400, 26 )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jPubPrivateKeyCopy"
+								"text": "copy"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jPubPrivateKeyCopy", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jPubPrivateKeyExport"
+								"text": "export"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jPubPrivateKeyExport", true ) )
+							} )
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "pnCert"
+						"visible": false
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel13"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label10"
+								"text": "Certificate : (with GreenLockCA)"
+								"toolTipText": "signed with privatekey of GreenLockCA"
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel14"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label11"
+								"text": "public key : "
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFCertPublicKey"
+								"preferredSize": #Dimension0
+								addEvent( new FormEvent( "javax.swing.event.CaretListener", "caretUpdate", "jTFCertPublicKeyCaretUpdate", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jChooseCertPublicKey"
+								"text": "choose"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jChooseCertPublicKey", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "jLBCertStatus"
+								"text": "status"
+								"preferredSize": new java.awt.Dimension( 120, 16 )
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel15"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label12"
+								"text": "name :         "
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFCertName"
+								"preferredSize": #Dimension0
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel19"
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnCertGen"
+								"text": "Gen"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnCertGen", true ) )
+							} )
+						} )
+					} )
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
+						name: "pnKeyStore"
+						"visible": false
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel16"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label13"
+								"text": "Key Store :"
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel17"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label14"
+								"text": "private key : "
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFKeyStorePrivateKey"
+								"preferredSize": #Dimension0
+								addEvent( new FormEvent( "javax.swing.event.CaretListener", "caretUpdate", "jTFKeyStorePrivateKeyCaretUpdate", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jChooseKeyStorePrivateKey"
+								"text": "choose"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jChooseKeyStorePrivateKey", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "jLBKeyStorePrivateKeyStatus"
+								"text": "status"
+								"preferredSize": new java.awt.Dimension( 120, 16 )
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
+							"alignment": 0
+						} ) {
+							name: "panel18"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label15"
+								"text": "certificate :   "
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFKeyStoreCert"
+								"preferredSize": #Dimension0
+								addEvent( new FormEvent( "javax.swing.event.CaretListener", "caretUpdate", "jTFKeyStoreCertCaretUpdate", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jChooseKeyStoreCert"
+								"text": "choose"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jChooseKeyStoreCert", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "jLBKeyStoreCertStatus"
+								"text": "status"
+								"preferredSize": new java.awt.Dimension( 120, 16 )
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel20"
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "btnKeyStoreGen"
+								"text": "Gen"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnKeyStoreGen", true ) )
+							} )
+						} )
+					} )
+				}, new FormLayoutConstraints( class java.lang.String ) {
+					"value": "Center"
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 810, 565 )
+		} )
+	}
+}

@@ -150,7 +150,7 @@ public class Symmetric {
         FileInputStream fileInputStream = new FileInputStream(file);
         fileInputStream.read(iv);
         decryptCipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, algorithm), new IvParameterSpec(iv));
-        FileOutputStream fileOutputStream = new FileOutputStream(des );
+        FileOutputStream fileOutputStream = new FileOutputStream(des);
         CipherOutputStream cipherOutputStream = new CipherOutputStream(fileOutputStream, decryptCipher);
         byte[] buffer = new byte[1024];
         int length;

@@ -5,23 +5,19 @@
 package vn.edu.atbm_gui;
 
 
-import java.awt.event.*;
-
 import org.jdesktop.swingx.VerticalLayout;
 import vn.edu.atbmmodel.key.KeyGen;
 import vn.edu.atbmmodel.publicKey.RSA;
-import vn.edu.atbmmodel.symmetric.Symmetric;
 import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
-import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.io.File;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 
 /**
@@ -87,7 +83,7 @@ public class PublicKeyEncpt extends JPanel {
                 jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
             }
         } else {
-            key = jTFKey.getText().getBytes();
+            key = Base64.getDecoder().decode(jTFKey.getText());
             jTAStatus.append("key: read from text field\n");
         }
         try {
@@ -131,7 +127,7 @@ public class PublicKeyEncpt extends JPanel {
                 jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
             }
         } else {
-            key = jTFKey.getText().getBytes();
+            key = Base64.getDecoder().decode(jTFKey.getText());
             jTAStatus.append("key: read from text field\n");
         }
         try {
@@ -160,6 +156,20 @@ public class PublicKeyEncpt extends JPanel {
             jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
         }
 
+    }
+
+    private void jTFKeyFocusGained(FocusEvent e) {
+        if (jTFKey.getText().equals("choose publicKey for encode, privateKey for decode")) {
+            jTFKey.setText("");
+            jTFKey.setForeground(Color.BLACK); // Đặt màu chữ khi nhập
+        }
+    }
+
+    private void jTFKeyFocusLost(FocusEvent e) {
+        if (jTFKey.getText().isEmpty()) {
+            jTFKey.setForeground(Color.GRAY); // Đặt màu chữ mờ
+            jTFKey.setText("choose publicKey for encode, privateKey for decode");
+        }
     }
 
 
@@ -195,12 +205,12 @@ public class PublicKeyEncpt extends JPanel {
         jTAStatus = new JTextArea();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing.
-        border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JFor\u006dDesi\u0067ner \u0045valu\u0061tion" , javax. swing .border . TitledBorder. CENTER
-        ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .Font ( "Dia\u006cog", java .awt . Font
-        . BOLD ,12 ) ,java . awt. Color .red ) , getBorder () ) );  addPropertyChangeListener(
-        new java. beans .PropertyChangeListener ( ){ @Override public void propertyChange (java . beans. PropertyChangeEvent e) { if( "bord\u0065r"
-        .equals ( e. getPropertyName () ) )throw new RuntimeException( ) ;} } );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
+        EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing
+        .border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),
+        java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener()
+        {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.getPropertyName()))
+        throw new RuntimeException();}});
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -289,6 +299,18 @@ public class PublicKeyEncpt extends JPanel {
                     //---- jTFKey ----
                     jTFKey.setPreferredSize(new Dimension(500, 30));
                     jTFKey.setToolTipText("choose publicKey for encode, privateKey for  decode");
+                    jTFKey.setText("choose publicKey for encode, privateKey for decode");
+                    jTFKey.setForeground(Color.gray);
+                    jTFKey.addFocusListener(new FocusAdapter() {
+                        @Override
+                        public void focusGained(FocusEvent e) {
+                            jTFKeyFocusGained(e);
+                        }
+                        @Override
+                        public void focusLost(FocusEvent e) {
+                            jTFKeyFocusLost(e);
+                        }
+                    });
                     pnKey.add(jTFKey);
 
                     //---- btnKeyFile ----

@@ -10,7 +10,7 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JFrame frame = new JFrame("app");
+        JFrame frame = new JFrame("GreenLock");
         SwingUtilities.updateComponentTreeUI(frame);
         frame.setSize(600, 250);
         JPanel pnMain = new indexApp().pnMain;

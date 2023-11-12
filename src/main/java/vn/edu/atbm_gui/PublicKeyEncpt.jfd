@@ -83,6 +83,10 @@ new FormModel {
 							name: "jTFKey"
 							"preferredSize": new java.awt.Dimension( 500, 30 )
 							"toolTipText": "choose publicKey for encode, privateKey for  decode"
+							"text": "choose publicKey for encode, privateKey for decode"
+							"foreground": sfield java.awt.Color gray
+							addEvent( new FormEvent( "java.awt.event.FocusListener", "focusGained", "jTFKeyFocusGained", true ) )
+							addEvent( new FormEvent( "java.awt.event.FocusListener", "focusLost", "jTFKeyFocusLost", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnKeyFile"
