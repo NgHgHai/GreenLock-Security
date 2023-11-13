@@ -59,8 +59,8 @@ public class Symmetric {
             return 8;
         else if (algorithm.equals("SEED"))
             return 8;
-        else if (algorithm.equals("Skipjack"))
-            return 8;
+        else if (algorithm.equals("Camellia"))
+            return 16;
         else if (algorithm.equals("TEA"))
             return 8;
         else if (algorithm.equals("XTEA"))

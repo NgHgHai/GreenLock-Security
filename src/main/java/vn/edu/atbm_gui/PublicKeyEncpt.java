@@ -8,6 +8,7 @@ package vn.edu.atbm_gui;
 import org.jdesktop.swingx.VerticalLayout;
 import vn.edu.atbmmodel.key.KeyGen;
 import vn.edu.atbmmodel.publicKey.RSA;
+import vn.edu.atbmmodel.tool.ChooseFile;
 import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
 import javax.swing.*;
@@ -17,86 +18,58 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.Base64;
 
 /**
  * @author hoang hai
  */
 public class PublicKeyEncpt extends JPanel {
-    public boolean keyIsFile = false;
-    public boolean inputIsFile = false;
-    File dataSource;
-    File key;
+
     KeyGen keyGen = KeyGen.getInstance();
 
     public PublicKeyEncpt() {
         initComponents();
     }
 
-    private void btnResetKeyToPlainText(ActionEvent e) {
-        keyIsFile = false;
-        jTAStatus.append("key field: " + "reset to plain text" + "\n");
-    }
-
-    private void btnResetInputToPlainText(ActionEvent e) {
-        inputIsFile = false;
-        jTAStatus.append("input field: " + "reset to plain text" + "\n");
-    }
 
     private void btnKeyFile(ActionEvent e) {
         // choose key file
-        JFileChooser fileChooser = new JFileChooser();
-        int returnValue = fileChooser.showOpenDialog(this);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            jTFKey.setText(fileChooser.getSelectedFile().getAbsolutePath());
-            keyIsFile = true;
-            jTAStatus.append("key field: " + fileChooser.getSelectedFile().getAbsolutePath() + "\n");
-            key = fileChooser.getSelectedFile();
-        }
+        String key = ChooseFile.chooseFile("choose key file");
+        jTFKey.setText(key);
+        jTAStatus.append("key field: " + key + "\n");
     }
 
     private void btnChooseFileInput(ActionEvent e) {
         // choose input file
-        JFileChooser fileChooser = new JFileChooser();
-        int returnValue = fileChooser.showOpenDialog(this);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-
-            jTAInput.setText(fileChooser.getSelectedFile().getAbsolutePath());
-            inputIsFile = true;
-            jTAStatus.append("input field: " + fileChooser.getSelectedFile().getAbsolutePath() + "\n");
-            dataSource = fileChooser.getSelectedFile();
-        }
+        String input = ChooseFile.chooseFile("choose input file");
+        jTAInput.setText(input);
+        jTAStatus.append("input field: " + input + "\n");
     }
 
     private void btnEncrypt(ActionEvent e) {
         jTAStatus.append("encrypting...\n");
-        RSA rsa = RSA.getInstance();
-        byte[] enc;
-        byte[] key = null;
-        String des = null;
-        if (keyIsFile) {
-            try {
+        try {
+            RSA rsa = RSA.getInstance();
+            byte[] enc;
+            byte[] key = null;
+            String des = null;
+
+            String path = jTFKey.getText();
+            File file = new File(path);
+            //get key
+            if (file.isFile()) {
                 key = ReadKeyFormFile.readKeyFromFile(jTFKey.getText());
                 jTAStatus.append("key: read from file\n");
-            } catch (IOException ex) {
-                jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
+            } else {
+                key = Base64.getDecoder().decode(jTFKey.getText());
+                jTAStatus.append("key: read from text field\n");
             }
-        } else {
-            key = Base64.getDecoder().decode(jTFKey.getText());
-            jTAStatus.append("key: read from text field\n");
-        }
-        try {
+            // init
             rsa.init(jCBAlgorithm.getSelectedItem().toString(), jCBMode.getSelectedItem().toString(), jCBPadding.getSelectedItem().toString());
             jTAStatus.append("algorithm: " + jCBAlgorithm.getSelectedItem().toString() + "mode: " + jCBMode.getSelectedItem().toString() + "padding: " + jCBPadding.getSelectedItem().toString() + "\n");
-            if (inputIsFile) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(jTAInput.getText()));
-                fileChooser.setSelectedFile(new File(jTAInput.getText() + "-encrypted" + ".enc"));
-                int returnValue = fileChooser.showSaveDialog(this);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    des = fileChooser.getSelectedFile().getAbsolutePath();
-                }
+            file = new File(jTAInput.getText());
+            if (file.isFile()) {
+                des = ChooseFile.chooseFile("choose output file");
                 boolean b = rsa.encryptFile(keyGen.getPublicKeyformBytes(key), jTAInput.getText(), des);
                 if (b) {
                     jTAStatus.append("encrypt file success : " + des + "\n");
@@ -111,36 +84,31 @@ public class PublicKeyEncpt extends JPanel {
         } catch (Exception ex) {
             jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
         }
+
     }
 
     private void btnDecrypt(ActionEvent e) {
         jTAStatus.append("decrypting...\n");
-        RSA rsa = RSA.getInstance();
-        byte[] dec;
-        byte[] key = null;
-        String des = null;
-        if (keyIsFile) {
-            try {
+        try {
+            RSA rsa = RSA.getInstance();
+            byte[] dec;
+            byte[] key = null;
+            String des = null;
+            //getkey
+            File file = new File(jTFKey.getText());
+            if (file.isFile()) {
                 key = ReadKeyFormFile.readKeyFromFile(jTFKey.getText());
                 jTAStatus.append("key: read from file\n");
-            } catch (IOException ex) {
-                jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
+            } else {
+                key = Base64.getDecoder().decode(jTFKey.getText());
+                jTAStatus.append("key: read from text field\n");
             }
-        } else {
-            key = Base64.getDecoder().decode(jTFKey.getText());
-            jTAStatus.append("key: read from text field\n");
-        }
-        try {
+            //init
             rsa.init(jCBAlgorithm.getSelectedItem().toString(), jCBMode.getSelectedItem().toString(), jCBPadding.getSelectedItem().toString());
             jTAStatus.append("algorithm: " + jCBAlgorithm.getSelectedItem().toString() + "mode: " + jCBMode.getSelectedItem().toString() + "padding: " + jCBPadding.getSelectedItem().toString() + "\n");
-            if (inputIsFile) {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(jTAInput.getText()));
-                fileChooser.setSelectedFile(new File(jTAInput.getText() + "-decrypted" + ".dec"));
-                int returnValue = fileChooser.showSaveDialog(this);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    des = fileChooser.getSelectedFile().getAbsolutePath();
-                }
+            file = new File(jTAInput.getText());
+            if (file.isFile()) {
+                des = ChooseFile.chooseFile("choose output file");
                 boolean b = rsa.decryptFile(keyGen.getPrivateKeyformBytes(key), jTAInput.getText(), des);
                 if (b) {
                     jTAStatus.append("decrypt file success : " + des + "\n");
@@ -155,7 +123,6 @@ public class PublicKeyEncpt extends JPanel {
         } catch (Exception ex) {
             jTAStatus.append("ERROR : " + ex.getMessage() + "\n");
         }
-
     }
 
     private void jTFKeyFocusGained(FocusEvent e) {
@@ -172,6 +139,10 @@ public class PublicKeyEncpt extends JPanel {
         }
     }
 
+    private void btnResetKeyToPlainText(ActionEvent e) {
+        // TODO add your code here
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -184,7 +155,6 @@ public class PublicKeyEncpt extends JPanel {
         jCBMode = new JComboBox<>();
         label5 = new JLabel();
         jCBPadding = new JComboBox<>();
-        btnResetInputToPlainText = new JButton();
         pnCenter = new JPanel();
         pnInput = new JPanel();
         scrollPane1 = new JScrollPane();
@@ -194,7 +164,6 @@ public class PublicKeyEncpt extends JPanel {
         label8 = new JLabel();
         jTFKey = new JTextField();
         btnKeyFile = new JButton();
-        btnResetKeyToPlainText = new JButton();
         pnExecute = new JPanel();
         btnEncrypt = new JButton();
         btnDecrypt = new JButton();
@@ -205,12 +174,12 @@ public class PublicKeyEncpt extends JPanel {
         jTAStatus = new JTextArea();
 
         //======== this ========
-        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.
-        EmptyBorder(0,0,0,0), "JFor\u006dDesi\u0067ner \u0045valu\u0061tion",javax.swing.border.TitledBorder.CENTER,javax.swing
-        .border.TitledBorder.BOTTOM,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12),
-        java.awt.Color.red), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener()
-        {@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("bord\u0065r".equals(e.getPropertyName()))
-        throw new RuntimeException();}});
+        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder
+        ( 0, 0 ,0 , 0) ,  "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border
+        .TitledBorder . BOTTOM, new java. awt .Font ( "Dialo\u0067", java .awt . Font. BOLD ,12 ) ,java . awt
+        . Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void
+        propertyChange (java . beans. PropertyChangeEvent e) { if( "borde\u0072" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
+        ;} } );
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -255,11 +224,6 @@ public class PublicKeyEncpt extends JPanel {
                     "OAEPPadding"
                 }));
                 pnTop.add(jCBPadding);
-
-                //---- btnResetInputToPlainText ----
-                btnResetInputToPlainText.setText("reset input to plain text");
-                btnResetInputToPlainText.addActionListener(e -> btnResetInputToPlainText(e));
-                pnTop.add(btnResetInputToPlainText);
             }
             pnMain.add(pnTop, BorderLayout.PAGE_START);
 
@@ -277,6 +241,7 @@ public class PublicKeyEncpt extends JPanel {
                         //---- jTAInput ----
                         jTAInput.setRows(5);
                         jTAInput.setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), "Input", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION));
+                        jTAInput.setPreferredSize(new Dimension(700, 113));
                         scrollPane1.setViewportView(jTAInput);
                     }
                     pnInput.add(scrollPane1);
@@ -317,11 +282,6 @@ public class PublicKeyEncpt extends JPanel {
                     btnKeyFile.setText("choose key file");
                     btnKeyFile.addActionListener(e -> btnKeyFile(e));
                     pnKey.add(btnKeyFile);
-
-                    //---- btnResetKeyToPlainText ----
-                    btnResetKeyToPlainText.setText("reset key to plain text");
-                    btnResetKeyToPlainText.addActionListener(e -> btnResetKeyToPlainText(e));
-                    pnKey.add(btnResetKeyToPlainText);
                 }
                 pnCenter.add(pnKey);
 
@@ -383,7 +343,6 @@ public class PublicKeyEncpt extends JPanel {
     private JComboBox<String> jCBMode;
     private JLabel label5;
     private JComboBox<String> jCBPadding;
-    private JButton btnResetInputToPlainText;
     private JPanel pnCenter;
     private JPanel pnInput;
     private JScrollPane scrollPane1;
@@ -393,7 +352,6 @@ public class PublicKeyEncpt extends JPanel {
     private JLabel label8;
     private JTextField jTFKey;
     private JButton btnKeyFile;
-    private JButton btnResetKeyToPlainText;
     private JPanel pnExecute;
     private JButton btnEncrypt;
     private JButton btnDecrypt;

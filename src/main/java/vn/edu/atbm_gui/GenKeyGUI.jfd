@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -111,7 +111,6 @@ new FormModel {
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 						name: "pnPublicKey"
-						"visible": false
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 							name: "panel9"
 							add( new FormComponent( "javax.swing.JLabel" ) {
@@ -197,7 +196,6 @@ new FormModel {
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 						name: "pnCert"
-						"visible": false
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 							name: "panel13"
 							add( new FormComponent( "javax.swing.JLabel" ) {
@@ -251,10 +249,30 @@ new FormModel {
 								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnCertGen", true ) )
 							} )
 						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel22"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label16"
+								"text": "certificate :"
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFCertResult"
+								"preferredSize": new java.awt.Dimension( 400, 30 )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jCertCopy"
+								"text": "copy"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jCertCopy", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jCertExport"
+								"text": "export"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jCertExport", true ) )
+							} )
+						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.swingx.VerticalLayout ) ) {
 						name: "pnKeyStore"
-						"visible": false
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 							name: "panel16"
 							add( new FormComponent( "javax.swing.JLabel" ) {
@@ -312,10 +330,39 @@ new FormModel {
 						} )
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
 							name: "panel20"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label3"
+								"text": "pass :"
+							} )
+							add( new FormComponent( "javax.swing.JPasswordField" ) {
+								name: "jPassKeyStore"
+								"preferredSize": new java.awt.Dimension( 100, 30 )
+							} )
 							add( new FormComponent( "javax.swing.JButton" ) {
 								name: "btnKeyStoreGen"
 								"text": "Gen"
 								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnKeyStoreGen", true ) )
+							} )
+						} )
+						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {
+							name: "panel23"
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "label17"
+								"text": "key store"
+							} )
+							add( new FormComponent( "javax.swing.JTextField" ) {
+								name: "jTFKeyStoreResult"
+								"preferredSize": new java.awt.Dimension( 400, 30 )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jKeyStoreCopy"
+								"text": "copy"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jKeyStoreCopy", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JButton" ) {
+								name: "jKeyStoreExport"
+								"text": "export"
+								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jKeyStoreExport", true ) )
 							} )
 						} )
 					} )
@@ -325,7 +372,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 810, 565 )
+			"size": new java.awt.Dimension( 785, 680 )
 		} )
 	}
 }

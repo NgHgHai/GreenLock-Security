@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -47,11 +47,6 @@ new FormModel {
 							addElement( "OAEPPadding" )
 						}
 					} )
-					add( new FormComponent( "javax.swing.JButton" ) {
-						name: "btnResetInputToPlainText"
-						"text": "reset input to plain text"
-						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnResetInputToPlainText", true ) )
-					} )
 				}, new FormLayoutConstraints( class java.lang.String ) {
 					"value": "First"
 				} )
@@ -65,6 +60,7 @@ new FormModel {
 								name: "jTAInput"
 								"rows": 5
 								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Input", 1, 0 )
+								"preferredSize": new java.awt.Dimension( 700, 113 )
 							} )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
@@ -92,11 +88,6 @@ new FormModel {
 							name: "btnKeyFile"
 							"text": "choose key file"
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnKeyFile", true ) )
-						} )
-						add( new FormComponent( "javax.swing.JButton" ) {
-							name: "btnResetKeyToPlainText"
-							"text": "reset key to plain text"
-							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnResetKeyToPlainText", true ) )
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {

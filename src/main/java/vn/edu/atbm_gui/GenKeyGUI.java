@@ -21,11 +21,14 @@ import java.math.BigInteger;
 import java.security.*;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.Random;
 
 /**
  * @author hoang hai
  */
 public class GenKeyGUI extends JPanel {
+    KeyGen keyGen = KeyGen.getInstance();
+
     public GenKeyGUI() {
         initComponents();
     }
@@ -60,7 +63,34 @@ public class GenKeyGUI extends JPanel {
     }
 
     private void btnSymGen(ActionEvent e) {
-        KeyGen keyGen = KeyGen.getInstance();
+        if (jCBSymAlgo.getSelectedItem().toString().equals("Hill")) {
+            int[] size = new int[4];
+            try {
+                Random random = new Random();
+                size[0] = random.nextInt(256);
+                size[1] = random.nextInt(256);
+                size[2] = random.nextInt(256);
+                size[3] = random.nextInt(256);
+            } catch (Exception ex) {
+                return;
+            }
+            jTFSymKey.setText(String.valueOf(size[0]) + " " + String.valueOf(size[1]) + " " + String.valueOf(size[2]) + " " + String.valueOf(size[3]));
+            return;
+        }
+        if (jCBSymAlgo.getSelectedItem().toString().equals("Vigener")) {
+            int[] size = new int[4];
+            try {
+                Random random = new Random();
+                size[0] = random.nextInt(26);
+                size[1] = random.nextInt(26);
+                size[2] = random.nextInt(26);
+                size[3] = random.nextInt(26);
+            } catch (Exception ex) {
+                return;
+            }
+            jTFSymKey.setText(size[0] + " " + size[1] + " " + size[2] + " " + size[3]);
+            return;
+        }
         try {
             int size = Integer.parseInt(jCBSymSize.getSelectedItem().toString());
             SecretKey key = keyGen.getKeySymmetric(jCBSymAlgo.getSelectedItem().toString(), size);
@@ -71,9 +101,6 @@ public class GenKeyGUI extends JPanel {
         }
     }
 
-    private void jTFSymSizeCaretUpdate(CaretEvent e) {
-        // TODO add your code here
-    }
 
     private void jCBSymAlgo(ActionEvent e) {
         if (jCBSymAlgo.getSelectedItem().toString().equals("AES")) {
@@ -104,21 +131,19 @@ public class GenKeyGUI extends JPanel {
     private void jSymExport(ActionEvent e) {
         String path = ChooseFile.chooseFile("choose file to export");
         byte[] keyByte = Base64.getDecoder().decode(jTFSymKey.getText());
-        ChooseFile.writeFile(path, keyByte);
+        ChooseFile.writeFile(path + ".secKey", keyByte);
     }
 
     private void btnPubGen(ActionEvent e) {
-        KeyGen keyGen = KeyGen.getInstance();
+
         try {
             KeyPair keyPair = keyGen.getKeyPair(Integer.parseInt(jCBPubSize.getSelectedItem().toString()));
             String publicKeyBase64 = Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded());
             String privateKeyBase64 = Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded());
             jTFPubPublicKey.setText(publicKeyBase64);
             jTFPubPrivateKey.setText(privateKeyBase64);
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException(ex);
-        } catch (NoSuchProviderException ex) {
-            throw new RuntimeException(ex);
+        } catch (NoSuchAlgorithmException | NoSuchProviderException ex) {
+            JOptionPane.showMessageDialog(this, "Error : " + ex.getMessage());
         }
 
     }
@@ -142,13 +167,13 @@ public class GenKeyGUI extends JPanel {
     private void jPubPublicKeyExport(ActionEvent e) {
         String path = ChooseFile.chooseFile("choose file to export");
         byte[] keyByte = Base64.getDecoder().decode(jTFPubPublicKey.getText());
-        ChooseFile.writeFile(path, keyByte);
+        ChooseFile.writeFile(path + ".pubKey", keyByte);
     }
 
     private void jPubPrivateKeyExport(ActionEvent e) {
         String path = ChooseFile.chooseFile("choose file to export");
         byte[] keyByte = Base64.getDecoder().decode(jTFPubPrivateKey.getText());
-        ChooseFile.writeFile(path, keyByte);
+        ChooseFile.writeFile(path + ".priKey", keyByte);
     }
 
     private void jChooseCertPublicKey(ActionEvent e) {
@@ -174,17 +199,28 @@ public class GenKeyGUI extends JPanel {
             PublicKey publicKey = keyGen.getPublicKeyformBytes(keyByte);
             X509Certificate x509Certificate = keyGen.genCertificate(publicKey, name, new BigInteger(64, new SecureRandom()));
 
+//            String pathOut = ChooseFile.chooseFile("choose file to export");
+//            ChooseFile.writeFile(pathOut + ".cer", x509Certificate.getEncoded());
 
-//            X509Certificate x509Certificate = null;//test
-
-
-            String pathOut = ChooseFile.chooseFile("choose file to export");
-            ChooseFile.writeFile(pathOut + ".cer", x509Certificate.getEncoded());
-
+            jTFCertResult.setText(Base64.getEncoder().encodeToString(x509Certificate.getEncoded()));
             JOptionPane.showMessageDialog(this, "success");
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error : " + ex.getMessage());
         }
+    }
+
+    private void jCertCopy(ActionEvent e) {
+        String textToCopy = jTFCertResult.getText();
+        // Đưa nội dung vào Clipboard
+        StringSelection stringSelection = new StringSelection(textToCopy);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+    }
+
+    private void jCertExport(ActionEvent e) {
+        String pathOut = ChooseFile.chooseFile("choose file to export");
+        byte[] certByte = Base64.getDecoder().decode(jTFCertResult.getText());
+        ChooseFile.writeFile(pathOut + ".cer", certByte);
     }
 
     private void jTFCertPublicKeyCaretUpdate(CaretEvent e) {
@@ -261,7 +297,53 @@ public class GenKeyGUI extends JPanel {
     }
 
     private void btnKeyStoreGen(ActionEvent e) {
-        // TODO add your code here
+        try {
+            byte[] keyStore;
+            byte[] priKeyByte;
+            byte[] certByte;
+            KeyGen keyGen = KeyGen.getInstance();
+            String privateKeyPath = jTFKeyStorePrivateKey.getText();
+            String certPath = jTFKeyStoreCert.getText();
+            char[] passChar = jPassKeyStore.getPassword();
+            //private-key
+            File file = new File(privateKeyPath);
+            if (file.exists()) {
+                priKeyByte = ReadKeyFormFile.readKeyFromFile(privateKeyPath);
+            } else {
+                priKeyByte = Base64.getDecoder().decode(privateKeyPath);
+            }
+            //cert
+            file = new File(certPath);
+            if (file.isFile()) {
+                certByte = ReadKeyFormFile.readKeyFromFile(certPath);
+            } else {
+                certByte = Base64.getDecoder().decode(certPath);
+            }
+
+            PrivateKey privateKey = keyGen.getPrivateKeyformBytes(priKeyByte);
+            X509Certificate x509Certificate = keyGen.getCertificateFormBytes(certByte);
+            keyStore = keyGen.genKeyStore(privateKey, x509Certificate, passChar);
+            jTFKeyStoreResult.setText(Base64.getEncoder().encodeToString(keyStore));
+
+            JOptionPane.showMessageDialog(this, "success");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error : " + ex.getMessage());
+        }
+
+    }
+
+    private void jKeyStoreCopy(ActionEvent e) {
+        String textToCopy = jTFKeyStoreResult.getText();
+        // Đưa nội dung vào Clipboard
+        StringSelection stringSelection = new StringSelection(textToCopy);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(stringSelection, null);
+    }
+
+    private void jKeyStoreExport(ActionEvent e) {
+        String pathOut = ChooseFile.chooseFile("choose file to export");
+        byte[] keyStoreByte = Base64.getDecoder().decode(jTFKeyStoreResult.getText());
+        ChooseFile.writeFile(pathOut + ".p12", keyStoreByte);
     }
 
 
@@ -319,6 +401,11 @@ public class GenKeyGUI extends JPanel {
         jTFCertName = new JTextField();
         panel19 = new JPanel();
         btnCertGen = new JButton();
+        panel22 = new JPanel();
+        label16 = new JLabel();
+        jTFCertResult = new JTextField();
+        jCertCopy = new JButton();
+        jCertExport = new JButton();
         pnKeyStore = new JPanel();
         panel16 = new JPanel();
         label13 = new JLabel();
@@ -333,16 +420,22 @@ public class GenKeyGUI extends JPanel {
         jChooseKeyStoreCert = new JButton();
         jLBKeyStoreCertStatus = new JLabel();
         panel20 = new JPanel();
+        label3 = new JLabel();
+        jPassKeyStore = new JPasswordField();
         btnKeyStoreGen = new JButton();
+        panel23 = new JPanel();
+        label17 = new JLabel();
+        jTFKeyStoreResult = new JTextField();
+        jKeyStoreCopy = new JButton();
+        jKeyStoreExport = new JButton();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax
-        . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frmDes\u0069gner \u0045valua\u0074ion" , javax. swing
-        .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .
-        Font ( "D\u0069alog", java .awt . Font. BOLD ,12 ) ,java . awt. Color .red
-        ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override
-        public void propertyChange (java . beans. PropertyChangeEvent e) { if( "\u0062order" .equals ( e. getPropertyName (
-        ) ) )throw new RuntimeException( ) ;} } );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
+        ( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax. swing. border
+        . TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt
+        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
+        propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
+        ; }} );
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -464,7 +557,6 @@ public class GenKeyGUI extends JPanel {
 
                 //======== pnPublicKey ========
                 {
-                    pnPublicKey.setVisible(false);
                     pnPublicKey.setLayout(new VerticalLayout());
 
                     //======== panel9 ========
@@ -559,7 +651,6 @@ public class GenKeyGUI extends JPanel {
 
                 //======== pnCert ========
                 {
-                    pnCert.setVisible(false);
                     pnCert.setLayout(new VerticalLayout());
 
                     //======== panel13 ========
@@ -622,12 +713,35 @@ public class GenKeyGUI extends JPanel {
                         panel19.add(btnCertGen);
                     }
                     pnCert.add(panel19);
+
+                    //======== panel22 ========
+                    {
+                        panel22.setLayout(new FlowLayout());
+
+                        //---- label16 ----
+                        label16.setText("certificate :");
+                        panel22.add(label16);
+
+                        //---- jTFCertResult ----
+                        jTFCertResult.setPreferredSize(new Dimension(400, 30));
+                        panel22.add(jTFCertResult);
+
+                        //---- jCertCopy ----
+                        jCertCopy.setText("copy");
+                        jCertCopy.addActionListener(e -> jCertCopy(e));
+                        panel22.add(jCertCopy);
+
+                        //---- jCertExport ----
+                        jCertExport.setText("export");
+                        jCertExport.addActionListener(e -> jCertExport(e));
+                        panel22.add(jCertExport);
+                    }
+                    pnCert.add(panel22);
                 }
                 pnRoot2nd.add(pnCert);
 
                 //======== pnKeyStore ========
                 {
-                    pnKeyStore.setVisible(false);
                     pnKeyStore.setLayout(new VerticalLayout());
 
                     //======== panel16 ========
@@ -694,12 +808,44 @@ public class GenKeyGUI extends JPanel {
                     {
                         panel20.setLayout(new FlowLayout());
 
+                        //---- label3 ----
+                        label3.setText("pass :");
+                        panel20.add(label3);
+
+                        //---- jPassKeyStore ----
+                        jPassKeyStore.setPreferredSize(new Dimension(100, 30));
+                        panel20.add(jPassKeyStore);
+
                         //---- btnKeyStoreGen ----
                         btnKeyStoreGen.setText("Gen");
                         btnKeyStoreGen.addActionListener(e -> btnKeyStoreGen(e));
                         panel20.add(btnKeyStoreGen);
                     }
                     pnKeyStore.add(panel20);
+
+                    //======== panel23 ========
+                    {
+                        panel23.setLayout(new FlowLayout());
+
+                        //---- label17 ----
+                        label17.setText("key store");
+                        panel23.add(label17);
+
+                        //---- jTFKeyStoreResult ----
+                        jTFKeyStoreResult.setPreferredSize(new Dimension(400, 30));
+                        panel23.add(jTFKeyStoreResult);
+
+                        //---- jKeyStoreCopy ----
+                        jKeyStoreCopy.setText("copy");
+                        jKeyStoreCopy.addActionListener(e -> jKeyStoreCopy(e));
+                        panel23.add(jKeyStoreCopy);
+
+                        //---- jKeyStoreExport ----
+                        jKeyStoreExport.setText("export");
+                        jKeyStoreExport.addActionListener(e -> jKeyStoreExport(e));
+                        panel23.add(jKeyStoreExport);
+                    }
+                    pnKeyStore.add(panel23);
                 }
                 pnRoot2nd.add(pnKeyStore);
             }
@@ -762,6 +908,11 @@ public class GenKeyGUI extends JPanel {
     private JTextField jTFCertName;
     private JPanel panel19;
     private JButton btnCertGen;
+    private JPanel panel22;
+    private JLabel label16;
+    private JTextField jTFCertResult;
+    private JButton jCertCopy;
+    private JButton jCertExport;
     private JPanel pnKeyStore;
     private JPanel panel16;
     private JLabel label13;
@@ -776,7 +927,14 @@ public class GenKeyGUI extends JPanel {
     private JButton jChooseKeyStoreCert;
     private JLabel jLBKeyStoreCertStatus;
     private JPanel panel20;
+    private JLabel label3;
+    private JPasswordField jPassKeyStore;
     private JButton btnKeyStoreGen;
+    private JPanel panel23;
+    private JLabel label17;
+    private JTextField jTFKeyStoreResult;
+    private JButton jKeyStoreCopy;
+    private JButton jKeyStoreExport;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
     public static void main(String[] args) {
         try {

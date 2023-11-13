@@ -43,6 +43,7 @@ public class Hill {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 key[i][j] = Integer.parseInt(st.nextToken());
+                System.out.println(key[i][j]);
             }
         }
         return key;
