@@ -12,17 +12,21 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.operator.jcajce.JcaDigestCalculatorProviderBuilder;
 import org.bouncycastle.util.Store;
 import vn.edu.atbmmodel.key.KeyGen;
+import vn.edu.atbmmodel.tool.ChooseFile;
 import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
-
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.security.*;
-
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 public class SignInData {
     public static byte[] createDigitalSignature(byte[] data, String algorithm, PrivateKey privateKey) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
@@ -100,7 +104,6 @@ public class SignInData {
             certList.add(certificate);
             CMSSignedDataGenerator gen = new CMSSignedDataGenerator();
             CMSTypedData msg = new CMSProcessableFile(new File(source));
-            CMSTypedData msg1 = (CMSTypedData) new CMSTypedStream(new FileInputStream(source));
             Store certs = new JcaCertStore(certList);
 
             DigestCalculatorProvider digProvider = new JcaDigestCalculatorProviderBuilder()
@@ -112,18 +115,16 @@ public class SignInData {
 
             gen.addSignerInfoGenerator(signerInfoGeneratorBuilder.build(signer, certificate));
             gen.addCertificates(certs);
-
-            FileOutputStream fos = new FileOutputStream(dest);
-            fos.write(gen.generate(msg, true).getEncoded());
-            fos.flush();
-            fos.close();
+            System.out.println("goi vao chooseFile");
+            ChooseFile.writeFile(dest, gen.generate(msg, true).getEncoded());
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
         return true;
     }
 
-    public static boolean verifyDetachedData( byte[] data,byte[] cmsSignedData)
+    public static boolean verifyDetachedData(byte[] data, byte[] cmsSignedData)
             throws GeneralSecurityException, OperatorCreationException, CMSException {
         CMSSignedData signedData = new CMSSignedData(
                 new CMSProcessableByteArray(data), cmsSignedData);

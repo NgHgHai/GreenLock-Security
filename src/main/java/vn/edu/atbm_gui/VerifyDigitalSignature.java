@@ -63,40 +63,60 @@ public class VerifyDigitalSignature extends JPanel {
 
     private void btnVerify(ActionEvent e) {
         String algorithm = jCBAlgorithm.getSelectedItem().toString();
+        boolean v2 = false;
+        boolean v1 = false;
         try {
+            byte[] signedBytes = ReadKeyFormFile.readKeyFromFile(jTFSignedFile.getText());
             if (useTextInField) {
                 String data = jTFData.getText();
-                byte[] signedBytes = ReadKeyFormFile.readKeyFromFile(jTFSignedFile.getText());
                 byte[] dataBytes = jTFData.getText().getBytes();
                 if (publicKeyBytes == null || signedBytes == null) {
                     JOptionPane.showMessageDialog(null, "File not found");
                     return;
                 }
                 PublicKey publicKey = KeyGen.getInstance().getPublicKeyformBytes(publicKeyBytes);
-                boolean v1 = SignInData.verifyDigitalSignature(data, signedBytes, algorithm, publicKey);
+                v1 = SignInData.verifyDigitalSignature(data, signedBytes, algorithm, publicKey);
                 System.out.println(v1);
-                boolean v2 = SignInData.verifyDetachedData(dataBytes, signedBytes);
+                try {
+                    v2 = SignInData.verifyDetachedData(dataBytes, signedBytes);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 System.out.println(v2);
                 boolean verify = v1 || v2;
                 if (verify) {
                     jTAStatus.setText("Verify success");
+                    if (v1) {
+                        jTAStatus.append("\n the .sig signed by single private key (not contain certificate)))");
+                    } else {
+                        jTAStatus.append("\n the .sig signed by certificate (contain certificate)");
+                    }
                 } else {
                     jTAStatus.setText("Verify fail");
                 }
             } else {
-                byte[] signedBytes = ReadKeyFormFile.readKeyFromFile(jTFSignedFile.getText());
                 byte[] dataBytes = ReadKeyFormFile.readKeyFromFile(jTFData.getText());
                 if (publicKeyBytes == null || signedBytes == null || dataBytes == null) {
                     JOptionPane.showMessageDialog(null, "File not found");
                     return;
                 }
                 PublicKey publicKey = KeyGen.getInstance().getPublicKeyformBytes(publicKeyBytes);
+                v1 = SignInData.verifyDigitalSignatureFile(jTFData.getText(), jTFSignedFile.getText(), algorithm, publicKey);
 
-                boolean v1 = SignInData.verifyDetachedDataFile(jTFData.getText(), jTFSignedFile.getText());
-                boolean v2 = SignInData.verifyDigitalSignatureFile(jTFData.getText(), jTFSignedFile.getText(), algorithm, publicKey);
+                try {
+                    v2 = SignInData.verifyDetachedDataFile(jTFData.getText(), jTFSignedFile.getText());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
                 boolean verify = v1 || v2;
                 if (verify) {
                     jTAStatus.setText("Verify success");
+                    if (v1) {
+                        jTAStatus.append("\n the .sig signed by single private key (not contain certificate)))");
+                    } else {
+                        jTAStatus.append("\n the .sig signed by certificate (contain certificate)");
+                    }
                 } else {
                     jTAStatus.setText("Verify fail");
                 }

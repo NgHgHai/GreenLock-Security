@@ -23,6 +23,7 @@ public class ChooseFile {
             fos.write(keyByte);
             fos.flush();
             fos.close();
+            System.out.println("Write file success");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

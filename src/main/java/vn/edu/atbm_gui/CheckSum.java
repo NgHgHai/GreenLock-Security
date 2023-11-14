@@ -5,15 +5,14 @@
 package vn.edu.atbm_gui;
 
 
-import java.awt.event.*;
-
-import org.jdesktop.swingx.*;
+import org.jdesktop.swingx.VerticalLayout;
 import vn.edu.atbmmodel.hash.Hash;
 import vn.edu.atbmmodel.tool.ChooseFile;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 /**
  * @author hoang hai
@@ -61,7 +60,7 @@ public class CheckSum extends JPanel {
             if (hashValue.equals(hashValueTocheck)) {
                 JOptionPane.showMessageDialog(this, "hash value is correct");
             } else {
-                JOptionPane.showMessageDialog(this, "hash value is not correct");
+                JOptionPane.showMessageDialog(this, "hash value is NOT correct");
             }
 
         } catch (Exception ex) {

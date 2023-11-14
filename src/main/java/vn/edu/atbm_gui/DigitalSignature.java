@@ -21,9 +21,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.nio.file.Files;
-import java.security.*;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.Provider;
+import java.security.Security;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
@@ -171,48 +173,44 @@ public class DigitalSignature extends JPanel {
                 String des = ChooseFile.chooseFile("Choose file to save signature");
 
                 if (inputIsFile) {
-                    SignInData.createDetachedSignatureWithCertFile(jTAInput.getText(), des, certificate, algorithm, privateKey);
+                    System.out.println("bat dau vietxupng file");
+                    SignInData.createDetachedSignatureWithCertFile(jTAInput.getText(), des + ".sig", certificate, algorithm, privateKey);
                     jTAStatus.append(now + ": Signature form file \n");
                     jTAStatus.append(now + ": Signature : " + des + "\n");
+
                 } else {
                     byte[] data = jTAInput.getText().getBytes();
                     byte[] signed = SignInData.createDetachedSignatureWithCert(data, certificate, algorithm, privateKey);
-                    try {
-                        FileOutputStream fos = new FileOutputStream(des);
-                        fos.write(signed);
-                    } catch (Exception ex) {
-
-                    }
+                    ChooseFile.writeFile(des + ".sig", signed);
 
                     jTAStatus.append(now + ": " + Base64.getEncoder().encodeToString(signed) + "\n");
                     jTAStatus.append(now + ": Signature form text in field \n");
                     jTAStatus.append(now + ": Signature : " + des + "\n");
                 }
             } else if (jRadioOnlyPrivateKey.isSelected()) {
-                privateKeyBytes = ReadKeyFormFile.readKeyFromFile(jTFPrivateKey.getText());
+
                 PrivateKey privateKey = keyGen.getPrivateKeyformBytes(privateKeyBytes);
+                System.out.println(privateKey.getAlgorithm());
 
                 jTAStatus.append(now + ": Private Key : " + privateKey.getAlgorithm() + "\n");
                 jTAStatus.append(now + ": Certificate : " + "null" + "\n");
                 String des = ChooseFile.chooseFile("Choose file to save signature");
-                FileOutputStream fos = new FileOutputStream(des);
+
                 jTAStatus.append(now + ": certificate form private key : " + "\n");
                 if (inputIsFile) {
-                    SignInData.createDigitalSignatureFile(jTAInput.getText(), des, algorithm, privateKey);
+                    SignInData.createDigitalSignatureFile(jTAInput.getText(), des + ".sig", algorithm, privateKey);
                     jTAStatus.append(now + ": Signature form file \n");
                     jTAStatus.append(now + ": Signature : " + des + "\n");
                 } else {
                     byte[] data = jTAInput.getText().getBytes();
                     byte[] signed = SignInData.createDigitalSignature(data, algorithm, privateKey);
-                    fos.write(signed);
+                    ChooseFile.writeFile(des + ".sig", signed);
                     jTAStatus.append(now + ": " + Base64.getEncoder().encodeToString(signed) + "\n");
                     jTAStatus.append(now + ": Signature form text in field \n");
                     jTAStatus.append(now + ": Signature : " + des + "\n");
                 }
 
             } else if (jRadioWithCertificate.isSelected()) {
-
-                privateKeyBytes = ReadKeyFormFile.readKeyFromFile(jTFPrivateKey.getText());
 
                 PrivateKey privateKey = keyGen.getPrivateKeyformBytes(privateKeyBytes);
 
@@ -222,15 +220,14 @@ public class DigitalSignature extends JPanel {
                 jTAStatus.append(now + ": Certificate : " + certificate.toString() + "\n");
                 jTAStatus.append(now + ": certificate form private key and certificate : " + "\n");
                 String des = ChooseFile.chooseFile("Choose file to save signature");
-                FileOutputStream fos = new FileOutputStream(des);
                 if (inputIsFile) {
-                    SignInData.createDetachedSignatureWithCertFile(jTAInput.getText(), des, certificate, algorithm, privateKey);
+                    SignInData.createDetachedSignatureWithCertFile(jTAInput.getText(), des + ".sig", certificate, algorithm, privateKey);
                     jTAStatus.append(now + ": Signature form file \n");
                     jTAStatus.append(now + ": Signature : " + des + "\n");
                 } else {
                     byte[] data = jTAInput.getText().getBytes();
                     byte[] signed = SignInData.createDetachedSignatureWithCert(data, certificate, algorithm, privateKey);
-                    fos.write(signed);
+                    ChooseFile.writeFile(des + ".sig", signed);
                     jTAStatus.append(now + ": " + Base64.getEncoder().encodeToString(signed) + "\n");
                     jTAStatus.append(now + ": Signature form text in field \n");
                     jTAStatus.append(now + ": Signature : " + des + "\n");
@@ -242,7 +239,9 @@ public class DigitalSignature extends JPanel {
             jTAStatus.append("=====================================================================================\n");
 
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "error");
+            jTAStatus.append(now + ": " + ex.getMessage() + "\n");
         }
     }
 
