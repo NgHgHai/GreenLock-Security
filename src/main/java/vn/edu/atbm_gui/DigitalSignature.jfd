@@ -52,6 +52,7 @@ new FormModel {
 								"border": new javax.swing.border.TitledBorder( new javax.swing.border.EmptyBorder( 0, 0, 0, 0 ), "Input", 1, 0 )
 								"font": #Font0
 								"editable": false
+								"preferredSize": new java.awt.Dimension( 150, 93 )
 							} )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
@@ -136,6 +137,7 @@ new FormModel {
 								"preferredSize": #Dimension0
 								"enabled": false
 								"font": #Font0
+								addEvent( new FormEvent( "javax.swing.event.CaretListener", "caretUpdate", "jTFPrivateKeyCaretUpdate", true ) )
 							} )
 							add( new FormComponent( "javax.swing.JButton" ) {
 								name: "btnPrivateKeyFile"
@@ -152,6 +154,11 @@ new FormModel {
 								"toolTipText": "will return a - Digital Signature -(CA organization will NOT authenticate)"
 								"font": #Font0
 								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "jRadioOnlyPrivateKey", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "jLBPriStatus"
+								"text": "status"
+								"preferredSize": new java.awt.Dimension( 100, 16 )
 							} )
 						} )
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
@@ -229,7 +236,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 1085, 610 )
+			"size": new java.awt.Dimension( 1145, 610 )
 		} )
 		add( new FormNonVisual( "javax.swing.ButtonGroup" ) {
 			name: "buttonGroup1"

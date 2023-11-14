@@ -241,13 +241,10 @@ public class SymmetricKeyEncpt extends JPanel {
 
     }
 
-    private void btnResetKeyToPlainText(ActionEvent e) {
-        // TODO add your code here
-    }
 
     private void jTFKeyCaretUpdate(CaretEvent e) {
         try {
-            jLBStatus.setForeground(Color.GREEN);
+            jLBStatus.setForeground(new Color(51, 153, 0));
             String keyString = jTFKey.getText();
             File file = new File(keyString);
             if (file.isFile()) {
@@ -257,7 +254,7 @@ public class SymmetricKeyEncpt extends JPanel {
             } else {
                 keyByte = Base64.getDecoder().decode(keyString);
                 SecretKey secretKey = new SecretKeySpec(keyByte, jCBAlgorithm.getSelectedItem().toString());
-                jLBStatus.setText("length" + String.valueOf(secretKey.getEncoded().length * 8)+ " bit");
+                jLBStatus.setText("length" + String.valueOf(secretKey.getEncoded().length * 8) + " bit");
             }
         } catch (Exception ex) {
             jLBStatus.setForeground(Color.RED);

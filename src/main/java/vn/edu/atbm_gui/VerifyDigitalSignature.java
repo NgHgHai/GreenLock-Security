@@ -4,8 +4,6 @@
 
 package vn.edu.atbm_gui;
 
-import java.awt.event.*;
-
 import org.jdesktop.swingx.VerticalLayout;
 import vn.edu.atbmmodel.digitalsignature.SignInData;
 import vn.edu.atbmmodel.key.KeyGen;
@@ -14,8 +12,12 @@ import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.CaretEvent;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.security.PublicKey;
+import java.util.Base64;
 
 /**
  * @author hoang hai
@@ -23,6 +25,7 @@ import java.security.PublicKey;
 public class VerifyDigitalSignature extends JPanel {
 
     boolean useTextInField = false;
+    byte[] publicKeyBytes;
 
     public VerifyDigitalSignature() {
         initComponents();
@@ -63,7 +66,6 @@ public class VerifyDigitalSignature extends JPanel {
         try {
             if (useTextInField) {
                 String data = jTFData.getText();
-                byte[] publicKeyBytes = ReadKeyFormFile.readKeyFromFile(jTFPublicKey.getText());
                 byte[] signedBytes = ReadKeyFormFile.readKeyFromFile(jTFSignedFile.getText());
                 byte[] dataBytes = jTFData.getText().getBytes();
                 if (publicKeyBytes == null || signedBytes == null) {
@@ -81,9 +83,7 @@ public class VerifyDigitalSignature extends JPanel {
                 } else {
                     jTAStatus.setText("Verify fail");
                 }
-                return;
             } else {
-                byte[] publicKeyBytes = ReadKeyFormFile.readKeyFromFile(jTFPublicKey.getText());
                 byte[] signedBytes = ReadKeyFormFile.readKeyFromFile(jTFSignedFile.getText());
                 byte[] dataBytes = ReadKeyFormFile.readKeyFromFile(jTFData.getText());
                 if (publicKeyBytes == null || signedBytes == null || dataBytes == null) {
@@ -107,6 +107,31 @@ public class VerifyDigitalSignature extends JPanel {
         }
     }
 
+    private void jTFPublicKeyCaretUpdate(CaretEvent e) {
+        try {
+            String path = jTFPublicKey.getText();
+            File file = new File(path);
+            PublicKey publicKey = null;
+            //get key
+            if (file.isFile()) {
+                publicKeyBytes = ReadKeyFormFile.readKeyFromFile(jTFPublicKey.getText());
+            } else {
+                publicKeyBytes = Base64.getDecoder().decode(jTFPublicKey.getText());
+            }
+            publicKey = KeyGen.getInstance().getPublicKeyformBytes(publicKeyBytes);
+            if (publicKey != null) {
+                jLBStatus.setForeground(new Color(51, 153, 0));
+                jLBStatus.setText("public key" + " (" + publicKey.getAlgorithm() + ")");
+            } else {
+                jLBStatus.setForeground(Color.red);
+                jLBStatus.setText("key invalid");
+            }
+        } catch (Exception ex) {
+            jLBStatus.setForeground(Color.red);
+            jLBStatus.setText("key invalid");
+        }
+    }
+
 
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
@@ -122,6 +147,7 @@ public class VerifyDigitalSignature extends JPanel {
         label9 = new JLabel();
         jTFPublicKey = new JTextField();
         btnPublicKeyFile = new JButton();
+        jLBStatus = new JLabel();
         panel3 = new JPanel();
         label10 = new JLabel();
         jTFSignedFile = new JTextField();
@@ -137,13 +163,13 @@ public class VerifyDigitalSignature extends JPanel {
         jTAStatus = new JTextArea();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new
-        javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmDes\u0069gner \u0045valua\u0074ion", javax
-        . swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java
-        .awt .Font ("D\u0069alog" ,java .awt .Font .BOLD ,12 ), java. awt
-        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans.
-        PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062order" .
-        equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax
+        .swing.border.EmptyBorder(0,0,0,0), "JF\u006frmDes\u0069gner \u0045valua\u0074ion",javax.swing
+        .border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM,new java.awt.
+        Font("D\u0069alog",java.awt.Font.BOLD,12),java.awt.Color.red
+        ), getBorder())); addPropertyChangeListener(new java.beans.PropertyChangeListener(){@Override
+        public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062order".equals(e.getPropertyName(
+        )))throw new RuntimeException();}});
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -210,6 +236,7 @@ public class VerifyDigitalSignature extends JPanel {
                         //---- jTFPublicKey ----
                         jTFPublicKey.setPreferredSize(new Dimension(500, 30));
                         jTFPublicKey.setFont(new Font("Arial", Font.PLAIN, 12));
+                        jTFPublicKey.addCaretListener(e -> jTFPublicKeyCaretUpdate(e));
                         panel2.add(jTFPublicKey);
 
                         //---- btnPublicKeyFile ----
@@ -218,6 +245,10 @@ public class VerifyDigitalSignature extends JPanel {
                         btnPublicKeyFile.setFont(new Font("Arial", Font.PLAIN, 12));
                         btnPublicKeyFile.addActionListener(e -> btnPublicKeyFile(e));
                         panel2.add(btnPublicKeyFile);
+
+                        //---- jLBStatus ----
+                        jLBStatus.setText("status");
+                        panel2.add(jLBStatus);
                     }
                     pnInput.add(panel2);
 
@@ -325,6 +356,7 @@ public class VerifyDigitalSignature extends JPanel {
     private JLabel label9;
     private JTextField jTFPublicKey;
     private JButton btnPublicKeyFile;
+    private JLabel jLBStatus;
     private JPanel panel3;
     private JLabel label10;
     private JTextField jTFSignedFile;

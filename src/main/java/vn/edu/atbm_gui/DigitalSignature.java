@@ -15,6 +15,7 @@ import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.CaretEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,10 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
-import java.security.KeyStore;
-import java.security.PrivateKey;
-import java.security.Provider;
-import java.security.Security;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.time.LocalDateTime;
@@ -42,6 +40,7 @@ public class DigitalSignature extends JPanel {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     String now = time.format(formatter);
     KeyGen keyGen = KeyGen.getInstance();
+    byte[] privateKeyBytes;
 
     public DigitalSignature() {
         initComponents();
@@ -143,14 +142,14 @@ public class DigitalSignature extends JPanel {
                     certificate = (X509Certificate) KeyGen.getInstance().getCertificateFormBytes(certificateByte);
                     jTAStatus.append(now + ": certificate form private key and certificate : " + "\n");
                 }
-                
+
                 jTAStatus.append(now + ": private key : " + privateKey.getAlgorithm() + "\n");
                 jTAStatus.append(now + ": Certificate : " + certificate.toString() + "\n");
                 String des = ChooseFile.chooseFile("Choose file to save signature");
-                Certificate[] chain ={certificate};
+                Certificate[] chain = {certificate};
 //                StringTokenizer st = new StringTokenizer(algorithm, "with");
 //                String digestAlgorithm = st.nextToken();
-                SignInPdf.sign(pdfPath,des,chain,privateKey, "SHA256",provider.getName(), PdfSigner.CryptoStandard.CMS,"sign by GreenLock","vietnamese");
+                SignInPdf.sign(pdfPath, des, chain, privateKey, "SHA256", provider.getName(), PdfSigner.CryptoStandard.CMS, "sign by GreenLock", "vietnamese");
                 jTAStatus.append("=====================================================================================\n");
                 jTAStatus.append("=====================================================================================\n");
                 return;
@@ -190,7 +189,9 @@ public class DigitalSignature extends JPanel {
                     jTAStatus.append(now + ": Signature : " + des + "\n");
                 }
             } else if (jRadioOnlyPrivateKey.isSelected()) {
-                PrivateKey privateKey = keyGen.getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile(jTFPrivateKey.getText()));
+                privateKeyBytes = ReadKeyFormFile.readKeyFromFile(jTFPrivateKey.getText());
+                PrivateKey privateKey = keyGen.getPrivateKeyformBytes(privateKeyBytes);
+
                 jTAStatus.append(now + ": Private Key : " + privateKey.getAlgorithm() + "\n");
                 jTAStatus.append(now + ": Certificate : " + "null" + "\n");
                 String des = ChooseFile.chooseFile("Choose file to save signature");
@@ -210,7 +211,11 @@ public class DigitalSignature extends JPanel {
                 }
 
             } else if (jRadioWithCertificate.isSelected()) {
-                PrivateKey privateKey = keyGen.getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile(jTFPrivateKey.getText()));
+
+                privateKeyBytes = ReadKeyFormFile.readKeyFromFile(jTFPrivateKey.getText());
+
+                PrivateKey privateKey = keyGen.getPrivateKeyformBytes(privateKeyBytes);
+
                 byte[] certificateByte = Files.readAllBytes(new File(jTFCertificate.getText()).toPath());
                 X509Certificate certificate = (X509Certificate) KeyGen.getInstance().getCertificateFormBytes(certificateByte);
                 jTAStatus.append(now + ": Private Key : " + privateKey.getAlgorithm() + "\n");
@@ -269,6 +274,31 @@ public class DigitalSignature extends JPanel {
         }
     }
 
+    private void jTFPrivateKeyCaretUpdate(CaretEvent e) {
+        try {
+            String path = jTFPrivateKey.getText();
+            File file = new File(path);
+            PrivateKey privateKey = null;
+            //get key
+            if (file.isFile()) {
+                privateKeyBytes = ReadKeyFormFile.readKeyFromFile(jTFPrivateKey.getText());
+            } else {
+                privateKeyBytes = Base64.getDecoder().decode(jTFPrivateKey.getText());
+            }
+            privateKey = KeyGen.getInstance().getPrivateKeyformBytes(privateKeyBytes);
+            if (privateKey != null) {
+                jLBPriStatus.setForeground(new Color(51, 153, 0));
+                jLBPriStatus.setText("private key" + " (" + privateKey.getAlgorithm() + ")");
+            } else {
+                jLBPriStatus.setForeground(Color.red);
+                jLBPriStatus.setText("key invalid");
+            }
+        } catch (Exception ex) {
+            jLBPriStatus.setForeground(Color.red);
+            jLBPriStatus.setText("key invalid");
+        }
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
         // Generated using JFormDesigner Evaluation license - hoanghai
@@ -295,6 +325,7 @@ public class DigitalSignature extends JPanel {
         jTFPrivateKey = new JTextField();
         btnPrivateKeyFile = new JButton();
         jRadioOnlyPrivateKey = new JRadioButton();
+        jLBPriStatus = new JLabel();
         panel3 = new JPanel();
         label10 = new JLabel();
         jTFCertificate = new JTextField();
@@ -309,13 +340,13 @@ public class DigitalSignature extends JPanel {
 
         //======== this ========
         setFont(new Font("Arial", Font.PLAIN, 12));
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new
-        javax. swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e", javax
-        . swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java
-        .awt .Font ("D\u0069al\u006fg" ,java .awt .Font .BOLD ,12 ), java. awt
-        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans.
-        PropertyChangeListener( ){ @Override public void propertyChange (java .beans .PropertyChangeEvent e) {if ("\u0062or\u0064er" .
-        equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
+        swing. border. EmptyBorder( 0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border
+        . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog"
+        ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) , getBorder
+        ( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
+        .beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException
+        ( ); }} );
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -372,6 +403,7 @@ public class DigitalSignature extends JPanel {
                         jTAInput.setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), "Input", TitledBorder.LEFT, TitledBorder.DEFAULT_POSITION));
                         jTAInput.setFont(new Font("Arial", Font.PLAIN, 12));
                         jTAInput.setEditable(false);
+                        jTAInput.setPreferredSize(new Dimension(150, 93));
                         scrollPane1.setViewportView(jTAInput);
                     }
                     pnInput.add(scrollPane1);
@@ -458,6 +490,7 @@ public class DigitalSignature extends JPanel {
                         jTFPrivateKey.setPreferredSize(new Dimension(500, 30));
                         jTFPrivateKey.setEnabled(false);
                         jTFPrivateKey.setFont(new Font("Arial", Font.PLAIN, 12));
+                        jTFPrivateKey.addCaretListener(e -> jTFPrivateKeyCaretUpdate(e));
                         panel2.add(jTFPrivateKey);
 
                         //---- btnPrivateKeyFile ----
@@ -474,6 +507,11 @@ public class DigitalSignature extends JPanel {
                         jRadioOnlyPrivateKey.setFont(new Font("Arial", Font.PLAIN, 12));
                         jRadioOnlyPrivateKey.addActionListener(e -> jRadioOnlyPrivateKey(e));
                         panel2.add(jRadioOnlyPrivateKey);
+
+                        //---- jLBPriStatus ----
+                        jLBPriStatus.setText("status");
+                        jLBPriStatus.setPreferredSize(new Dimension(100, 16));
+                        panel2.add(jLBPriStatus);
                     }
                     pnKey.add(panel2);
 
@@ -587,6 +625,7 @@ public class DigitalSignature extends JPanel {
     private JTextField jTFPrivateKey;
     private JButton btnPrivateKeyFile;
     private JRadioButton jRadioOnlyPrivateKey;
+    private JLabel jLBPriStatus;
     private JPanel panel3;
     private JLabel label10;
     private JTextField jTFCertificate;

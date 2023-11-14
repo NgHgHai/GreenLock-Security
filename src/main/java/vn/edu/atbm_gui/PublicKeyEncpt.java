@@ -13,11 +13,14 @@ import vn.edu.atbmmodel.tool.ReadKeyFormFile;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.CaretEvent;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.io.File;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Base64;
 
 /**
@@ -139,9 +142,39 @@ public class PublicKeyEncpt extends JPanel {
         }
     }
 
-    private void btnResetKeyToPlainText(ActionEvent e) {
-        // TODO add your code here
+    private void jTFKeyCaretUpdate(CaretEvent e) {
+        try {
+            byte[] key = null;
+            String path = jTFKey.getText();
+            File file = new File(path);
+            PublicKey publicKey = null;
+            PrivateKey privateKey = null;
+
+            //get key
+            if (file.isFile()) {
+                key = ReadKeyFormFile.readKeyFromFile(jTFKey.getText());
+            } else {
+                key = Base64.getDecoder().decode(jTFKey.getText());
+            }
+            publicKey = keyGen.getPublicKeyformBytes(key);
+            privateKey = keyGen.getPrivateKeyformBytes(key);
+            if (publicKey != null) {
+                jLBStatus.setForeground(new Color(51,153,0));
+                jLBStatus.setText("public key");
+            } else if (privateKey != null) {
+                jLBStatus.setForeground(new Color(51,153,0));
+                jLBStatus.setText("private key");
+            } else {
+                jLBStatus.setForeground(Color.red);
+                jLBStatus.setText("key invalid");
+            }
+        }catch (Exception ex) {
+            jLBStatus.setForeground(Color.red);
+            jLBStatus.setText("key invalid");
+        }
+
     }
+
 
 
     private void initComponents() {
@@ -164,6 +197,7 @@ public class PublicKeyEncpt extends JPanel {
         label8 = new JLabel();
         jTFKey = new JTextField();
         btnKeyFile = new JButton();
+        jLBStatus = new JLabel();
         pnExecute = new JPanel();
         btnEncrypt = new JButton();
         btnDecrypt = new JButton();
@@ -174,12 +208,14 @@ public class PublicKeyEncpt extends JPanel {
         jTAStatus = new JTextArea();
 
         //======== this ========
-        setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax . swing. border .EmptyBorder
-        ( 0, 0 ,0 , 0) ,  "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e" , javax. swing .border . TitledBorder. CENTER ,javax . swing. border
-        .TitledBorder . BOTTOM, new java. awt .Font ( "Dialo\u0067", java .awt . Font. BOLD ,12 ) ,java . awt
-        . Color .red ) , getBorder () ) );  addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override public void
-        propertyChange (java . beans. PropertyChangeEvent e) { if( "borde\u0072" .equals ( e. getPropertyName () ) )throw new RuntimeException( )
-        ;} } );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(
+        new javax.swing.border.EmptyBorder(0,0,0,0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn"
+        ,javax.swing.border.TitledBorder.CENTER,javax.swing.border.TitledBorder.BOTTOM
+        ,new java.awt.Font("Dia\u006cog",java.awt.Font.BOLD,12)
+        ,java.awt.Color.red), getBorder())); addPropertyChangeListener(
+        new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e
+        ){if("\u0062ord\u0065r".equals(e.getPropertyName()))throw new RuntimeException()
+        ;}});
         setLayout(new VerticalLayout());
 
         //======== pnMain ========
@@ -276,12 +312,17 @@ public class PublicKeyEncpt extends JPanel {
                             jTFKeyFocusLost(e);
                         }
                     });
+                    jTFKey.addCaretListener(e -> jTFKeyCaretUpdate(e));
                     pnKey.add(jTFKey);
 
                     //---- btnKeyFile ----
                     btnKeyFile.setText("choose key file");
                     btnKeyFile.addActionListener(e -> btnKeyFile(e));
                     pnKey.add(btnKeyFile);
+
+                    //---- jLBStatus ----
+                    jLBStatus.setText("status");
+                    pnKey.add(jLBStatus);
                 }
                 pnCenter.add(pnKey);
 
@@ -352,6 +393,7 @@ public class PublicKeyEncpt extends JPanel {
     private JLabel label8;
     private JTextField jTFKey;
     private JButton btnKeyFile;
+    private JLabel jLBStatus;
     private JPanel pnExecute;
     private JButton btnEncrypt;
     private JButton btnDecrypt;

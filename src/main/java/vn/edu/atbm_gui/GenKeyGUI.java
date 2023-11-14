@@ -236,7 +236,7 @@ public class GenKeyGUI extends JPanel {
                 keyByte = Base64.getDecoder().decode(path);
                 publicKey = KeyGen.getInstance().getPublicKeyformBytes(keyByte);
             }
-            jLBCertStatus.setForeground(Color.GREEN);
+            jLBCertStatus.setForeground(new Color(51, 153, 0));
             jLBCertStatus.setText(publicKey.getAlgorithm());
         } catch (Exception ex) {
             jLBCertStatus.setForeground(Color.RED);
@@ -257,7 +257,7 @@ public class GenKeyGUI extends JPanel {
                 keyByte = Base64.getDecoder().decode(path);
                 privateKey = KeyGen.getInstance().getPrivateKeyformBytes(keyByte);
             }
-            jLBKeyStorePrivateKeyStatus.setForeground(Color.GREEN);
+            jLBKeyStorePrivateKeyStatus.setForeground(new Color(51, 153, 0));
             jLBKeyStorePrivateKeyStatus.setText(privateKey.getAlgorithm());
         } catch (Exception ex) {
             jLBKeyStorePrivateKeyStatus.setForeground(Color.RED);
@@ -278,7 +278,7 @@ public class GenKeyGUI extends JPanel {
                 keyByte = Base64.getDecoder().decode(path);
                 x509Certificate = KeyGen.getInstance().getCertificateFormBytes(keyByte);
             }
-            jLBKeyStoreCertStatus.setForeground(Color.GREEN);
+            jLBKeyStoreCertStatus.setForeground(new Color(51, 153, 0));
             jLBKeyStoreCertStatus.setText(x509Certificate.getSigAlgName());
         } catch (Exception ex) {
             jLBKeyStoreCertStatus.setForeground(Color.RED);
@@ -430,12 +430,12 @@ public class GenKeyGUI extends JPanel {
         jKeyStoreExport = new JButton();
 
         //======== this ========
-        setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder
-        ( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border. TitledBorder. CENTER, javax. swing. border
-        . TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt
-        . Color. red) , getBorder( )) );  addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void
-        propertyChange (java .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( )
-        ; }} );
+        setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.
+        border.EmptyBorder(0,0,0,0), "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e",javax.swing.border.TitledBorder.CENTER
+        ,javax.swing.border.TitledBorder.BOTTOM,new java.awt.Font("D\u0069al\u006fg",java.awt.Font
+        .BOLD,12),java.awt.Color.red), getBorder())); addPropertyChangeListener(
+        new java.beans.PropertyChangeListener(){@Override public void propertyChange(java.beans.PropertyChangeEvent e){if("\u0062or\u0064er"
+        .equals(e.getPropertyName()))throw new RuntimeException();}});
         setLayout(new VerticalLayout());
 
         //======== pnMain ========

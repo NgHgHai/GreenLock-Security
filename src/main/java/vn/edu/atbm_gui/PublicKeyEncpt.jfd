@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.8" encoding: "UTF-8"
+JFDML JFormDesigner: "8.2.0.0.331" Java: "17.0.7" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -83,11 +83,16 @@ new FormModel {
 							"foreground": sfield java.awt.Color gray
 							addEvent( new FormEvent( "java.awt.event.FocusListener", "focusGained", "jTFKeyFocusGained", true ) )
 							addEvent( new FormEvent( "java.awt.event.FocusListener", "focusLost", "jTFKeyFocusLost", true ) )
+							addEvent( new FormEvent( "javax.swing.event.CaretListener", "caretUpdate", "jTFKeyCaretUpdate", true ) )
 						} )
 						add( new FormComponent( "javax.swing.JButton" ) {
 							name: "btnKeyFile"
 							"text": "choose key file"
 							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnKeyFile", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "jLBStatus"
+							"text": "status"
 						} )
 					} )
 					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) ) {

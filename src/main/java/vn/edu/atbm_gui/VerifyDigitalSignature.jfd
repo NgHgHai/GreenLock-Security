@@ -59,6 +59,7 @@ new FormModel {
 								name: "jTFPublicKey"
 								"preferredSize": &Dimension0 new java.awt.Dimension( 500, 30 )
 								"font": #Font0
+								addEvent( new FormEvent( "javax.swing.event.CaretListener", "caretUpdate", "jTFPublicKeyCaretUpdate", true ) )
 							} )
 							add( new FormComponent( "javax.swing.JButton" ) {
 								name: "btnPublicKeyFile"
@@ -66,6 +67,10 @@ new FormModel {
 								"preferredSize": new java.awt.Dimension( 170, 30 )
 								"font": #Font0
 								addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnPublicKeyFile", true ) )
+							} )
+							add( new FormComponent( "javax.swing.JLabel" ) {
+								name: "jLBStatus"
+								"text": "status"
 							} )
 						} )
 						add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.FlowLayout ) {
