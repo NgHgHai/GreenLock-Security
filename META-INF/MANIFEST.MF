@@ -1,3 +1,8 @@
 Manifest-Version: 1.0
 Main-Class: vn.edu.atbm_gui.Main
-
+Class-Path: bcprov-jdk15on-1.70.jar kernel-7.2.5.jar layout-7.2.5.jar co
+ mmons-codec-1.15.jar swing-worker-1.1.jar forms-7.2.5.jar slf4j-api-1.7
+ .36.jar hyph-7.2.5.jar font-asian-7.2.5.jar styled-xml-parser-7.2.5.jar
+  bcpkix-jdk15on-1.70.jar bcutil-jdk15on-1.70.jar commons-math3-3.6.1.ja
+ r pdfa-7.2.5.jar barcodes-7.2.5.jar svg-7.2.5.jar sign-7.2.5.jar swingx
+ -1.6.1.jar io-7.2.5.jar filters-2.0.235.jar commons-7.2.5.jar
