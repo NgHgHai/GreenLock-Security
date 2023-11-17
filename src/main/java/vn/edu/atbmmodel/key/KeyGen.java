@@ -128,7 +128,7 @@ public class KeyGen {
         KeyGen keyGen = KeyGen.getInstance();
         PrivateKey privateKey;
         try {
-            privateKey = keyGen.getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile("src/greenlock_ca/GreenLockPrivateKey.key"));
+            privateKey = keyGen.getPrivateKeyformBytes(ReadKeyFormFile.readKeyFromFile("greenlock_ca/GreenLockPrivateKey.key"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

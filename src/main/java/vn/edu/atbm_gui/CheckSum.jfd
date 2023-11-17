@@ -74,7 +74,7 @@ new FormModel {
 						name: "pnKey"
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "label8"
-							"text": "checksums"
+							"text": "hash value"
 						} )
 						add( new FormComponent( "javax.swing.JTextField" ) {
 							name: "jTFhashValue"
