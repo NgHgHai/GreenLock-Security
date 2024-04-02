@@ -43,8 +43,5 @@ So you mush have jre to run this
 
 ## Used By
 
-This project is used by the following companies:
-
-- Company 1
-- Company 2
-
+This project is used by the following project:
+https://github.com/ThanhNgoan2705/BikeEcommerceWeb
