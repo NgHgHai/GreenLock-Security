@@ -19,6 +19,7 @@ The software will display information encoded in Base64 format for users to easi
 When packaging software, I choose not to package it with jre to achieve the goal of having the lightest file, so the requirement for the computer to run is to have jre installed.
 So you mush have jre to run this
 - link download full doc + source + .exe file : https://drive.google.com/file/d/1Ba-VqcZFnxE-fvU69xu8GZXFqdv50uKg/view?usp=drive_link
+- java 11 : https://www.oracle.com/vn/java/technologies/javase/jdk11-archive-downloads.html
 
 
 ## Authors
